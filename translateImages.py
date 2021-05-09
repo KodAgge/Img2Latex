@@ -9,5 +9,5 @@ for entry in os.scandir(test_chrome):
     if (entry.path.endswith(".inkml")
             or entry.path.endswith(".inmkl")) and entry.is_file():
         print(entry.path)
-        inkml2img.inkml2img(entry.path,r'C:\Users\TheBeast\Documents\GitHub\DD2424_Img2Latex\data\CROHME DATA\TrainTransformed\Image' + str(i) +'.png')
+        inkml2img.inkml2img(entry.path, r'C:\Users\TheBeast\Documents\GitHub\DD2424_Img2Latex\data\CROHME DATA\TrainTransformed\Image' + str(i) +'.png')
         i+= 1
