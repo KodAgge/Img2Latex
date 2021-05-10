@@ -8,13 +8,15 @@ import torch.nn.functional as F
 import torch.optim as optim
 from skimage.io import imread
 from skimage.io import imshow
+import cv2
 
 
 '''
 To do
 
-1. Reshape images
-2. Normalize data
+1. Reshape images DONE
+  1.1 Crop images NOT DONE
+2. Normalize data DONE
 3. Import labels
 4. Define loss function
 5. First conv layer to match image size
@@ -45,25 +47,90 @@ class Net(nn.Module):
         x = self.fc3(x)
         return x
 
-# def imshow(img):
-#     img = img / 2 + 0.5     # unnormalize
-#     npimg = img.numpy()
-#     plt.imshow(np.transpose(npimg, (1, 2, 0)))
-#     plt.show()
 
-test_data = []
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    # img = (img + 1) * (255 / 2)    # unnormalize
+    npimg = img.numpy()
+    # print(npimg)
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    # plt.imshow(npimg[0,:,:])
+    plt.show()
 
-for i in range(2):
-  image_path = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed/Image' + str(i) + '.png'
-  img = imread(image_path)
-  test_data.append(img)
-  # plt.imshow(img)
-  # plt.show()
 
-  # img.show()
-  # img = imread(image_path, as_gray=True)
+def loadData(path, width, height, n_test, scale = 255):
+  # Preallocate memory
+  data = np.zeros([width, height, n_test])
 
-print(np.mean(test_data[1], axis = (0,1)))
+  for i in range(n_test):
+    image_path = path + '/Image' + str(i) + '.png'
+    img = imread(image_path) # Read image
+    plt.imshow(img)
+    plt.show()
+
+    img_gray_scale = img[:,:,0] # Remove unessecary dimensions
+    # TODO
+    # Add code that automatically crops out whitespace around equation
+    plt.imshow(img_gray_scale)
+    plt.show()
+
+    img_rescaled = img_gray_scale / (scale / 2) - 1 # Rescale to [-1, 1]
+
+    plt.imshow(img_rescaled)
+    plt.show()
+
+    img_resize = cv2.resize(img_rescaled, [width, height]) # Resize image
+    data[:,:,i] = img_resize # Save transformed image data
+
+    plt.imshow(img_resize)
+    plt.show()
+
+    # print(img_rescaled.shape)
+    # print(img_resize.shape)
+
+  return data
+
+def normalizeData(test_data, train_data, val_data):
+  # Find mean and std
+  all_data = np.array([train_data, test_data, val_data])
+  mean = np.mean(all_data)
+  std = np.std(all_data)
+
+  # Normalize
+  test_data = (test_data - mean) / std
+  train_data = (train_data - mean) / std
+  val_data = (val_data - mean) / std
+
+  return test_data, train_data, val_data
+
+
+
+
+n_test = 1
+n_train = 1
+n_val = 1
+width = 100
+height = 100
+scale = 255
+path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
+path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
+path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
+
+test_data = loadData(path_test, width, height, n_test, scale)
+train_data = loadData(path_train, width, height, n_train, scale)
+val_data = loadData(path_val, width, height, n_val, scale)
+
+# test_data, train_data, val_data = normalizeData(test_data, train_data, val_data)
+
+net = Net()
+
+batch_size = 4
+
+# Laddar dem här in labels? Hur ska labels komma med?
+
+trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=False)
+
+testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
 
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -96,14 +163,16 @@ print(np.mean(test_data[1], axis = (0,1)))
 
 
 
-# # get some random training images
+# get some random training images
 # dataiter = iter(trainloader)
+# print(dataiter.next().shape)
+# images = dataiter.next()
 # images, labels = dataiter.next()
 
-# # # show images
-# # imshow(torchvision.utils.make_grid(images))
-# # # print labels
-# # print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
+# show images
+# imshow(torchvision.utils.make_grid(images))
+# print labels
+# print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
 
 # criterion = nn.CrossEntropyLoss()
 # optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
