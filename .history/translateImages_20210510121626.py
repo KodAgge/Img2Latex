@@ -25,6 +25,6 @@ for entry in os.scandir(img_folder):
         inkml2img.inkml2img(entry.path, r'./data/CROHME DATA/' + mode + out_folder_suffix + img_name)
         
         # Joar, här kan du skriva create_label_csv() funktionen. 
-        ### ...
 
         i+= 1
+        input('Done')

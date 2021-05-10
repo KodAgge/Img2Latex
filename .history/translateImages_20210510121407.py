@@ -3,7 +3,7 @@ import os
 # inkml2img.inkml2img('2013ALL_inkml_data/200923-1556-49.inkml','./2013ALL_inkml_data_image/200923-1556-49.png')
 
 mode = 'TRAIN' # EK) If we're transforming training, test or validation images.
-out_folder_suffix = '_transformed/' # EK) Folder name for transformed images. I changed this to "_transformed/" so that your data wouldn't be overwritten/duplicated when I did some tests.  
+out_folder_suffix = '_transformed/' # EK) I changed this to "_transformed/" so that your data wouldn't be overwritten when I did some tests.  
 
 if mode == 'TRAIN':
     img_folder = r'./data/CROHME DATA/TRAIN_CROHME_8836'
@@ -22,9 +22,9 @@ for entry in os.scandir(img_folder):
         print(entry.path)
 
         img_name = 'Image' + str(i) +'.png'
-        inkml2img.inkml2img(entry.path, r'./data/CROHME DATA/' + mode + out_folder_suffix + img_name)
+        inkml2img.inkml2img(entry.path, r'./data/CROHME DATA/' + mode + final_folder_suffix + img_name)
         
-        # Joar, här kan du skriva create_label_csv() funktionen. 
-        ### ...
+        # 
 
         i+= 1
+        input('Done')
