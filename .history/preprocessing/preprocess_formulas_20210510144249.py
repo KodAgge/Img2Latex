@@ -1,13 +1,14 @@
-### EK)
 
-### 1. Which of the two modes should be ran first: normalization or tokenization?
+##### EK)
+
+### Which of the two modes should be ran first: normalization or tokenization?
 # It seems that normalization first and then tokenization gives the best results contrary to what's implied in the first "parser.add_argument(...)". For instance we get...
 #  \left ( D ^ { * } D ^ { * } + m ^ { 2 } \right ) { \cal H } = 0
 # ...instead of...
 #  \left( D ^ { * } D ^ { * } + m ^ { 2 } \right) { \cal H } = 0
 # ...which seems preferable.
 
-### 2. How to run this script:
+### How to run this script:
 # a) normalization
 # python scripts/preprocessing/preprocess_formulas.py --mode normalize --input-file <input_file_path> --output-file <output_file_path>
 # b) tokenization
@@ -15,6 +16,7 @@
 
 
 
+#####
 
 
 #!/usr/bin/env python
