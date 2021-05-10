@@ -9,18 +9,21 @@ import torch.optim as optim
 from skimage.io import imread
 from skimage.io import imshow
 import cv2
+import math
 
 
 '''
 To do
 
-1. Reshape images DONE
-  1.1 Crop images NOT DONE
-2. Normalize data DONE
-3. Import labels
-4. Define loss function
-5. First conv layer to match image size
-6. Train on small dataset
+- Reshape images DONE
+- Normalize data DONE
+- Import labels
+- Define loss function
+- First conv layer to match image size DONE
+- Define layers DONE
+- Activation function?
+- Batcg normalization?
+- Train on small dataset
 
 Mischenallous
 - Clean up code
@@ -29,23 +32,56 @@ Mischenallous
 '''
 
 class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+  def __init__(self):
+    super().__init__()
+    self.conv1 = nn.Conv2d(3, 6, 5)
+    self.pool = nn.MaxPool2d(2, 2)
+    self.conv2 = nn.Conv2d(6, 16, 5)
+    self.fc1 = nn.Linear(16 * 5 * 5, 120)
+    self.fc2 = nn.Linear(120, 84)
+    self.fc3 = nn.Linear(84, 10)
 
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = torch.flatten(x, 1) # flatten all dimensions except batch
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+    # The one used in the paper
+    def __init__(self):
+      super().__init__()
+      self.conv1 = nn.Conv2d(1, 512, 3) # num_input_channels, num_filters, filter_size
+      # ADD BN
+
+      self.conv2 = nn.Conv2d(512, 512, 3, padding=(1, 1)) # num_input_channels, num_filters, filter_size
+      # ADD BN
+
+      self.pool1 = nn.MaxPool2d((1, 2), stride=(1, 2)) # size_of_pool, stride
+      self.conv3 = nn.Conv2d(512, 256, 3, padding=(1, 1)) # num_input_channels, num_filters, filter_size
+      self.pool2 = nn.MaxPool2d((2, 1), stride=(2, 1)) # size_of_pool, stride
+      self.conv4 = nn.Conv2d(256, 256, 3, padding=(1, 1)) # num_input_channels, num_filters, filter_size
+      # ADD BN
+
+      self.conv5 = nn.Conv2d(256, 128, 3, padding=(1, 1)) # num_input_channels, num_filters, filter_size
+      self.pool3 = nn.MaxPool2d((2, 2), stride=(2, 2)) # size_of_pool, stride
+      self.conv6 = nn.Conv2d(128, 64, 3, padding=(1, 1)) # num_input_channels, num_filters, filter_size
+      self.pool4 = nn.MaxPool2d((2, 2), stride=(2, 2), padding=(2, 2)) # size_of_pool, stride
+
+  def forward(self, x):
+
+    x = self.pool(F.relu(self.conv1(x)))
+    x = self.pool(F.relu(self.conv2(x)))
+    x = torch.flatten(x, 1) # flatten all dimensions except batch
+    x = F.relu(self.fc1(x))
+    x = F.relu(self.fc2(x))
+    x = self.fc3(x)
+    return x
+
+  # The one used in the paper
+  def forward(self, x):
+
+    x = self.conv1(x)
+    x = self.pool1(self.conv2(x))
+    x = self.pool2(self.conv3(x))
+    x = self.conv4(x)
+    x = self.pool3(self.conv5(x))
+    x = self.pool4(self.conv6(x))
+
+    return x
 
 
 def imshow(img):
@@ -60,24 +96,29 @@ def imshow(img):
 
 def loadData(path, width, height, n_test, scale = 255):
   # Preallocate memory
-  data = np.zeros([width, height, n_test])
+  data = np.zeros([height, width, n_test])
 
   for i in range(n_test):
     image_path = path + '/Image' + str(i) + '.png'
     img = imread(image_path) # Read image
-    plt.imshow(img)
-    plt.show()
 
     img_gray_scale = img[:,:,0] # Remove unessecary dimensions
-    # TODO
-    # Add code that automatically crops out whitespace around equation
-    plt.imshow(img_gray_scale)
-    plt.show()
 
-    img_rescaled = img_gray_scale / (scale / 2) - 1 # Rescale to [-1, 1]
+    (img_height, img_width) = img_gray_scale.shape # Current shape
 
-    plt.imshow(img_rescaled)
-    plt.show()
+    # Om bilden är för kort i jmf med det valda formatet
+    if img_height / img_width < height / width:
+      new_height = height / width * img_width
+      pad = (new_height - img_height) / 2
+      img_padded= cv2.copyMakeBorder(img_gray_scale, math.ceil(pad), math.floor(pad), 0, 0, cv2.BORDER_CONSTANT, value=255)
+      
+    # Om bilden är för smal i jmf med det valda formatet
+    elif img_height / img_width > height / width:
+      new_width = img_height * width / height
+      pad = (new_width - img_width) / 2
+      img_padded= cv2.copyMakeBorder(img_gray_scale, 0, 0, math.ceil(pad),math.floor(pad), cv2.BORDER_CONSTANT, value=255)
+
+    img_rescaled = img_padded / (scale / 2) - 1 # Rescale to [-1, 1]
 
     img_resize = cv2.resize(img_rescaled, [width, height]) # Resize image
     data[:,:,i] = img_resize # Save transformed image data
@@ -85,10 +126,8 @@ def loadData(path, width, height, n_test, scale = 255):
     plt.imshow(img_resize)
     plt.show()
 
-    # print(img_rescaled.shape)
-    # print(img_resize.shape)
-
   return data
+
 
 def normalizeData(test_data, train_data, val_data):
   # Find mean and std
@@ -105,20 +144,24 @@ def normalizeData(test_data, train_data, val_data):
 
 
 
-
-n_test = 1
+# Hur mycket av datan som ska läsas in
+n_test = 2046
 n_train = 1
 n_val = 1
-width = 100
+
+# Average är 198.7316715542522 x 502.2697947214076 på testsetet
 height = 100
+width = 250
+
+# Går från 0 - 255 (svart - vitt)
 scale = 255
 path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
 path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
 path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
 
 test_data = loadData(path_test, width, height, n_test, scale)
-train_data = loadData(path_train, width, height, n_train, scale)
-val_data = loadData(path_val, width, height, n_val, scale)
+# train_data = loadData(path_train, width, height, n_train, scale)
+# val_data = loadData(path_val, width, height, n_val, scale)
 
 # test_data, train_data, val_data = normalizeData(test_data, train_data, val_data)
 
