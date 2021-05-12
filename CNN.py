@@ -10,6 +10,7 @@ from skimage.io import imread
 from skimage.io import imshow
 import cv2
 import math
+import time
 
 
 '''
@@ -91,7 +92,7 @@ class NetTest(nn.Module):
     return x
 
 
-class Net(nn.Module):
+class NetOld(nn.Module):
   # The one used in the original paper
   def __init__(self):
     super().__init__()
@@ -127,6 +128,140 @@ class Net(nn.Module):
     return x
 
 
+class Net(nn.Module):
+  # The one used in the original paper
+  def __init__(self):
+    super().__init__()
+    # First row (from end)
+    self.conv1 = nn.Conv2d(1, 64, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.pool1 = nn.MaxPool2d((2, 2), stride=(2, 2), padding=(1, 1)).double() # size_of_pool, stride, can't have (2,2) padding
+
+    # Second row (from end)
+    self.conv2 = nn.Conv2d(64, 128, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.pool2 = nn.MaxPool2d((2, 2), stride=(2, 2)).double() # size_of_pool, stride
+
+    # Third row (from end)
+    self.conv3 = nn.Conv2d(128, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.bn3 = nn.BatchNorm2d(256).double()
+
+    # Fourth row (from end)
+    self.conv4 = nn.Conv2d(256, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.pool4 = nn.MaxPool2d((2, 1), stride=(2, 1)).double() # size_of_pool, stride
+
+    # Fifth row (from end)
+    self.conv5 = nn.Conv2d(256, 512, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.bn5 = nn.BatchNorm2d(512).double()
+    self.pool5 = nn.MaxPool2d((1, 2), stride=(1, 2)).double() # size_of_pool, stride
+
+    # Sixth row (from end)
+    self.conv6 = nn.Conv2d(512, 512, 3).double() # num_input_channels, num_filters, filter_size
+    self.bn6 = nn.BatchNorm2d(512).double()
+
+    # Optional flattening for testing
+    self.fc = nn.Linear(148480, 2).double()
+
+  def forward(self, x):
+    # Reshape vector
+    (batch_size, height, width) = x.shape
+    x = x.reshape(batch_size, 1, height, width)
+
+    # First row (from end)
+    x = self.conv1(x)
+    x = self.pool1(x)
+
+    # Second row (from end)
+    x = self.conv2(x)
+    x = self.pool2(x)
+
+    # Third row (from end)
+    x = self.conv3(x)
+    x = self.bn3(x)
+
+    # Fourth row (from end)
+    x = self.conv4(x)
+    x = self.pool4(x)
+
+    # Fifth row (from end)
+    x = self.conv5(x)
+    x = self.bn5(x)
+    x = self.pool5(x)
+
+    # Sixth row (from end)
+    x = self.conv6(x)
+    x = self.bn6(x)
+
+    # For testing
+    x = torch.flatten(x, 1) # flatten all dimensions except batch
+    x = F.relu(self.fc(x))
+
+    return x
+
+
+class NetStanford(nn.Module):
+  # The one used in the original paper
+  def __init__(self):
+    super().__init__()
+    # First row (from end)
+    self.conv1 = nn.Conv2d(1, 64, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+
+    # Second row (from end)
+    self.conv2 = nn.Conv2d(64, 128, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+
+    # Third row (from end)
+    self.conv3 = nn.Conv2d(128, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.bn3 = nn.BatchNorm2d(256).double()
+
+    # Fourth row (from end)
+    self.conv4 = nn.Conv2d(256, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.pool4 = nn.MaxPool2d((2, 1), stride=(2, 1)).double() # size_of_pool, stride
+
+    # Fifth row (from end)
+    self.conv5 = nn.Conv2d(256, 512, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
+    self.bn5 = nn.BatchNorm2d(512).double()
+    self.pool5 = nn.MaxPool2d((1, 2), stride=(1, 2)).double() # size_of_pool, stride
+
+    # Sixth row (from end)
+    self.conv6 = nn.Conv2d(512, 512, 3).double() # num_input_channels, num_filters, filter_size
+    self.bn6 = nn.BatchNorm2d(512).double()
+
+    # Optional flattening for testing
+    self.fc = nn.Linear(148480, 2).double()
+
+  def forward(self, x):
+    # Reshape vector
+    (batch_size, height, width) = x.shape
+    x = x.reshape(batch_size, 1, height, width)
+
+    # First row (from end)
+    x = self.conv1(x)
+
+    # Second row (from end)
+    x = self.conv2(x)
+
+    # Third row (from end)
+    x = self.conv3(x)
+    x = self.bn3(x)
+
+    # Fourth row (from end)
+    x = self.conv4(x)
+    x = self.pool4(x)
+
+    # Fifth row (from end)
+    x = self.conv5(x)
+    x = self.bn5(x)
+    x = self.pool5(x)
+
+    # Sixth row (from end)
+    x = self.conv6(x)
+    x = self.bn6(x)
+
+    # For testing
+    x = torch.flatten(x, 1) # flatten all dimensions except batch
+    x = F.relu(self.fc(x))
+
+    return x
+
+
 def imshow(img):
     img = img / 2 + 0.5     # unnormalize
     npimg = img.numpy()
@@ -134,7 +269,7 @@ def imshow(img):
     plt.show()
 
 
-def loadData(path, width, height, n_test, scale = 255):
+def loadImages(path, width, height, n_test, scale = 255):
   # Preallocate memory
   data = np.zeros([height, width, n_test])
 
@@ -169,112 +304,102 @@ def loadData(path, width, height, n_test, scale = 255):
   return data
 
 
-def normalizeData(test_data, train_data, val_data):
+def normalizeData(test_images, train_images, val_images):
   # Find mean and std
-  all_data = np.array([train_data, test_data, val_data])
+  all_data = np.concatenate([train_images, test_images, val_images], axis = 2)
   mean = np.mean(all_data)
   std = np.std(all_data)
 
   # Normalize
-  test_data = (test_data - mean) / std
-  train_data = (train_data - mean) / std
-  val_data = (val_data - mean) / std
+  test_images = (test_images - mean) / std
+  train_images = (train_images - mean) / std
+  val_images = (val_images - mean) / std
 
-  return test_data, train_data, val_data
+  return test_images, train_images, val_images
 
+
+def addLabels(images, labels, random = False):
+  n = images.shape[2]
+  data = []
+
+  if random:
+    for i in range(n):
+      if i < n / 2:
+        k = 0
+      else:
+        k = 1
+
+      data.append([images[:,:,i], k])
+
+  else:
+    for i in range(n):
+      data.append([images[:,:,i], labels[i]])
+
+  return data
 
 
 # Hur mycket av datan som ska läsas in
-n_test = 2
-n_train = 2
-n_val = 1
+n_test = 10
+n_train = 200
+n_val = 20
 
 # Average är 198.7316715542522 x 502.2697947214076 på testsetet
 height = 100
 width = 250
 
-# Går från 0 - 255 (svart - vitt)
-scale = 255
+# Ladda in och transformera bilder
+scale = 255 # Går från 0 - 255 (svart - vitt)
 path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
 path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
 path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
+test_images = loadImages(path_test, width, height, n_test, scale)
+train_images = loadImages(path_train, width, height, n_train, scale)
+val_images = loadImages(path_val, width, height, n_val, scale)
 
-test_data = loadData(path_test, width, height, n_test, scale)
-train_data = loadData(path_train, width, height, n_train, scale)
-val_data = loadData(path_val, width, height, n_val, scale)
+# Normalisera bilderna
+test_images, train_images, val_images = normalizeData(test_images, train_images, val_images)
 
+# Lägg till lables
+test_data = addLabels(test_images, 0, True)
+train_data = addLabels(train_images, 0, True)
+val_data = addLabels(val_images, 0, True)
 
-# test_data, train_data, val_data = normalizeData(test_data, train_data, val_data)
-
+# Initialisera nätverket
 net = Net()
+batch_size = 4
+n_epochs = 2
 
-train_d = []
-for i in range(n_test):
-  if i < n_test / 2:
-    k = 0
-  else:
-    k = 1
+# Ladda in datan som .torch format
+trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
+testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True)
+valloader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle=True)
 
-  train_d.append([test_data[:,:,i], k])
-
-# # Laddar dem här in labels? Hur ska labels komma med?
-
-# trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=False)
-
-# testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
-
-# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-# # Assuming that we are on a CUDA machine, this should print a CUDA device:
-
-# print(device)
-
-
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
-
-
-batch_size = 2
-
-# trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
-#                                         download=True, transform=transform)
-
-trainloader = torch.utils.data.DataLoader(train_d, batch_size=batch_size,
-                                          shuffle=False)
-
-
-# testset = torchvision.datasets.CIFAR10(root='./data', train=False,
-#                                        download=True, transform=transform)
-# testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-#                                          shuffle=False)
-
-# classes = ('plane', 'car', 'bird', 'cat',
-#            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
+# Dummy klass för testning
 classes = ('0', '1')
 
 
 
-# get some random training images
-dataiter = iter(trainloader)
-# print(dataiter.next().shape)
-# images = dataiter.next()
-images, labels = dataiter.next()
-
-# # show images
-# imshow(torchvision.utils.make_grid(images))
-# # print labels
+# # Kod som tar fram några bilder och plottar en av dem
+# dataiter = iter(trainloader)
+# images, labels = dataiter.next()
+# plt.imshow(images[0])
+# plt.show()
 # print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
 
+# Definierar loss och optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(2):  # loop over the dataset multiple times
+
+# Träningscykeln
+start_time = time.perf_counter()
+
+for epoch in range(n_epochs):
+    print("Epoch:", epoch + 1)
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
+        print("\tBatch:", i + 1)
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
 
@@ -294,34 +419,16 @@ for epoch in range(2):  # loop over the dataset multiple times
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
-
+end_time = time.perf_counter()
 print('Finished Training')
+print('It took', end_time - start_time, 'seconds')
 
-# PATH = './cifar_net.pth'
-# torch.save(net.state_dict(), PATH)
 
-# dataiter = iter(testloader)
-# images, labels = dataiter.next()
-
-# # print images
-# imshow(torchvision.utils.make_grid(images))
-# print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
-
-# net = Net()
-# net.load_state_dict(torch.load(PATH))
-
-outputs = net(images)
-
-_, predicted = torch.max(outputs, 1)
-
-# print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
-#                               for j in range(4)))
-
+# Beräkna nätverkets totala accuracy
 correct = 0
 total = 0
-# since we're not training, we don't need to calculate the gradients for our outputs
 with torch.no_grad():
-    for data in trainloader: # testloader:
+    for data in testloader: # testloader:
         images, labels = data
         # calculate outputs by running images through the network
         outputs = net(images)
@@ -330,8 +437,10 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print('Accuracy of the network on the test images: %d %%' % (
-    100 * correct / total))
+print('Accuracy of the network on the test images: %d %%' % (100 * correct / total))
+
+
+# Beräkna accuracyn per klass
 
 # prepare to count predictions for each class
 correct_pred = {classname: 0 for classname in classes}
@@ -339,7 +448,7 @@ total_pred = {classname: 0 for classname in classes}
 
 # again no gradients needed
 with torch.no_grad():
-    for data in trainloader: #testloader:
+    for data in testloader: #testloader:
         images, labels = data
         outputs = net(images)
         _, predictions = torch.max(outputs, 1)
@@ -353,5 +462,4 @@ with torch.no_grad():
 # print accuracy for each class
 for classname, correct_count in correct_pred.items():
     accuracy = 100 * float(correct_count) / total_pred[classname]
-    print("Accuracy for class {:5s} is: {:.1f} %".format(classname,
-                                                   accuracy))
+    print("Accuracy for class {:5s} is: {:.1f} %".format(classname, accuracy))
