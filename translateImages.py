@@ -3,7 +3,7 @@ import create_label_csv
 import os
 # inkml2img.inkml2img('2013ALL_inkml_data/200923-1556-49.inkml','./2013ALL_inkml_data_image/200923-1556-49.png')
 
-mode = 'TRAIN' # EK) If we're transforming training, test or validation images.
+mode = 'VALIDATION' # EK) If we're transforming training, test or validation images.
 out_folder_suffix = '_transformed/' # EK) Folder name for transformed images. I changed this to "_transformed/" so that your data wouldn't be overwritten/duplicated when I did some tests.  
 csvFileName = mode + "_label_csv.txt"
 
