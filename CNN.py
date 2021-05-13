@@ -295,7 +295,10 @@ def loadImages(path, width, height, n_test, scale = 255):
 
     img_rescaled = img_padded / (scale / 2) - 1 # Rescale to [-1, 1]
 
-    img_resize = cv2.resize(img_rescaled, [width, height]) # Resize image
+    #FIXME Crashes when using [width, height]. Changed to tuple (width, height)
+    #img_resize = cv2.resize(img_rescaled, [width, height]) # Resize image 
+    img_resize = cv2.resize(img_rescaled, (width, height)) # Resize image
+
     data[:,:,i] = img_resize # Save transformed image data
 
     # plt.imshow(img_resize)
@@ -349,9 +352,16 @@ width = 250
 
 # Ladda in och transformera bilder
 scale = 255 # Går från 0 - 255 (svart - vitt)
-path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
-path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
-path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
+
+#path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
+path_test = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed' 
+
+#path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
+path_train = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
+
+#path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
+path_val = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
+
 test_images = loadImages(path_test, width, height, n_test, scale)
 train_images = loadImages(path_train, width, height, n_train, scale)
 val_images = loadImages(path_val, width, height, n_val, scale)
@@ -376,7 +386,6 @@ valloader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle
 
 # Dummy klass för testning
 classes = ('0', '1')
-
 
 
 # # Kod som tar fram några bilder och plottar en av dem
@@ -419,6 +428,7 @@ for epoch in range(n_epochs):
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
+
 end_time = time.perf_counter()
 print('Finished Training')
 print('It took', end_time - start_time, 'seconds')
