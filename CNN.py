@@ -11,6 +11,12 @@ from skimage.io import imshow
 import cv2
 import math
 import time
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+from ray import tune
+from ray.tune import CLIReporter
+from ray.tune.schedulers import ASHAScheduler
+
 
 
 '''
@@ -281,13 +287,14 @@ def loadImages(path, width, height, n_test, scale = 255):
 
     (img_height, img_width) = img_gray_scale.shape # Current shape
 
-    # Om bilden är för kort i jmf med det valda formatet
+    # If the picture is to short compared to the required format
+    
     if img_height / img_width < height / width:
       new_height = height / width * img_width
       pad = (new_height - img_height) / 2
       img_padded= cv2.copyMakeBorder(img_gray_scale, math.ceil(pad), math.floor(pad), 0, 0, cv2.BORDER_CONSTANT, value=255)
-      
-    # Om bilden är för smal i jmf med det valda formatet
+    
+    # If the picture is to narrow compared to the required format
     elif img_height / img_width > height / width:
       new_width = img_height * width / height
       pad = (new_width - img_width) / 2
@@ -321,7 +328,7 @@ def normalizeData(test_images, train_images, val_images):
   return test_images, train_images, val_images
 
 
-def addLabels(images, labels, random = False):
+def addLabels(images, labels, random=False):
   n = images.shape[2]
   data = []
 
@@ -341,17 +348,17 @@ def addLabels(images, labels, random = False):
   return data
 
 
-# Hur mycket av datan som ska läsas in
+#Number of datapoints to include in training
 n_test = 10
-n_train = 200
+n_train = 5
 n_val = 20
 
-# Average är 198.7316715542522 x 502.2697947214076 på testsetet
+#Average image dimensions on testset: 198.7316715542522 x 502.2697947214076
 height = 100
 width = 250
 
-# Ladda in och transformera bilder
-scale = 255 # Går från 0 - 255 (svart - vitt)
+# Load and transform images
+scale = 255 # RGB from 0-255 (black - white)
 
 #path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
 path_test = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed' 
@@ -362,45 +369,62 @@ path_train = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME D
 #path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
 path_val = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
 
+#Load images and rescale to required dimensions 
 test_images = loadImages(path_test, width, height, n_test, scale)
 train_images = loadImages(path_train, width, height, n_train, scale)
 val_images = loadImages(path_val, width, height, n_val, scale)
 
-# Normalisera bilderna
+# Normalize data
 test_images, train_images, val_images = normalizeData(test_images, train_images, val_images)
 
-# Lägg till lables
+# Append labels
 test_data = addLabels(test_images, 0, True)
 train_data = addLabels(train_images, 0, True)
 val_data = addLabels(val_images, 0, True)
 
-# Initialisera nätverket
+# Init network
 net = Net()
-batch_size = 4
+
+#REVIEW START 
+config = {
+    "l1": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
+    "l2": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
+    "lr": tune.loguniform(1e-4, 1e-1),
+    "batch_size": tune.choice([2, 4, 8, 16])
+}
+net = Net(config["l1"], config["l2"]) 
+#REVIEW END
+
+batch_size = 2
 n_epochs = 2
 
-# Ladda in datan som .torch format
+#Load data into .torch format
 trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
 testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True)
 valloader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle=True)
 
-# Dummy klass för testning
+# Dummy classes for testing the network
 classes = ('0', '1')
 
-
+#ANCHOR Start
 # # Kod som tar fram några bilder och plottar en av dem
 # dataiter = iter(trainloader)
 # images, labels = dataiter.next()
 # plt.imshow(images[0])
 # plt.show()
 # print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
+#ANCHOR End
 
-# Definierar loss och optimizer
+
+# Define loss and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
+#REVIEW START
+optimizer = optim.SGD(net.parameters(), lr=config['lr'], momentum=0.9) 
+#REVIEW END
 
-# Träningscykeln
+# Training cycle
 start_time = time.perf_counter()
 
 for epoch in range(n_epochs):
@@ -434,9 +458,11 @@ print('Finished Training')
 print('It took', end_time - start_time, 'seconds')
 
 
-# Beräkna nätverkets totala accuracy
+
+'''CALCULATE ACCURACY'''
 correct = 0
 total = 0
+predictions = []
 with torch.no_grad():
     for data in testloader: # testloader:
         images, labels = data
@@ -450,7 +476,7 @@ with torch.no_grad():
 print('Accuracy of the network on the test images: %d %%' % (100 * correct / total))
 
 
-# Beräkna accuracyn per klass
+# Calculate accuracy per class
 
 # prepare to count predictions for each class
 correct_pred = {classname: 0 for classname in classes}
