@@ -60,7 +60,7 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
 def main():
     train_set = CROHME_Training_Set()
     print(train_set[0]['image'])
-    print(train_set[0]['label'])
+    print(type(train_set[0]['label']))
     train_dataloader = DataLoader(train_set, batch_size=20, shuffle=True)
     ED = EncoderDecoder(1, 1)
 
