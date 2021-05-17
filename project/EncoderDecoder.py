@@ -24,10 +24,10 @@ class EncoderDecoder(nn.Module):
 
     def forward(self, X_batch): 
         x = self.CNN(X_batch)
+        return x
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
     criterion = nn.CrossEntropyLoss() # Ändra denna?
-
     
     optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 
@@ -37,13 +37,16 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
         for i, data in enumerate(train_dataloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data["image"], data["label"]
+            
+            # Can use to decrease learning rate
+            # for g in optimizer.param_groups:
+            #     g['lr'] /= 2
 
             # zero the parameter gradients
             optimizer.zero_grad()
             
             # forward + backward + optimize
             outputs = net(inputs)
-
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -59,8 +62,9 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
 
 def main():
     train_set = CROHME_Training_Set()
-    print(train_set[0]['image'])
-    print(type(train_set[0]['label']))
+    # print(train_set[0]['image'])
+    # print(train_set[0]['label'])
+    # print(train_set[0]['label'][0])
     train_dataloader = DataLoader(train_set, batch_size=20, shuffle=True)
     ED = EncoderDecoder(1, 1)
 

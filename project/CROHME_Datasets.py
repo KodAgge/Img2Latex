@@ -1,7 +1,10 @@
 import torch
+from torch._C import dtype
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
 import pandas as pd
+import numpy as np
+from ast import literal_eval
 pd.options.display.width = 0
 
 from DataLoaderHelpers import loadImages, normalizeData
@@ -20,10 +23,10 @@ VALIDATION_ANNOTATIONS = './project/VALIDATION_NORMALIZED_TOKENIZED.txt'
 ANNOTATION_HEADERS = ['ImageFile','InkmlFile','LatexCode','InkmlFolder']
 
 # N_TEST = 2120
-# N_TRAIN = 7170
+N_TRAIN = 7170
 # N_VAL = 667
 N_TEST = 2
-N_TRAIN = 7
+# N_TRAIN = 7
 N_VAL = 6
 
 SCALE = 255 # RGB from 0-255 (black - white)
@@ -55,7 +58,14 @@ class CROHME_Training_Set(Dataset):
         return len(self.annotations_df)
 
     def __getitem__(self, idx):
-        label = self.annotations_df.iloc[idx].LatexCode
+        label = literal_eval(self.annotations_df.iloc[idx].LatexCode) # '[1, 2, 3]' to [1, 2, 3]
+
+        #TODO
+        '''
+            Write code that translates array to one-hot multy array
+        '''
+
+        label = torch.Tensor(label).long() # Make it into a int-tensor
         # print(self.images)
         # print(self.images.shape)
         image = self.images[:,:,idx]
