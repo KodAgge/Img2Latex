@@ -2,6 +2,9 @@ import numpy as np
 import editdistance as ed
 import statistics as stats
 from nltk import bleu_score
+from sympy.parsing.latex import parse_latex
+import warnings
+warnings.simplefilter(action='ignore')
 
 class Performance:
     
@@ -21,9 +24,6 @@ class Performance:
             labels.append([pred, real])
             scores_lev.append(dist)
         
-        if self.get_stats:
-            return stats.mean(scores_lev), stats.stdev(scores_lev), labels, scores_lev
-        
         return labels, scores_lev
 
     def bleu(self):
@@ -37,10 +37,13 @@ class Performance:
             score =  bleu_score.sentence_bleu(pred, real)
             scores_bleu.append(score)
 
-        if self.get_stats:
-            return stats.mean(scores_bleu), stats.stdev(scores_bleu), bleu_labels, scores_bleu
-
         return bleu_labels, scores_bleu
+
+
+    def equal_latex(self, expr1, expr2):
+        expr1 = parse_latex(expr1)
+        expr2 = parse_latex(expr2)
+        return expr1.equals(expr2)
 
 
     def get_statistics(self, lev_scores, bleu_scores):
@@ -81,13 +84,18 @@ class Performance:
                 print()
 
 
-'''
 
+
+
+'''
 predictions = ['This should match all the time', 'This should not match all the time']
 ground_truth = ['This should match all the time','Hey, this should not match all the time']
 
 
-performance = Performance(predictions, ground_truth, get_stats=True)
+performance = Performance(predictions, ground_truth)
+print(performance.parseLatex())
+
+
 lev_mean, lev_stdev, lev_labels, lev_distances = performance.levenshtein()
 bleu_mean, bleu_stdev, bleu_labels, bleu_distances = performance.bleu()
 
