@@ -48,8 +48,8 @@ class CROHME_Training_Set(Dataset):
         if self.img_transform:
             image = self.img_transform(image)
         
-        #print(label)
-        #print(image)
+        print(label)
+        print(image)
 
         return {"image": image, "label": label}
 
@@ -58,7 +58,7 @@ class CROHME_Training_Set(Dataset):
 def main():
     train_set = CROHME_Training_Set()
     #print(len(train_set))
-    #train_set[0]
+    train_set[0]
 
 if __name__=='__main__':
     main()

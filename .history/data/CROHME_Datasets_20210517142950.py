@@ -58,7 +58,7 @@ class CROHME_Training_Set(Dataset):
 def main():
     train_set = CROHME_Training_Set()
     #print(len(train_set))
-    #train_set[0]
+    train_set[0]
 
 if __name__=='__main__':
     main()

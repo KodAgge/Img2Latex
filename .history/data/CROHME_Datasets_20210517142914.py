@@ -33,9 +33,10 @@ class CROHME_Training_Set(Dataset):
         
         self.img_transform = img_transform
 
-        #print(self.images.shape)
+        print(self.images.shape)
+        
         #print(type(self.annotations_df))
-        #print(self.annotations_df.iloc[1])
+        print(self.annotations_df.iloc[1])
         #print(self.annotations_df.head())
 
     def __len__(self):
@@ -48,8 +49,8 @@ class CROHME_Training_Set(Dataset):
         if self.img_transform:
             image = self.img_transform(image)
         
-        #print(label)
-        #print(image)
+        print(label)
+        print(image)
 
         return {"image": image, "label": label}
 
@@ -58,7 +59,7 @@ class CROHME_Training_Set(Dataset):
 def main():
     train_set = CROHME_Training_Set()
     #print(len(train_set))
-    #train_set[0]
+    train_set[0]
 
 if __name__=='__main__':
     main()

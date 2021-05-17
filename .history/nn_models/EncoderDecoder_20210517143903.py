@@ -4,9 +4,9 @@ from torch.utils.data import DataLoader
 import sys
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
-sys.path.insert(1, '../data/')
+sys.path.insert(1, '/path/to/application/app/folder')
 
-import CROHME_Datasets
+import fileimport CROHME_Datasets
 
 class EncoderDecoder(nn.Module):
 

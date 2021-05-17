@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 import sys
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
-sys.path.insert(1, '../data/')
+sys.path.insert(1, '../data')
 
 import CROHME_Datasets
 
