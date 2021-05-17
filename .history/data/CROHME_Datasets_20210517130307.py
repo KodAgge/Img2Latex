@@ -23,9 +23,7 @@ class CROHME_Training_Set(Dataset):
 
         # Normalize data
         test_images, train_images, val_images = normalizeData(test_images, train_images, val_images)
-        
-        
-        
+        #print('hoj')
         #print(type(self.annotations_df))
         #print(self.annotations_df.iloc[1])
         #print(self.annotations_df.head())
