@@ -1,0 +1,667 @@
+Image0.png§103_em_0.inkml§$P = a_nX^n + a_{n-1}X^{n-1}+\ldots + a_1X + a_0$§project/CROHME DATA/VAL_CROHME_671 
+Image1.png§103_em_1.inkml§$e^v = c(1)$§project/CROHME DATA/VAL_CROHME_671 
+Image2.png§103_em_10.inkml§$w_k( x ) = \frac{1}{d( x , x _k)^p}$§project/CROHME DATA/VAL_CROHME_671 
+Image3.png§103_em_11.inkml§$T = T_{0} + \Delta T$§project/CROHME DATA/VAL_CROHME_671 
+Image4.png§103_em_12.inkml§$(Gz)$§project/CROHME DATA/VAL_CROHME_671 
+Image5.png§103_em_13.inkml§$m = \frac{A.k.R}{g}$§project/CROHME DATA/VAL_CROHME_671 
+Image6.png§103_em_14.inkml§$u_n = u_p q^{n - p}$§project/CROHME DATA/VAL_CROHME_671 
+Image7.png§103_em_15.inkml§$q = 36\pi \frac {v^2}{s^3}$§project/CROHME DATA/VAL_CROHME_671 
+Image8.png§103_em_16.inkml§$(p_1, \ldots, p_N)$§project/CROHME DATA/VAL_CROHME_671 
+Image9.png§103_em_17.inkml§$i=E( T_0)$§project/CROHME DATA/VAL_CROHME_671 
+Image10.png§103_em_18.inkml§$B_1 = S_1(A_1)$§project/CROHME DATA/VAL_CROHME_671 
+Image11.png§103_em_19.inkml§$q \times p$§project/CROHME DATA/VAL_CROHME_671 
+Image12.png§103_em_2.inkml§$G(A) = E - g(F - f(A))$§project/CROHME DATA/VAL_CROHME_671 
+Image13.png§103_em_20.inkml§$E_1, \ldots, E_k$§project/CROHME DATA/VAL_CROHME_671 
+Image14.png§103_em_21.inkml§$r=M$§project/CROHME DATA/VAL_CROHME_671 
+Image15.png§103_em_22.inkml§$B(t)-B(s)$§project/CROHME DATA/VAL_CROHME_671 
+Image16.png§103_em_23.inkml§$\Delta x=x^{\prime}-x$§project/CROHME DATA/VAL_CROHME_671 
+Image17.png§103_em_24.inkml§$y=s x + t$§project/CROHME DATA/VAL_CROHME_671 
+Image18.png§103_em_25.inkml§$G M m / R^2$§project/CROHME DATA/VAL_CROHME_671 
+Image19.png§103_em_26.inkml§$(T_{fus})$§project/CROHME DATA/VAL_CROHME_671 
+Image20.png§103_em_27.inkml§$\frac{m+m^{\prime}}{n+n^{\prime}} \gt \frac{a}{b}$§project/CROHME DATA/VAL_CROHME_671 
+Image21.png§103_em_28.inkml§$l=v t/2$§project/CROHME DATA/VAL_CROHME_671 
+Image22.png§103_em_29.inkml§$\mu e \frac{N}{L^2}=R^{-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image23.png§103_em_3.inkml§$(E_{ij})$§project/CROHME DATA/VAL_CROHME_671 
+Image24.png§103_em_5.inkml§$HR=\frac{P_{v}}{P_{v sat}}$§project/CROHME DATA/VAL_CROHME_671 
+Image25.png§103_em_7.inkml§$\int_{1}^{+\infty} \frac{1}{t^2} \mathrm dt$§project/CROHME DATA/VAL_CROHME_671 
+Image26.png§103_em_8.inkml§$\frac{1}{\sqrt{-2gy(1+{y^{\prime}}^2)}}=k$§project/CROHME DATA/VAL_CROHME_671 
+Image27.png§103_em_9.inkml§$\mathrm d\left(x,y\right) = p\left(x-y\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image28.png§104_em_30.inkml§$dg = \frac{1}{|a|} da db$§project/CROHME DATA/VAL_CROHME_671 
+Image29.png§104_em_31.inkml§$\int \mathrm dx = x + C$§project/CROHME DATA/VAL_CROHME_671 
+Image30.png§104_em_32.inkml§$S^{\prime}P = r^{\prime}$§project/CROHME DATA/VAL_CROHME_671 
+Image31.png§104_em_33.inkml§$a(v^2)= a$§project/CROHME DATA/VAL_CROHME_671 
+Image32.png§104_em_34.inkml§$|x - u| \lt \frac{a}{4}$§project/CROHME DATA/VAL_CROHME_671 
+Image33.png§104_em_35.inkml§$q\lt-1$§project/CROHME DATA/VAL_CROHME_671 
+Image34.png§104_em_36.inkml§$\left| x - \frac{a}{b} \right| \leq \frac{1}{\sqrt 5 b^2}$§project/CROHME DATA/VAL_CROHME_671 
+Image35.png§104_em_37.inkml§$I_A \leq I_B \leq I_C$§project/CROHME DATA/VAL_CROHME_671 
+Image36.png§104_em_38.inkml§$u(t)-v(t)$§project/CROHME DATA/VAL_CROHME_671 
+Image37.png§104_em_39.inkml§$S_{max}=P\frac{\alpha}{1-\alpha}$§project/CROHME DATA/VAL_CROHME_671 
+Image38.png§104_em_40.inkml§$\gamma_1 = \frac{\mu_3}{\sigma^3}$§project/CROHME DATA/VAL_CROHME_671 
+Image39.png§104_em_42.inkml§$T_{850}$§project/CROHME DATA/VAL_CROHME_671 
+Image40.png§104_em_43.inkml§$TX_i=X_{i+1}$§project/CROHME DATA/VAL_CROHME_671 
+Image41.png§104_em_44.inkml§$M_i(x_i,y_i)$§project/CROHME DATA/VAL_CROHME_671 
+Image42.png§104_em_45.inkml§$P(X)P^\prime (X)=R(X)$§project/CROHME DATA/VAL_CROHME_671 
+Image43.png§104_em_47.inkml§$u \in S$§project/CROHME DATA/VAL_CROHME_671 
+Image44.png§104_em_48.inkml§$P(b/c)$§project/CROHME DATA/VAL_CROHME_671 
+Image45.png§104_em_49.inkml§$(v_1, \ldots, v_n)$§project/CROHME DATA/VAL_CROHME_671 
+Image46.png§104_em_50.inkml§$To = \sqrt{\frac {2H} g}$§project/CROHME DATA/VAL_CROHME_671 
+Image47.png§104_em_51.inkml§$S_{n+1}=S_nS_{n-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image48.png§104_em_52.inkml§$s=1$§project/CROHME DATA/VAL_CROHME_671 
+Image49.png§104_em_53.inkml§$L_0$§project/CROHME DATA/VAL_CROHME_671 
+Image50.png§104_em_54.inkml§$\{x P(x)\}$§project/CROHME DATA/VAL_CROHME_671 
+Image51.png§104_em_55.inkml§$G_{2k}$§project/CROHME DATA/VAL_CROHME_671 
+Image52.png§104_em_56.inkml§$a_2 = \frac{P[x_0, x_1] - P[x_1, x_2]}{x0 - x2} = P[x_0, x_1, x_2]$§project/CROHME DATA/VAL_CROHME_671 
+Image53.png§104_em_57.inkml§$y^{\prime}(a)$§project/CROHME DATA/VAL_CROHME_671 
+Image54.png§104_em_58.inkml§$\sigma(0)=01$§project/CROHME DATA/VAL_CROHME_671 
+Image55.png§104_em_59.inkml§$S_n = X_1 + X_2 + \ldots + X_n$§project/CROHME DATA/VAL_CROHME_671 
+Image56.png§105_em_60.inkml§$c_1(\alpha -E) + c_2(\beta) = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image57.png§105_em_61.inkml§$P_{CV} = \frac{C}{45} + (\frac{P}{40})\times 1.6$§project/CROHME DATA/VAL_CROHME_671 
+Image58.png§105_em_62.inkml§$f^{\prime}(x) = 2ax + b$§project/CROHME DATA/VAL_CROHME_671 
+Image59.png§105_em_63.inkml§$\frac{1}{T} \int_{-T/2}^{T/2} P(t) e^{-i \frac{2n\pi}{T}} dt=c_n(P) (1)$§project/CROHME DATA/VAL_CROHME_671 
+Image60.png§105_em_64.inkml§$1 + a(p)p^{-s} + a(p^2)p^{-2s} + \ldots$§project/CROHME DATA/VAL_CROHME_671 
+Image61.png§105_em_65.inkml§${\sqrt{2} = \frac{p}{q}}$§project/CROHME DATA/VAL_CROHME_671 
+Image62.png§105_em_66.inkml§$\int_{b}^{a} f(x) \mathrm dx = -\int_{a}^{b} f(x) \mathrm dx$§project/CROHME DATA/VAL_CROHME_671 
+Image63.png§105_em_68.inkml§$\mathrm{card}(B^A) = 2^{\mathrm{card}(A)}$§project/CROHME DATA/VAL_CROHME_671 
+Image64.png§105_em_69.inkml§$P_1=P^\prime$§project/CROHME DATA/VAL_CROHME_671 
+Image65.png§105_em_70.inkml§$T(g)=0$§project/CROHME DATA/VAL_CROHME_671 
+Image66.png§105_em_71.inkml§$\mu_n = E[X^n]$§project/CROHME DATA/VAL_CROHME_671 
+Image67.png§105_em_72.inkml§$\sigma({A}_i)$§project/CROHME DATA/VAL_CROHME_671 
+Image68.png§105_em_74.inkml§$\alpha= 2 \sqrt { \frac {l(u)}{L}}$§project/CROHME DATA/VAL_CROHME_671 
+Image69.png§105_em_75.inkml§$v_3 = \frac{1}{4}(-1 - \sqrt{17}+\sqrt{34+2\sqrt17}) v_4 = \frac{1}{4}(-1 - \sqrt{17}-\sqrt{34+2\sqrt17})$§project/CROHME DATA/VAL_CROHME_671 
+Image70.png§105_em_76.inkml§$\frac{2s^2}{5t}x^5 + sx^4 + tx^3 + \frac{t^2}{2s}x^2 + \frac{t^3}{8s^2}x + a_0 = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image71.png§105_em_77.inkml§$V_i-V_o$§project/CROHME DATA/VAL_CROHME_671 
+Image72.png§105_em_78.inkml§$sp_{t} \lt 0$§project/CROHME DATA/VAL_CROHME_671 
+Image73.png§105_em_79.inkml§$A = \{ a_0, \ldots , a_ {|A| } \}$§project/CROHME DATA/VAL_CROHME_671 
+Image74.png§105_em_80.inkml§$S^{4m+1}$§project/CROHME DATA/VAL_CROHME_671 
+Image75.png§105_em_81.inkml§$\frac{C_{pA}^kC_{qA}^{n-k}}{C_A^n}$§project/CROHME DATA/VAL_CROHME_671 
+Image76.png§105_em_82.inkml§$T_N = 100$§project/CROHME DATA/VAL_CROHME_671 
+Image77.png§105_em_83.inkml§$P(r)$§project/CROHME DATA/VAL_CROHME_671 
+Image78.png§105_em_84.inkml§$H,H^{\prime},M$§project/CROHME DATA/VAL_CROHME_671 
+Image79.png§105_em_85.inkml§$t_1= \frac{L}{c + V_p}$§project/CROHME DATA/VAL_CROHME_671 
+Image80.png§105_em_86.inkml§$A^n+\ldots+c_0I_n$§project/CROHME DATA/VAL_CROHME_671 
+Image81.png§105_em_87.inkml§$f = \frac{\sqrt{5}}{RC}$§project/CROHME DATA/VAL_CROHME_671 
+Image82.png§105_em_88.inkml§$M(22)$§project/CROHME DATA/VAL_CROHME_671 
+Image83.png§105_em_89.inkml§$P_f=p_c\times (1-o_i-o_t)+o_t$§project/CROHME DATA/VAL_CROHME_671 
+Image84.png§106_em_100.inkml§$i.M$§project/CROHME DATA/VAL_CROHME_671 
+Image85.png§106_em_101.inkml§$1 g = N_A u$§project/CROHME DATA/VAL_CROHME_671 
+Image86.png§106_em_102.inkml§$H_4^{(0)} = {0xc3d2e1f0}$§project/CROHME DATA/VAL_CROHME_671 
+Image87.png§106_em_103.inkml§$(s_1, \ldots, s_m )$§project/CROHME DATA/VAL_CROHME_671 
+Image88.png§106_em_104.inkml§$z=|z|\mathrm{e}^{i\theta}$§project/CROHME DATA/VAL_CROHME_671 
+Image89.png§106_em_105.inkml§$V.f(p) = NkT$§project/CROHME DATA/VAL_CROHME_671 
+Image90.png§106_em_106.inkml§$\frac{1}{2{\pi}i}\int_{c-i\infty}^{c+i\infty}g(s)t^{s}=\pi(t)$§project/CROHME DATA/VAL_CROHME_671 
+Image91.png§106_em_108.inkml§$P_{nmm}$§project/CROHME DATA/VAL_CROHME_671 
+Image92.png§106_em_109.inkml§$p=\frac{2(N_0-N_t)}{2N_0}$§project/CROHME DATA/VAL_CROHME_671 
+Image93.png§106_em_110.inkml§$c - w_i$§project/CROHME DATA/VAL_CROHME_671 
+Image94.png§106_em_111.inkml§$k(p + q) = p.q - 1$§project/CROHME DATA/VAL_CROHME_671 
+Image95.png§106_em_112.inkml§$L(v)L(u^{\prime})$§project/CROHME DATA/VAL_CROHME_671 
+Image96.png§106_em_113.inkml§$a^{\prime} = \frac{a}{\sqrt 2}$§project/CROHME DATA/VAL_CROHME_671 
+Image97.png§106_em_114.inkml§$\frac{(n+k-1)(n+k-2)\ldots(n+1)n}{k(k-1)\ldots 2\times 1}$§project/CROHME DATA/VAL_CROHME_671 
+Image98.png§106_em_115.inkml§$R_d = R_f$§project/CROHME DATA/VAL_CROHME_671 
+Image99.png§106_em_116.inkml§$(n+1)P_{n+1}(x)=(2n+1)xP_{n}(x) - nP_{n-1}(x)$§project/CROHME DATA/VAL_CROHME_671 
+Image100.png§106_em_117.inkml§$\log 2 (4)$§project/CROHME DATA/VAL_CROHME_671 
+Image101.png§106_em_118.inkml§$s = \frac{1}{2} + it$§project/CROHME DATA/VAL_CROHME_671 
+Image102.png§106_em_119.inkml§$Ext$§project/CROHME DATA/VAL_CROHME_671 
+Image103.png§106_em_90.inkml§$ a = \frac {v^2}{R}$§project/CROHME DATA/VAL_CROHME_671 
+Image104.png§106_em_91.inkml§$y\times y^{\prime}-x\times x^{\prime}\geq 0$§project/CROHME DATA/VAL_CROHME_671 
+Image105.png§106_em_93.inkml§$AB^2 + AC^2 = \frac {1 }{ 2} BC^2 + 2AI^2$§project/CROHME DATA/VAL_CROHME_671 
+Image106.png§106_em_94.inkml§$4\pi^2aR$§project/CROHME DATA/VAL_CROHME_671 
+Image107.png§106_em_95.inkml§$F(t) = {e}^{ht}$§project/CROHME DATA/VAL_CROHME_671 
+Image108.png§106_em_96.inkml§$I_{1} = I_{1_{mi}} + \frac{V_e}{L_1} t$§project/CROHME DATA/VAL_CROHME_671 
+Image109.png§106_em_97.inkml§$P^iP_i = m^2 c^2 \frac{V^iV_i}{(\sqrt{V^jV_j} )^2} = m^2c^2$§project/CROHME DATA/VAL_CROHME_671 
+Image110.png§106_em_99.inkml§$P_o ( \cos \theta ) = 1$§project/CROHME DATA/VAL_CROHME_671 
+Image111.png§114_em_125.inkml§$f(\sigma+it)$§project/CROHME DATA/VAL_CROHME_671 
+Image112.png§115_em_127.inkml§$Aire = (64/81)\times  d^2$§project/CROHME DATA/VAL_CROHME_671 
+Image113.png§115_em_128.inkml§$Li_s (z)$§project/CROHME DATA/VAL_CROHME_671 
+Image114.png§115_em_129.inkml§$u(b)$§project/CROHME DATA/VAL_CROHME_671 
+Image115.png§115_em_130.inkml§$N = (n-1)\times  10^6$§project/CROHME DATA/VAL_CROHME_671 
+Image116.png§115_em_131.inkml§$v^je_j$§project/CROHME DATA/VAL_CROHME_671 
+Image117.png§115_em_132.inkml§$L_0, L_1, \ldots$§project/CROHME DATA/VAL_CROHME_671 
+Image118.png§115_em_133.inkml§${f=F/(R T)}$§project/CROHME DATA/VAL_CROHME_671 
+Image119.png§115_em_134.inkml§$\Delta H^0$§project/CROHME DATA/VAL_CROHME_671 
+Image120.png§115_em_135.inkml§${ E = \frac{1}{2} k T }$§project/CROHME DATA/VAL_CROHME_671 
+Image121.png§115_em_136.inkml§$\frac{dA}{dt}= \{A,H\} =0$§project/CROHME DATA/VAL_CROHME_671 
+Image122.png§115_em_137.inkml§$\sigma = \frac{1}{2}$§project/CROHME DATA/VAL_CROHME_671 
+Image123.png§115_em_138.inkml§$T_{n}(T_{m}(X))=T_{mn}(X) $§project/CROHME DATA/VAL_CROHME_671 
+Image124.png§115_em_139.inkml§$H_3(R)$§project/CROHME DATA/VAL_CROHME_671 
+Image125.png§115_em_140.inkml§$v_p(n)$§project/CROHME DATA/VAL_CROHME_671 
+Image126.png§115_em_142.inkml§$T_0(X)=1$§project/CROHME DATA/VAL_CROHME_671 
+Image127.png§115_em_143.inkml§$\frac {V}{T} = \frac {nR}{p}$§project/CROHME DATA/VAL_CROHME_671 
+Image128.png§115_em_144.inkml§$(BT_B)$§project/CROHME DATA/VAL_CROHME_671 
+Image129.png§115_em_145.inkml§$f(H)$§project/CROHME DATA/VAL_CROHME_671 
+Image130.png§115_em_146.inkml§$p \neq q$§project/CROHME DATA/VAL_CROHME_671 
+Image131.png§115_em_147.inkml§$n = \frac{\sin(\theta_i)}{\sin(\theta_r)}$§project/CROHME DATA/VAL_CROHME_671 
+Image132.png§115_em_148.inkml§$\Delta S_{1,2}$§project/CROHME DATA/VAL_CROHME_671 
+Image133.png§115_em_149.inkml§$q=\sum_{i=1}^sl_i^2-\left(\sum_{i=s+1}^rl_i^2\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image134.png§115_em_150.inkml§$e_{s}+1,\ldots,e_r$§project/CROHME DATA/VAL_CROHME_671 
+Image135.png§115_em_151.inkml§$Pa.s$§project/CROHME DATA/VAL_CROHME_671 
+Image136.png§115_em_152.inkml§$u\mathrm dv= \mathrm d(uv)-v\mathrm du$§project/CROHME DATA/VAL_CROHME_671 
+Image137.png§115_em_153.inkml§$g(z)=z.u(z)$§project/CROHME DATA/VAL_CROHME_671 
+Image138.png§115_em_154.inkml§$b^{\prime}=\sum_{ij}\mu_{ij}a_{ij}$§project/CROHME DATA/VAL_CROHME_671 
+Image139.png§115_em_155.inkml§$s=n + \alpha$§project/CROHME DATA/VAL_CROHME_671 
+Image140.png§115_em_156.inkml§$u_n\gtM$§project/CROHME DATA/VAL_CROHME_671 
+Image141.png§116_em_158.inkml§$\tan \gamma_H=\tan H \sin \phi$§project/CROHME DATA/VAL_CROHME_671 
+Image142.png§116_em_159.inkml§$I^{-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image143.png§116_em_160.inkml§$M=(\alpha_{ik}.\beta_{jl})$§project/CROHME DATA/VAL_CROHME_671 
+Image144.png§116_em_161.inkml§$[\frac{2u}{3}+\frac{v}{3},\frac{2v}{3}+\frac{u}{3}]$§project/CROHME DATA/VAL_CROHME_671 
+Image145.png§116_em_162.inkml§$L(w)=\frac{m}{2}||w||^2-V(r)$§project/CROHME DATA/VAL_CROHME_671 
+Image146.png§116_em_163.inkml§$H_5=X^5-10X^3+15X$§project/CROHME DATA/VAL_CROHME_671 
+Image147.png§116_em_164.inkml§$g_1(x) =\frac { 1}{2} (f_1(x) + f_2(x) )= e^{ux}\cos(vx)$§project/CROHME DATA/VAL_CROHME_671 
+Image148.png§116_em_165.inkml§$f^{\prime}\left(x\right)=n\left(1+x\right)^{n-1}-n$§project/CROHME DATA/VAL_CROHME_671 
+Image149.png§116_em_166.inkml§$\lim_{x \rightarrow a}f(x) = l$§project/CROHME DATA/VAL_CROHME_671 
+Image150.png§116_em_167.inkml§$2^{2^N}$§project/CROHME DATA/VAL_CROHME_671 
+Image151.png§116_em_168.inkml§$M_k(n) = \frac{1}{2}n(n^k+1)$§project/CROHME DATA/VAL_CROHME_671 
+Image152.png§116_em_169.inkml§$r^l Y_{l,m}$§project/CROHME DATA/VAL_CROHME_671 
+Image153.png§116_em_170.inkml§$E = p c$§project/CROHME DATA/VAL_CROHME_671 
+Image154.png§116_em_171.inkml§$i_A (t) = I_S \sqrt{2} \cos \alpha_S$§project/CROHME DATA/VAL_CROHME_671 
+Image155.png§116_em_172.inkml§${E_{\theta_2}}$§project/CROHME DATA/VAL_CROHME_671 
+Image156.png§116_em_173.inkml§$4m_{i+1}=4({x_{i+1}}^2+2x_i+1^2)+4{y_i}^2+8(x_i+1)-4y_i+5-4R^2$§project/CROHME DATA/VAL_CROHME_671 
+Image157.png§116_em_174.inkml§$VdP = -nPdV$§project/CROHME DATA/VAL_CROHME_671 
+Image158.png§116_em_175.inkml§$P\gtp+\frac{aq}{1-q}$§project/CROHME DATA/VAL_CROHME_671 
+Image159.png§116_em_176.inkml§$\lim_{T \rightarrow \infty}x_T(t) = x(t)$§project/CROHME DATA/VAL_CROHME_671 
+Image160.png§116_em_177.inkml§$R_g\ltq^{-1}\ltl_0$§project/CROHME DATA/VAL_CROHME_671 
+Image161.png§116_em_178.inkml§$[XY]=[X^{\prime}Y^{\prime}]$§project/CROHME DATA/VAL_CROHME_671 
+Image162.png§116_em_179.inkml§$E[X] = \mu E[(X-\mu)^2] = \sigma^2$§project/CROHME DATA/VAL_CROHME_671 
+Image163.png§116_em_180.inkml§$\frac{P_i}{\gamma}+\frac{V_i^2}{2g}-\frac{P_v}{\gamma}$§project/CROHME DATA/VAL_CROHME_671 
+Image164.png§116_em_181.inkml§$S_{20,w}$§project/CROHME DATA/VAL_CROHME_671 
+Image165.png§116_em_182.inkml§$\Delta \theta = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image166.png§116_em_183.inkml§$E(P)$§project/CROHME DATA/VAL_CROHME_671 
+Image167.png§116_em_184.inkml§$E = F_e \times l = \frac {1}{2} m v^2$§project/CROHME DATA/VAL_CROHME_671 
+Image168.png§116_em_185.inkml§$y^2=-\sqrt{q}$§project/CROHME DATA/VAL_CROHME_671 
+Image169.png§116_em_186.inkml§$\sigma_{F}( R )$§project/CROHME DATA/VAL_CROHME_671 
+Image170.png§117_em_187.inkml§$\frac{V_o}{V_i}=-\frac{\alpha}{1-\alpha}$§project/CROHME DATA/VAL_CROHME_671 
+Image171.png§117_em_188.inkml§$\left|V_s\right|=\frac{V_s}{V_e}$§project/CROHME DATA/VAL_CROHME_671 
+Image172.png§117_em_189.inkml§$f(u_1) = u_2$§project/CROHME DATA/VAL_CROHME_671 
+Image173.png§117_em_190.inkml§$\mu_i=d_i$§project/CROHME DATA/VAL_CROHME_671 
+Image174.png§117_em_191.inkml§$q = w + x i + y j + z k$§project/CROHME DATA/VAL_CROHME_671 
+Image175.png§117_em_192.inkml§$a = \frac{8 R}{\sqrt{3}}$§project/CROHME DATA/VAL_CROHME_671 
+Image176.png§117_em_193.inkml§$u_{n+1}=f(u_n)$§project/CROHME DATA/VAL_CROHME_671 
+Image177.png§117_em_194.inkml§$S _i= 0$§project/CROHME DATA/VAL_CROHME_671 
+Image178.png§117_em_195.inkml§$X=R^2\frac{b_1-b_2}{a_1b_2-a_2b_1}$§project/CROHME DATA/VAL_CROHME_671 
+Image179.png§117_em_196.inkml§$\phi_A = \frac {M_0 L }{ 3 EI}$§project/CROHME DATA/VAL_CROHME_671 
+Image180.png§117_em_197.inkml§$x = \sqrt{|a|} \times i$§project/CROHME DATA/VAL_CROHME_671 
+Image181.png§117_em_198.inkml§$Nu= 0.13(Pr.Gr)^{0.33}$§project/CROHME DATA/VAL_CROHME_671 
+Image182.png§117_em_199.inkml§$v_1 = e^{\frac{-2i\pi}{9}}$§project/CROHME DATA/VAL_CROHME_671 
+Image183.png§117_em_200.inkml§$1 + z = \frac{1}{\sqrt{1 - \frac{2 G M}{R c^2}}}$§project/CROHME DATA/VAL_CROHME_671 
+Image184.png§117_em_201.inkml§$o \in Nil(A)$§project/CROHME DATA/VAL_CROHME_671 
+Image185.png§117_em_202.inkml§$\Delta_r G^0_{T}$§project/CROHME DATA/VAL_CROHME_671 
+Image186.png§117_em_203.inkml§$pV = Nk_BT$§project/CROHME DATA/VAL_CROHME_671 
+Image187.png§117_em_204.inkml§$\sigma =\sqrt{\sigma ^2}$§project/CROHME DATA/VAL_CROHME_671 
+Image188.png§117_em_205.inkml§$pgcd(n,P) = 1$§project/CROHME DATA/VAL_CROHME_671 
+Image189.png§117_em_207.inkml§$S(f) = \frac{1}{R}sinc^2\frac{f}{2R}\sin^2\frac{\pi f}{2R}$§project/CROHME DATA/VAL_CROHME_671 
+Image190.png§117_em_208.inkml§$|u_{n_0}-a|\lt\frac{1}{n}$§project/CROHME DATA/VAL_CROHME_671 
+Image191.png§117_em_209.inkml§$R^{\prime} = \frac{R}{3}$§project/CROHME DATA/VAL_CROHME_671 
+Image192.png§117_em_210.inkml§$F_{-n}(x)=-\frac 1{n-1}x^{-n+1} + Cste = -\frac1{n-1}\frac 1{x^{n-1}}$§project/CROHME DATA/VAL_CROHME_671 
+Image193.png§117_em_211.inkml§$v_2 = {v_1}^2$§project/CROHME DATA/VAL_CROHME_671 
+Image194.png§117_em_212.inkml§$M = \frac {P L }{ 4}$§project/CROHME DATA/VAL_CROHME_671 
+Image195.png§117_em_213.inkml§$v-u$§project/CROHME DATA/VAL_CROHME_671 
+Image196.png§117_em_214.inkml§$\int_a^b e^{M f(x)}dx$§project/CROHME DATA/VAL_CROHME_671 
+Image197.png§117_em_215.inkml§$s_{j}(t)$§project/CROHME DATA/VAL_CROHME_671 
+Image198.png§117_em_216.inkml§${f(x)=\sum_{k=1}^\infty \frac {\sin(2^k x)} {\sqrt{2}^k}}$§project/CROHME DATA/VAL_CROHME_671 
+Image199.png§118_em_217.inkml§$V = f(p.d / T)$§project/CROHME DATA/VAL_CROHME_671 
+Image200.png§118_em_218.inkml§$G/H_{G}$§project/CROHME DATA/VAL_CROHME_671 
+Image201.png§118_em_219.inkml§$B(X,M)$§project/CROHME DATA/VAL_CROHME_671 
+Image202.png§118_em_220.inkml§$A = \pi . Ra . Rb$§project/CROHME DATA/VAL_CROHME_671 
+Image203.png§118_em_221.inkml§$2sp_{z}$§project/CROHME DATA/VAL_CROHME_671 
+Image204.png§118_em_222.inkml§$E = \sqrt{p^2c^2 + m^2c^4}$§project/CROHME DATA/VAL_CROHME_671 
+Image205.png§118_em_224.inkml§$C_{n+1}(E)=C_1 \left ( C_{n}(E)\right )$§project/CROHME DATA/VAL_CROHME_671 
+Image206.png§118_em_225.inkml§$\frac{u-3}{2} + 4 \gt 5u$§project/CROHME DATA/VAL_CROHME_671 
+Image207.png§118_em_226.inkml§${Red}$§project/CROHME DATA/VAL_CROHME_671 
+Image208.png§118_em_227.inkml§$L_v = 3335 - 2,91T$§project/CROHME DATA/VAL_CROHME_671 
+Image209.png§118_em_228.inkml§$r_C = \frac{2S}{a+b-c}$§project/CROHME DATA/VAL_CROHME_671 
+Image210.png§118_em_229.inkml§$f(N) =\{0_L \}$§project/CROHME DATA/VAL_CROHME_671 
+Image211.png§118_em_230.inkml§$1 = \frac{p e^{\frac {p}{q}}}{q}$§project/CROHME DATA/VAL_CROHME_671 
+Image212.png§118_em_231.inkml§$A(0, R, \infty)$§project/CROHME DATA/VAL_CROHME_671 
+Image213.png§118_em_232.inkml§$r^{\prime} = B^n x + \alpha - (B y + \beta)^n$§project/CROHME DATA/VAL_CROHME_671 
+Image214.png§118_em_233.inkml§$\pi_0(G)$§project/CROHME DATA/VAL_CROHME_671 
+Image215.png§118_em_234.inkml§$dV = yz dx +zx dy + xy dz$§project/CROHME DATA/VAL_CROHME_671 
+Image216.png§118_em_235.inkml§$c(w)$§project/CROHME DATA/VAL_CROHME_671 
+Image217.png§118_em_236.inkml§$L/\log(L)$§project/CROHME DATA/VAL_CROHME_671 
+Image218.png§118_em_237.inkml§$||{ r} - { r}_2||$§project/CROHME DATA/VAL_CROHME_671 
+Image219.png§118_em_238.inkml§$I=10$§project/CROHME DATA/VAL_CROHME_671 
+Image220.png§118_em_239.inkml§$C^1(G)=G$§project/CROHME DATA/VAL_CROHME_671 
+Image221.png§118_em_240.inkml§$I_d = I_i k_d \sin \theta$§project/CROHME DATA/VAL_CROHME_671 
+Image222.png§118_em_241.inkml§$H_{2n}$§project/CROHME DATA/VAL_CROHME_671 
+Image223.png§118_em_242.inkml§$\frac{\sin{\theta}}{v}= \mathrm{Cste}$§project/CROHME DATA/VAL_CROHME_671 
+Image224.png§118_em_244.inkml§$||z - x|| \leq ||z - y|| + ||y - x||$§project/CROHME DATA/VAL_CROHME_671 
+Image225.png§118_em_245.inkml§$S^1 \times R^{n-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image226.png§118_em_246.inkml§$I_{1_{max}}$§project/CROHME DATA/VAL_CROHME_671 
+Image227.png§120_em_282.inkml§$R^{ij} - \frac{1}{2}g^{ij}R = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image228.png§120_em_283.inkml§$a_1 = \frac{M_2}{M_1 + M_2} a$§project/CROHME DATA/VAL_CROHME_671 
+Image229.png§120_em_284.inkml§$u = Ri$§project/CROHME DATA/VAL_CROHME_671 
+Image230.png§120_em_285.inkml§$u=x$§project/CROHME DATA/VAL_CROHME_671 
+Image231.png§120_em_286.inkml§$x = \frac{m_{eau}}{m_{air sec}}$§project/CROHME DATA/VAL_CROHME_671 
+Image232.png§120_em_287.inkml§$Imf$§project/CROHME DATA/VAL_CROHME_671 
+Image233.png§120_em_288.inkml§$f(z)=a (z-z_0)+b+o(z-z_0)$§project/CROHME DATA/VAL_CROHME_671 
+Image234.png§120_em_289.inkml§$\frac {\mu - 1}{\mu}$§project/CROHME DATA/VAL_CROHME_671 
+Image235.png§120_em_290.inkml§$(\mu+1)$§project/CROHME DATA/VAL_CROHME_671 
+Image236.png§120_em_291.inkml§$e ^ {a (-1 + 2w)} = w ^ {\frac{3 \sqrt{3} a}{\pi}}$§project/CROHME DATA/VAL_CROHME_671 
+Image237.png§120_em_292.inkml§$(y-y^{calc})$§project/CROHME DATA/VAL_CROHME_671 
+Image238.png§120_em_293.inkml§$p_A = u + c [L + \frac{1}{3}(a-b)]$§project/CROHME DATA/VAL_CROHME_671 
+Image239.png§120_em_296.inkml§$|B-\beta|$§project/CROHME DATA/VAL_CROHME_671 
+Image240.png§120_em_297.inkml§$P(X_1, \ldots, X_N) = \frac{e^{-\frac{E}{k_B T}}}{\int dX_1 dX_2 \ldots}$§project/CROHME DATA/VAL_CROHME_671 
+Image241.png§120_em_298.inkml§$F((T))$§project/CROHME DATA/VAL_CROHME_671 
+Image242.png§120_em_299.inkml§$u(ab^{-1} - cbb^{-1}d^{-1}) = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image243.png§120_em_300.inkml§$(2)$§project/CROHME DATA/VAL_CROHME_671 
+Image244.png§121_em_302.inkml§$- (T_{700} - T_{d_{700}})$§project/CROHME DATA/VAL_CROHME_671 
+Image245.png§121_em_303.inkml§$I_{moy}$§project/CROHME DATA/VAL_CROHME_671 
+Image246.png§121_em_304.inkml§$B_N(a)=\sum_{k=N}^ \infty \frac{16^{N-k}}{8k+a}$§project/CROHME DATA/VAL_CROHME_671 
+Image247.png§121_em_305.inkml§$k^2 = u.a^n + v$§project/CROHME DATA/VAL_CROHME_671 
+Image248.png§121_em_306.inkml§$u_n = o(v_n)$§project/CROHME DATA/VAL_CROHME_671 
+Image249.png§121_em_307.inkml§$C_V \gt 0$§project/CROHME DATA/VAL_CROHME_671 
+Image250.png§121_em_308.inkml§$C(0, R)$§project/CROHME DATA/VAL_CROHME_671 
+Image251.png§121_em_309.inkml§$S_2 = nS_1$§project/CROHME DATA/VAL_CROHME_671 
+Image252.png§121_em_310.inkml§$1024 \times  (10 + 256^1 + 256^2 + 256^3) = 17 247 250 432$§project/CROHME DATA/VAL_CROHME_671 
+Image253.png§121_em_311.inkml§$I_i = \sum_{j} w_{ij} V_j$§project/CROHME DATA/VAL_CROHME_671 
+Image254.png§121_em_312.inkml§$x_{2}+v_{2}.\Delta t$§project/CROHME DATA/VAL_CROHME_671 
+Image255.png§121_em_313.inkml§$\Delta w_{ij}=f(y_i)\times g(y_j)$§project/CROHME DATA/VAL_CROHME_671 
+Image256.png§121_em_314.inkml§$E,F$§project/CROHME DATA/VAL_CROHME_671 
+Image257.png§121_em_315.inkml§$\frac{S_{a}}{S_{r}}$§project/CROHME DATA/VAL_CROHME_671 
+Image258.png§121_em_316.inkml§$u_{n+2} = u_n + u_{n+1}$§project/CROHME DATA/VAL_CROHME_671 
+Image259.png§121_em_318.inkml§$\frac{P}{640}$§project/CROHME DATA/VAL_CROHME_671 
+Image260.png§121_em_319.inkml§$|| y_n - y_m ||^2 = 2||y_n -x||^2 + 2||y_m -x||^2 - 4|| \frac{y_n + y_m}2 -x ||^2$§project/CROHME DATA/VAL_CROHME_671 
+Image261.png§121_em_320.inkml§$V_i = \frac{v_i}{v} = \frac{p_i}{p}$§project/CROHME DATA/VAL_CROHME_671 
+Image262.png§121_em_321.inkml§$e^{2 \pi i b yr/N} = 1$§project/CROHME DATA/VAL_CROHME_671 
+Image263.png§121_em_322.inkml§$\mu=m_1-m$§project/CROHME DATA/VAL_CROHME_671 
+Image264.png§121_em_323.inkml§$\beta^{\prime}(s)$§project/CROHME DATA/VAL_CROHME_671 
+Image265.png§121_em_324.inkml§$M\times N$§project/CROHME DATA/VAL_CROHME_671 
+Image266.png§121_em_325.inkml§$y \mathrm dx + x \mathrm dy = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image267.png§121_em_326.inkml§$f(1/s)$§project/CROHME DATA/VAL_CROHME_671 
+Image268.png§121_em_327.inkml§$e = 6,11 \times e^{5417,7530 \times ( (1/273,16) - (1/T_d) ) }$§project/CROHME DATA/VAL_CROHME_671 
+Image269.png§121_em_328.inkml§$u_L = L \frac{di}{dt}$§project/CROHME DATA/VAL_CROHME_671 
+Image270.png§121_em_329.inkml§$H_{i-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image271.png§121_em_330.inkml§$S = \frac1{\frac {1}{E} - \frac {1}{P}}$§project/CROHME DATA/VAL_CROHME_671 
+Image272.png§121_em_331.inkml§$E(s^2_{n}) = E(X)^2+V(X) - E(X)^2-\frac{1}{n}V(X)=\frac{n-1}{n}V(X)$§project/CROHME DATA/VAL_CROHME_671 
+Image273.png§122_em_332.inkml§$|f(\frac{p}{q})|$§project/CROHME DATA/VAL_CROHME_671 
+Image274.png§122_em_333.inkml§$\mu_p = \left ( \frac{L}{t_r} \right )\left ( \frac{L_t}{V} \right )$§project/CROHME DATA/VAL_CROHME_671 
+Image275.png§122_em_334.inkml§$I_c=f(V_{ce})$§project/CROHME DATA/VAL_CROHME_671 
+Image276.png§122_em_335.inkml§$\mu_0$§project/CROHME DATA/VAL_CROHME_671 
+Image277.png§122_em_336.inkml§$\frac{m V^2}{2}$§project/CROHME DATA/VAL_CROHME_671 
+Image278.png§122_em_337.inkml§$M(z)$§project/CROHME DATA/VAL_CROHME_671 
+Image279.png§122_em_338.inkml§$p^{SA} \gt p^{AE}$§project/CROHME DATA/VAL_CROHME_671 
+Image280.png§122_em_339.inkml§$n = \frac{L}{2} \sqrt{\frac{t}{c_o} }$§project/CROHME DATA/VAL_CROHME_671 
+Image281.png§122_em_340.inkml§$u\neq v$§project/CROHME DATA/VAL_CROHME_671 
+Image282.png§122_em_341.inkml§$E_0$§project/CROHME DATA/VAL_CROHME_671 
+Image283.png§122_em_342.inkml§$H_6=X^6-15X^4+45X^2-15$§project/CROHME DATA/VAL_CROHME_671 
+Image284.png§122_em_343.inkml§$\mu Pa$§project/CROHME DATA/VAL_CROHME_671 
+Image285.png§122_em_344.inkml§$w = w( r,t)$§project/CROHME DATA/VAL_CROHME_671 
+Image286.png§122_em_345.inkml§$G(k, F(k,M))= M$§project/CROHME DATA/VAL_CROHME_671 
+Image287.png§122_em_346.inkml§$\left|a-\frac{p}{q}\right| \geq \frac{C}{q^d}$§project/CROHME DATA/VAL_CROHME_671 
+Image288.png§122_em_347.inkml§$\Delta s^2 = c^2 \Delta t^2 - \left( \Delta x^2 + \Delta y^2 + \Delta z^2 \right) = c^2 \Delta t^2 -\Delta l^2$§project/CROHME DATA/VAL_CROHME_671 
+Image289.png§122_em_348.inkml§$T_{ij} = P a^2 \gamma_{ij}$§project/CROHME DATA/VAL_CROHME_671 
+Image290.png§122_em_349.inkml§$p = 2 \times l - q$§project/CROHME DATA/VAL_CROHME_671 
+Image291.png§122_em_350.inkml§$L=2^{1/4} \mathrm{m}=118,9 \mathrm{cm}$§project/CROHME DATA/VAL_CROHME_671 
+Image292.png§122_em_351.inkml§$j({q})$§project/CROHME DATA/VAL_CROHME_671 
+Image293.png§122_em_352.inkml§$L = [0,1]$§project/CROHME DATA/VAL_CROHME_671 
+Image294.png§122_em_353.inkml§$\sum_{i=1}^m N_i = n \sum_{i=1}^m p_i = 1$§project/CROHME DATA/VAL_CROHME_671 
+Image295.png§122_em_354.inkml§$x =v_4+v_1$§project/CROHME DATA/VAL_CROHME_671 
+Image296.png§122_em_355.inkml§$dB\left(V^\prime\right) = dB\left(V\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image297.png§122_em_356.inkml§$f^{\prime}\left(x\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image298.png§122_em_357.inkml§$y^{obs}$§project/CROHME DATA/VAL_CROHME_671 
+Image299.png§122_em_358.inkml§$P_d(u)$§project/CROHME DATA/VAL_CROHME_671 
+Image300.png§122_em_359.inkml§$P[X]=0 avec P[X]=X^3-3X+1$§project/CROHME DATA/VAL_CROHME_671 
+Image301.png§122_em_360.inkml§$R = k[X_1 , \ldots, X_n ]$§project/CROHME DATA/VAL_CROHME_671 
+Image302.png§122_em_361.inkml§$M(r)$§project/CROHME DATA/VAL_CROHME_671 
+Image303.png§123_em_362.inkml§$M N = N M$§project/CROHME DATA/VAL_CROHME_671 
+Image304.png§123_em_363.inkml§$l_1 = L_1 - \frac{M}{m}$§project/CROHME DATA/VAL_CROHME_671 
+Image305.png§123_em_364.inkml§$S = \{ 1,s,s^2,s^3 ....... \}$§project/CROHME DATA/VAL_CROHME_671 
+Image306.png§123_em_365.inkml§$N/M$§project/CROHME DATA/VAL_CROHME_671 
+Image307.png§123_em_366.inkml§$HS_2$§project/CROHME DATA/VAL_CROHME_671 
+Image308.png§123_em_367.inkml§$(2-s)(-1/2) +(n-1)(1-s/2) = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image309.png§123_em_368.inkml§$L_2^{(\alpha)}(x) = \frac{x^2}{2} - (\alpha + 2)x + \frac{(\alpha+2)(\alpha+1)}{2}$§project/CROHME DATA/VAL_CROHME_671 
+Image310.png§123_em_369.inkml§$H=\frac{(fd)}{c}$§project/CROHME DATA/VAL_CROHME_671 
+Image311.png§123_em_370.inkml§$V=\int_0^{x_1} 2S \mathrm dx$§project/CROHME DATA/VAL_CROHME_671 
+Image312.png§123_em_371.inkml§$C_p=\frac{\gamma n R}{\gamma-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image313.png§123_em_373.inkml§$S_2=S_0+f_2$§project/CROHME DATA/VAL_CROHME_671 
+Image314.png§123_em_374.inkml§$10^{-pH_i}$§project/CROHME DATA/VAL_CROHME_671 
+Image315.png§123_em_375.inkml§$E_1 = E_0/(16 \pi^2)$§project/CROHME DATA/VAL_CROHME_671 
+Image316.png§123_em_376.inkml§$N_{n-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image317.png§123_em_378.inkml§$V_m = G\times V$§project/CROHME DATA/VAL_CROHME_671 
+Image318.png§123_em_379.inkml§$T(t) = \frac {\alpha^{\prime}(t)}{|| \alpha^{\prime}(t) ||}$§project/CROHME DATA/VAL_CROHME_671 
+Image319.png§123_em_380.inkml§$R_{3\times3}^T$§project/CROHME DATA/VAL_CROHME_671 
+Image320.png§123_em_381.inkml§$S_n=X_1+X_2+\ldots+X_n$§project/CROHME DATA/VAL_CROHME_671 
+Image321.png§123_em_382.inkml§$P_{sat(T)}$§project/CROHME DATA/VAL_CROHME_671 
+Image322.png§123_em_383.inkml§$C_t = N\times (G-1)\times C$§project/CROHME DATA/VAL_CROHME_671 
+Image323.png§123_em_384.inkml§$y_0 = G(x_0)= \frac{1}{4}$§project/CROHME DATA/VAL_CROHME_671 
+Image324.png§123_em_385.inkml§$\gamma=\frac{4 \pi^2 m V_0}{p_0 S^2 T^2}$§project/CROHME DATA/VAL_CROHME_671 
+Image325.png§123_em_386.inkml§$\Delta F \lt 0$§project/CROHME DATA/VAL_CROHME_671 
+Image326.png§123_em_387.inkml§$\lim_{x \rightarrow +\infty}f(x) = l$§project/CROHME DATA/VAL_CROHME_671 
+Image327.png§123_em_388.inkml§$0 \lt \left( 1 - \frac{L}{R_1} \right) \left( 1 - \frac{L}{R_2} \right) \lt 1$§project/CROHME DATA/VAL_CROHME_671 
+Image328.png§123_em_389.inkml§$z^2+w^2$§project/CROHME DATA/VAL_CROHME_671 
+Image329.png§123_em_390.inkml§$T=1$§project/CROHME DATA/VAL_CROHME_671 
+Image330.png§123_em_391.inkml§$P^{k-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image331.png§124_em_392.inkml§$(A_{N-1} \dots A_0) = N_k$§project/CROHME DATA/VAL_CROHME_671 
+Image332.png§124_em_394.inkml§$\Delta t_i$§project/CROHME DATA/VAL_CROHME_671 
+Image333.png§124_em_395.inkml§$m.\frac{d^2z}{dt^2}=q.{E_z}+q.(v_x.B_y-v_y.B_x)$§project/CROHME DATA/VAL_CROHME_671 
+Image334.png§124_em_396.inkml§$E=\frac{a}{\frac bc}$§project/CROHME DATA/VAL_CROHME_671 
+Image335.png§124_em_397.inkml§$d(A,(d))=|x_A - a|$§project/CROHME DATA/VAL_CROHME_671 
+Image336.png§124_em_398.inkml§$L_0 = \int_0^{x_0} \sqrt {1 + \frac{9a^2}4 x} \mathrm d x$§project/CROHME DATA/VAL_CROHME_671 
+Image337.png§124_em_399.inkml§$f(M)$§project/CROHME DATA/VAL_CROHME_671 
+Image338.png§124_em_400.inkml§$|f(x)|\leq p(x)$§project/CROHME DATA/VAL_CROHME_671 
+Image339.png§124_em_401.inkml§$HCN_{n,n}$§project/CROHME DATA/VAL_CROHME_671 
+Image340.png§124_em_402.inkml§$N = 3$§project/CROHME DATA/VAL_CROHME_671 
+Image341.png§124_em_403.inkml§$w_k^2 = |z|\mathrm{e}^{i\theta} \mathrm{e}^{2i\pi k} = z$§project/CROHME DATA/VAL_CROHME_671 
+Image342.png§124_em_404.inkml§$\frac{m+m^{\prime}}{n+n^{\prime}} \lt \frac{a}{b}$§project/CROHME DATA/VAL_CROHME_671 
+Image343.png§124_em_405.inkml§$(p+q) \times (p+q)$§project/CROHME DATA/VAL_CROHME_671 
+Image344.png§124_em_406.inkml§$E_iE_j = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image345.png§124_em_407.inkml§$f = \frac{1}{T}$§project/CROHME DATA/VAL_CROHME_671 
+Image346.png§124_em_408.inkml§$B(L(S)),B(R(S))$§project/CROHME DATA/VAL_CROHME_671 
+Image347.png§124_em_409.inkml§$\sigma = \frac {F }{ S}$§project/CROHME DATA/VAL_CROHME_671 
+Image348.png§124_em_410.inkml§$E_1, E_2, F_1, F_2$§project/CROHME DATA/VAL_CROHME_671 
+Image349.png§124_em_411.inkml§$V_r = V_i$§project/CROHME DATA/VAL_CROHME_671 
+Image350.png§124_em_412.inkml§$P = \sum_{k = 0}^p ak X^k$§project/CROHME DATA/VAL_CROHME_671 
+Image351.png§124_em_413.inkml§$s = 1,26 .10^{-6} mol.L^{-1}$§project/CROHME DATA/VAL_CROHME_671 
+Image352.png§124_em_414.inkml§$t_0 = \frac{2}{3(1+w)} \frac{1}{H_0}$§project/CROHME DATA/VAL_CROHME_671 
+Image353.png§124_em_415.inkml§$\sigma=1$§project/CROHME DATA/VAL_CROHME_671 
+Image354.png§124_em_416.inkml§$H(X,Y) \geq H(X)$§project/CROHME DATA/VAL_CROHME_671 
+Image355.png§124_em_417.inkml§$\frac {\Delta V} {V_0}$§project/CROHME DATA/VAL_CROHME_671 
+Image356.png§124_em_418.inkml§$S=0$§project/CROHME DATA/VAL_CROHME_671 
+Image357.png§124_em_419.inkml§$y_i^{ac}$§project/CROHME DATA/VAL_CROHME_671 
+Image358.png§124_em_420.inkml§$F_u = M_{u u} M_v + M_{u v} M_u$§project/CROHME DATA/VAL_CROHME_671 
+Image359.png§124_em_421.inkml§$(SM)$§project/CROHME DATA/VAL_CROHME_671 
+Image360.png§125_em_422.inkml§$q(x)=p(x+a)$§project/CROHME DATA/VAL_CROHME_671 
+Image361.png§125_em_423.inkml§$(p,q) \gt (p^{\prime},q^{\prime})$§project/CROHME DATA/VAL_CROHME_671 
+Image362.png§125_em_424.inkml§$VA = 	\sum_{i}VA(F_{i})$§project/CROHME DATA/VAL_CROHME_671 
+Image363.png§125_em_427.inkml§$\left( M_i^j \right)$§project/CROHME DATA/VAL_CROHME_671 
+Image364.png§125_em_428.inkml§$G_u = 2 M_{u v} M_v$§project/CROHME DATA/VAL_CROHME_671 
+Image365.png§125_em_429.inkml§$(M_1M_3)$§project/CROHME DATA/VAL_CROHME_671 
+Image366.png§125_em_430.inkml§$L(X^n)=2^n$§project/CROHME DATA/VAL_CROHME_671 
+Image367.png§125_em_431.inkml§$L_{\mu} = L_1$§project/CROHME DATA/VAL_CROHME_671 
+Image368.png§125_em_432.inkml§$E ^2-p^2 c^2 = m^2 c^4=0$§project/CROHME DATA/VAL_CROHME_671 
+Image369.png§125_em_433.inkml§$(v, r)$§project/CROHME DATA/VAL_CROHME_671 
+Image370.png§125_em_434.inkml§$L(E,F)$§project/CROHME DATA/VAL_CROHME_671 
+Image371.png§125_em_435.inkml§$q \in E$§project/CROHME DATA/VAL_CROHME_671 
+Image372.png§125_em_436.inkml§$v_{LG}$§project/CROHME DATA/VAL_CROHME_671 
+Image373.png§125_em_437.inkml§$Id_A$§project/CROHME DATA/VAL_CROHME_671 
+Image374.png§125_em_438.inkml§$w ^ \alpha = \frac{2}{\sqrt{3}} ( \cos ( \frac{\alpha \pi}{3} + \frac{\pi}{6} ) + w \sin \frac{\alpha \pi}{3} )$§project/CROHME DATA/VAL_CROHME_671 
+Image375.png§125_em_439.inkml§$c.s^2$§project/CROHME DATA/VAL_CROHME_671 
+Image376.png§125_em_440.inkml§$L = a$§project/CROHME DATA/VAL_CROHME_671 
+Image377.png§125_em_441.inkml§$u = g \frac tv$§project/CROHME DATA/VAL_CROHME_671 
+Image378.png§125_em_442.inkml§$1/v^2$§project/CROHME DATA/VAL_CROHME_671 
+Image379.png§125_em_444.inkml§$dE=uI\times dt$§project/CROHME DATA/VAL_CROHME_671 
+Image380.png§125_em_445.inkml§$P_1 = P_0 \frac {S_1} {S_0}$§project/CROHME DATA/VAL_CROHME_671 
+Image381.png§125_em_446.inkml§$T_0, T_1, \ldots, T_{r-2}, 1$§project/CROHME DATA/VAL_CROHME_671 
+Image382.png§125_em_447.inkml§$I=a.A$§project/CROHME DATA/VAL_CROHME_671 
+Image383.png§125_em_448.inkml§$M\rightarrow N$§project/CROHME DATA/VAL_CROHME_671 
+Image384.png§125_em_449.inkml§$\Delta_{r}H$§project/CROHME DATA/VAL_CROHME_671 
+Image385.png§125_em_450.inkml§$u \in E, v \in E, w \in E$§project/CROHME DATA/VAL_CROHME_671 
+Image386.png§125_em_451.inkml§$\pm w( r, t)$§project/CROHME DATA/VAL_CROHME_671 
+Image387.png§126_em_452.inkml§$||f||^2 = \frac {1}{4} a_0^2 +\frac {1}{2} \sum_{n=1}^{+\infty}(a_n^2+b_n^2)$§project/CROHME DATA/VAL_CROHME_671 
+Image388.png§126_em_453.inkml§$\Delta d = c.\Delta t$§project/CROHME DATA/VAL_CROHME_671 
+Image389.png§126_em_454.inkml§$G=10 \log \left( {\frac{V_{s}}{V_{e}}} \right)^2 \mathrm{dB}$§project/CROHME DATA/VAL_CROHME_671 
+Image390.png§126_em_455.inkml§$(PA)$§project/CROHME DATA/VAL_CROHME_671 
+Image391.png§126_em_456.inkml§$N - G$§project/CROHME DATA/VAL_CROHME_671 
+Image392.png§126_em_457.inkml§$\mathrm ds^2 = \mathrm dr^2 + r^2\mathrm d\theta^2 + \mathrm dz^2$§project/CROHME DATA/VAL_CROHME_671 
+Image393.png§126_em_458.inkml§$GL_m$§project/CROHME DATA/VAL_CROHME_671 
+Image394.png§126_em_459.inkml§$u_{N+1},v_{N+1}$§project/CROHME DATA/VAL_CROHME_671 
+Image395.png§126_em_460.inkml§$(E_{0})$§project/CROHME DATA/VAL_CROHME_671 
+Image396.png§126_em_461.inkml§$-X_t\mathrm dt$§project/CROHME DATA/VAL_CROHME_671 
+Image397.png§126_em_462.inkml§$uu^{\prime}+vv^{\prime}+ww^{\prime} = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image398.png§126_em_463.inkml§$a^{p/q}$§project/CROHME DATA/VAL_CROHME_671 
+Image399.png§126_em_464.inkml§$a = p/q$§project/CROHME DATA/VAL_CROHME_671 
+Image400.png§126_em_465.inkml§$a,b,c,a^{\prime},b^{\prime},c^{\prime}$§project/CROHME DATA/VAL_CROHME_671 
+Image401.png§126_em_467.inkml§$\mathrm df(x)$§project/CROHME DATA/VAL_CROHME_671 
+Image402.png§126_em_468.inkml§$S(A)=A^\prime$§project/CROHME DATA/VAL_CROHME_671 
+Image403.png§126_em_469.inkml§$a^L_1x_1+a^L_2x_2=L$§project/CROHME DATA/VAL_CROHME_671 
+Image404.png§126_em_470.inkml§$a_n(f,S)$§project/CROHME DATA/VAL_CROHME_671 
+Image405.png§126_em_471.inkml§$F_n(x)=\frac 1{n+1}x^n + Cste$§project/CROHME DATA/VAL_CROHME_671 
+Image406.png§126_em_472.inkml§$(k_2,l_2)$§project/CROHME DATA/VAL_CROHME_671 
+Image407.png§126_em_473.inkml§$d(u,v)=\sum_{n=0}^\infty 2^{-n}\frac {p_n(v-u)}{1+p_n(v-u)}$§project/CROHME DATA/VAL_CROHME_671 
+Image408.png§126_em_474.inkml§$P(v_y^2)$§project/CROHME DATA/VAL_CROHME_671 
+Image409.png§126_em_475.inkml§$V = C \sqrt{{RS}}$§project/CROHME DATA/VAL_CROHME_671 
+Image410.png§126_em_476.inkml§$G,H$§project/CROHME DATA/VAL_CROHME_671 
+Image411.png§126_em_477.inkml§$T x_n$§project/CROHME DATA/VAL_CROHME_671 
+Image412.png§126_em_478.inkml§$R_1\gt0$§project/CROHME DATA/VAL_CROHME_671 
+Image413.png§126_em_479.inkml§$sp_{t}$§project/CROHME DATA/VAL_CROHME_671 
+Image414.png§126_em_480.inkml§$B = (2q+1)f(x_n) - (1+q)^2 f(x_{n-1}) + q^2 f(x_{n-2})$§project/CROHME DATA/VAL_CROHME_671 
+Image415.png§126_em_481.inkml§$r_2 - r_1 = R$§project/CROHME DATA/VAL_CROHME_671 
+Image416.png§127_em_482.inkml§$2 + 2^{4-\frac{k}{2}} + o(1)$§project/CROHME DATA/VAL_CROHME_671 
+Image417.png§127_em_483.inkml§$R_A = \frac {P b }{ L }$§project/CROHME DATA/VAL_CROHME_671 
+Image418.png§127_em_484.inkml§$\frac{8\pi r}{q(r)}$§project/CROHME DATA/VAL_CROHME_671 
+Image419.png§127_em_485.inkml§$\left| q\right| \gt1$§project/CROHME DATA/VAL_CROHME_671 
+Image420.png§127_em_486.inkml§$S_n = 12 S_{n-1} - 18 S_{n-2}$§project/CROHME DATA/VAL_CROHME_671 
+Image421.png§127_em_487.inkml§$I(t) = I\sqrt{2}\cos{(wt+\phi)}$§project/CROHME DATA/VAL_CROHME_671 
+Image422.png§127_em_488.inkml§$A = n R^2 \cos \left(\frac{\alpha}{2}\right) \sin\left(\frac{\alpha}{2}\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image423.png§127_em_489.inkml§$dx^{\mu}$§project/CROHME DATA/VAL_CROHME_671 
+Image424.png§127_em_490.inkml§$s_i^2 =1$§project/CROHME DATA/VAL_CROHME_671 
+Image425.png§127_em_491.inkml§$u_1,u_2,\ldots,u_N$§project/CROHME DATA/VAL_CROHME_671 
+Image426.png§127_em_492.inkml§$P = (Vce.Ic + Vbe.Ib).RC$§project/CROHME DATA/VAL_CROHME_671 
+Image427.png§127_em_493.inkml§$t = \frac {v \sin \theta} {g} \pm \frac {\sqrt{\left(v \sin \theta\right)^2 + 2 g y_0}} {g}$§project/CROHME DATA/VAL_CROHME_671 
+Image428.png§127_em_494.inkml§$Li(x) \lt \pi(x)$§project/CROHME DATA/VAL_CROHME_671 
+Image429.png§127_em_495.inkml§$x(k,L)$§project/CROHME DATA/VAL_CROHME_671 
+Image430.png§127_em_496.inkml§$\phi(w) = u_1 ^T w$§project/CROHME DATA/VAL_CROHME_671 
+Image431.png§127_em_497.inkml§$\mathrm{Var}[X_i] = \frac{\alpha_i (\alpha_0-\alpha_i)}{\alpha_0^2 (\alpha_0+1)}$§project/CROHME DATA/VAL_CROHME_671 
+Image432.png§127_em_498.inkml§$H_n/T$§project/CROHME DATA/VAL_CROHME_671 
+Image433.png§127_em_499.inkml§$C_S = R(b, a)$§project/CROHME DATA/VAL_CROHME_671 
+Image434.png§127_em_500.inkml§$T_{f,x}$§project/CROHME DATA/VAL_CROHME_671 
+Image435.png§127_em_501.inkml§$\frac{\mathrm d}{\mathrm dt}$§project/CROHME DATA/VAL_CROHME_671 
+Image436.png§127_em_502.inkml§$E_p = \frac{1}{2} k x^2 - F x$§project/CROHME DATA/VAL_CROHME_671 
+Image437.png§127_em_503.inkml§$\int_{a}^{b} X_t \mathrm dB_t$§project/CROHME DATA/VAL_CROHME_671 
+Image438.png§127_em_505.inkml§$L(S) = \sum_{i=1}^{n} d\left(f(a_{i-1}),f(a_i)\right)$§project/CROHME DATA/VAL_CROHME_671 
+Image439.png§127_em_506.inkml§$L^2\left(I, R,\mu \right)$§project/CROHME DATA/VAL_CROHME_671 
+Image440.png§127_em_507.inkml§$v, u_1, u_2$§project/CROHME DATA/VAL_CROHME_671 
+Image441.png§127_em_508.inkml§$2S+1$§project/CROHME DATA/VAL_CROHME_671 
+Image442.png§127_em_509.inkml§$g(\theta) = G(\theta) - G$§project/CROHME DATA/VAL_CROHME_671 
+Image443.png§127_em_510.inkml§$S = \frac1{\frac {1}{P} - \frac {1}{E}}$§project/CROHME DATA/VAL_CROHME_671 
+Image444.png§127_em_511.inkml§$g^{\prime}(b) = \frac {1}{ b}$§project/CROHME DATA/VAL_CROHME_671 
+Image445.png§128_em_512.inkml§$\sigma \in [\sigma_1,\sigma_2]$§project/CROHME DATA/VAL_CROHME_671 
+Image446.png§128_em_513.inkml§$E \rightarrow E/F$§project/CROHME DATA/VAL_CROHME_671 
+Image447.png§128_em_514.inkml§$r=\frac{|P_1-P_3|}{2\sin(\theta)}$§project/CROHME DATA/VAL_CROHME_671 
+Image448.png§128_em_515.inkml§$||x+y||^2 =||x||^2 + ||y||^2$§project/CROHME DATA/VAL_CROHME_671 
+Image449.png§128_em_516.inkml§$g_{vv}$§project/CROHME DATA/VAL_CROHME_671 
+Image450.png§128_em_517.inkml§$P( E)$§project/CROHME DATA/VAL_CROHME_671 
+Image451.png§128_em_518.inkml§$\left\{ H,A \right\}$§project/CROHME DATA/VAL_CROHME_671 
+Image452.png§128_em_519.inkml§$M(R)$§project/CROHME DATA/VAL_CROHME_671 
+Image453.png§128_em_520.inkml§$tw(G)$§project/CROHME DATA/VAL_CROHME_671 
+Image454.png§128_em_521.inkml§$TN = \frac{n}{p}.{1000}$§project/CROHME DATA/VAL_CROHME_671 
+Image455.png§128_em_522.inkml§$2^\frac { N}{2}$§project/CROHME DATA/VAL_CROHME_671 
+Image456.png§128_em_523.inkml§$(S,T)$§project/CROHME DATA/VAL_CROHME_671 
+Image457.png§128_em_524.inkml§$q_ip_j$§project/CROHME DATA/VAL_CROHME_671 
+Image458.png§128_em_525.inkml§$d \times (-d^{\prime}) = (- dd^{\prime})$§project/CROHME DATA/VAL_CROHME_671 
+Image459.png§128_em_526.inkml§$v(x)$§project/CROHME DATA/VAL_CROHME_671 
+Image460.png§128_em_527.inkml§$\frac{V_ts}{V_m}$§project/CROHME DATA/VAL_CROHME_671 
+Image461.png§128_em_528.inkml§$y^{\prime} = f(x)g(y)$§project/CROHME DATA/VAL_CROHME_671 
+Image462.png§128_em_529.inkml§$T_{\mathrm{moy}}=10$§project/CROHME DATA/VAL_CROHME_671 
+Image463.png§128_em_530.inkml§$\frac{1}{p^{\prime}} - \frac{1}{p} - C = 0$§project/CROHME DATA/VAL_CROHME_671 
+Image464.png§128_em_531.inkml§$E^{\prime} = E - FG$§project/CROHME DATA/VAL_CROHME_671 
+Image465.png§128_em_532.inkml§$E = dg$§project/CROHME DATA/VAL_CROHME_671 
+Image466.png§128_em_536.inkml§$f(v,t)=w$§project/CROHME DATA/VAL_CROHME_671 
+Image467.png§128_em_537.inkml§$d \in EIC$§project/CROHME DATA/VAL_CROHME_671 
+Image468.png§128_em_538.inkml§$0 + 0 = Toto$§project/CROHME DATA/VAL_CROHME_671 
+Image469.png§128_em_539.inkml§$f_2(M)=0$§project/CROHME DATA/VAL_CROHME_671 
+Image470.png§128_em_541.inkml§$Nsyn$§project/CROHME DATA/VAL_CROHME_671 
+Image471.png§129_em_542.inkml§$\sqrt [3] a $§project/CROHME DATA/VAL_CROHME_671 
+Image472.png§129_em_543.inkml§$\sum _{i=0}^{10} x_i$§project/CROHME DATA/VAL_CROHME_671 
+Image473.png§129_em_544.inkml§$\sqrt [x] y$§project/CROHME DATA/VAL_CROHME_671 
+Image474.png§ritm_420_0.inkml§$ 548834 = 5 ^ {6} + 4 ^ {6} + 8 ^ {6} + 3 ^ {6} + 4 ^ 6 $§project/CROHME DATA/VAL_CROHME_671 
+Image475.png§ritm_421_0.inkml§$ \cos x + \sqrt {- 1} \sin x $§project/CROHME DATA/VAL_CROHME_671 
+Image476.png§ritm_422_0.inkml§$ + 7 \times 9 ^ {5} + 7 \times 9 ^ {4} + 7 \times 9 ^ {3} + 7 \times 9 ^ {2} + 7 \times 9 $§project/CROHME DATA/VAL_CROHME_671 
+Image477.png§ritm_423_0.inkml§$ \lambda e ^ {- \lambda e} $§project/CROHME DATA/VAL_CROHME_671 
+Image478.png§ritm_423_1.inkml§$ \frac {\tan \frac {a - b} {2}} {\tan \frac {a + b} {2}} = \frac {\tan \frac {\alpha - \beta} {2}} {\tan \frac {\alpha + \beta} {2}} $§project/CROHME DATA/VAL_CROHME_671 
+Image479.png§ritm_423_2.inkml§$ \frac {\alpha + \beta} {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image480.png§ritm_425_0.inkml§$ \cos 5 x = 16 \cos ^ {5} x - 20 \cos ^ {3} x + 5 $§project/CROHME DATA/VAL_CROHME_671 
+Image481.png§ritm_427_0.inkml§$ \cos c = \cos a \cos b + \sin a \sin 1 b \cos \gamma $§project/CROHME DATA/VAL_CROHME_671 
+Image482.png§ritm_427_1.inkml§$ \sum x _ n $§project/CROHME DATA/VAL_CROHME_671 
+Image483.png§ritm_429_0.inkml§$ lim _ {\times \rightarrow + \infty} (\sqrt {x 2 + 4 x + 1} - \sqrt {x ^ 2 + x + 1}) $§project/CROHME DATA/VAL_CROHME_671 
+Image484.png§rit_420b_0.inkml§$ t = t ^ {\prime} = 0 $§project/CROHME DATA/VAL_CROHME_671 
+Image485.png§rit_420_0.inkml§$ s (f) $§project/CROHME DATA/VAL_CROHME_671 
+Image486.png§rit_420_1.inkml§$ i ^ {\prime} \lt 0 $§project/CROHME DATA/VAL_CROHME_671 
+Image487.png§rit_420_2.inkml§$ M (0) $§project/CROHME DATA/VAL_CROHME_671 
+Image488.png§rit_420_3.inkml§$ 9 ^ {9 ^ {9 ^ {9 ^ {9 ^ {9}}}}} $§project/CROHME DATA/VAL_CROHME_671 
+Image489.png§rit_42100_0.inkml§$ b _ {14} $§project/CROHME DATA/VAL_CROHME_671 
+Image490.png§rit_42100_1.inkml§$ \cos x - \sqrt {- 1} \sin x $§project/CROHME DATA/VAL_CROHME_671 
+Image491.png§rit_42100_2.inkml§$ \frac {\sqrt {4}} {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image492.png§rit_42100_3.inkml§$ \frac {2 \pm \sqrt {2}} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image493.png§rit_42100_4.inkml§$ 3 y ^ {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image494.png§rit_42105_0.inkml§$ a + 6 \sqrt {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image495.png§rit_42105_1.inkml§$ \frac {1} {4} a a + b b $§project/CROHME DATA/VAL_CROHME_671 
+Image496.png§rit_42105_2.inkml§$ x ^ {5} + x + a $§project/CROHME DATA/VAL_CROHME_671 
+Image497.png§rit_42105_3.inkml§$ \frac {a} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image498.png§rit_42105_4.inkml§$ x \times \frac {a} {6} + y $§project/CROHME DATA/VAL_CROHME_671 
+Image499.png§rit_4210_0.inkml§$ \sin 9 - \cos 9 $§project/CROHME DATA/VAL_CROHME_671 
+Image500.png§rit_4210_1.inkml§$ \frac {b h} {b + 2 h} $§project/CROHME DATA/VAL_CROHME_671 
+Image501.png§rit_4210_2.inkml§$ b \times h $§project/CROHME DATA/VAL_CROHME_671 
+Image502.png§rit_4210_3.inkml§$ \frac {\pm \infty} {\pm \infty} $§project/CROHME DATA/VAL_CROHME_671 
+Image503.png§rit_4210_4.inkml§$ \frac {9} {7} $§project/CROHME DATA/VAL_CROHME_671 
+Image504.png§rit_42110_0.inkml§$ - \sqrt {y} $§project/CROHME DATA/VAL_CROHME_671 
+Image505.png§rit_42110_1.inkml§$ \int ^ {b} _ {a} x + y d y $§project/CROHME DATA/VAL_CROHME_671 
+Image506.png§rit_42110_2.inkml§$ \sqrt {14} $§project/CROHME DATA/VAL_CROHME_671 
+Image507.png§rit_42110_3.inkml§$ \sum z ^ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image508.png§rit_42110_4.inkml§$ \tan z = \frac {\sin z} {\cos z} $§project/CROHME DATA/VAL_CROHME_671 
+Image509.png§rit_42115_0.inkml§$ z _ {1} + z _ {2} + z _ {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image510.png§rit_42115_1.inkml§$ \lim _ {x \rightarrow \infty} x _ n $§project/CROHME DATA/VAL_CROHME_671 
+Image511.png§rit_42115_2.inkml§$ x ! ^ y \times y ! ^ x $§project/CROHME DATA/VAL_CROHME_671 
+Image512.png§rit_42115_3.inkml§$ \beta _ {15} $§project/CROHME DATA/VAL_CROHME_671 
+Image513.png§rit_42115_4.inkml§$ \frac {1} {z} $§project/CROHME DATA/VAL_CROHME_671 
+Image514.png§rit_42120_0.inkml§$ \cos ^ {2} \theta _ {1} $§project/CROHME DATA/VAL_CROHME_671 
+Image515.png§rit_42120_1.inkml§$ \frac {1} {\cos ^ {2} \times} $§project/CROHME DATA/VAL_CROHME_671 
+Image516.png§rit_42120_2.inkml§$ \lim _ {x \rightarrow + \infty} \log _ {a} x = + \infty $§project/CROHME DATA/VAL_CROHME_671 
+Image517.png§rit_42120_3.inkml§$ \sin 2 x = 2 \sin x \cos x $§project/CROHME DATA/VAL_CROHME_671 
+Image518.png§rit_42120_4.inkml§$ \lim _ {x \rightarrow + \infty} \frac {e ^ {x}} {x} $§project/CROHME DATA/VAL_CROHME_671 
+Image519.png§rit_42125_0.inkml§$ \frac {- 1} {sin ^ {2} x} $§project/CROHME DATA/VAL_CROHME_671 
+Image520.png§rit_42125_1.inkml§$ 1 + \tan ^ {2} x $§project/CROHME DATA/VAL_CROHME_671 
+Image521.png§rit_42125_2.inkml§$ z \rightarrow z ^ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image522.png§rit_42125_3.inkml§$ \frac {z ^ {3} - 2 z + 1} {z ^ {5} + 3 z - 1} $§project/CROHME DATA/VAL_CROHME_671 
+Image523.png§rit_42125_4.inkml§$ lim _ {x \rightarrow + \infty} \log _ {a} x = - \infty $§project/CROHME DATA/VAL_CROHME_671 
+Image524.png§rit_42130_0.inkml§$ \frac {5} {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image525.png§rit_42130_1.inkml§$ lim _ {x \rightarrow 3} x ^ {2} = 9 $§project/CROHME DATA/VAL_CROHME_671 
+Image526.png§rit_42130_2.inkml§$ \frac {5 \pi} {7} $§project/CROHME DATA/VAL_CROHME_671 
+Image527.png§rit_42130_3.inkml§$ lim _ {x \rightarrow + \infty} \sqrt {x} = + \infty $§project/CROHME DATA/VAL_CROHME_671 
+Image528.png§rit_42130_4.inkml§$ \int ^ {b} _ {a} x + z d z $§project/CROHME DATA/VAL_CROHME_671 
+Image529.png§rit_42135_0.inkml§$ \times \rightarrow \infty $§project/CROHME DATA/VAL_CROHME_671 
+Image530.png§rit_42135_1.inkml§$ \exists x \forall y (x R y) $§project/CROHME DATA/VAL_CROHME_671 
+Image531.png§rit_42135_2.inkml§$ L = \int ^ {\infty} _ {0} L _ {\lambda} d \lambda $§project/CROHME DATA/VAL_CROHME_671 
+Image532.png§rit_42140_0.inkml§$ \forall a \in F $§project/CROHME DATA/VAL_CROHME_671 
+Image533.png§rit_42140_1.inkml§$ \frac {\pi ^ {2}} {6} B ^ {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image534.png§rit_42140_2.inkml§$ a \neq b \neq c $§project/CROHME DATA/VAL_CROHME_671 
+Image535.png§rit_42140_3.inkml§$ \pi - \theta $§project/CROHME DATA/VAL_CROHME_671 
+Image536.png§rit_42140_4.inkml§$ \beta \geq a $§project/CROHME DATA/VAL_CROHME_671 
+Image537.png§rit_42145_0.inkml§$ \sum a _ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image538.png§rit_42145_1.inkml§$ \cos ^ {n} \theta $§project/CROHME DATA/VAL_CROHME_671 
+Image539.png§rit_42145_2.inkml§$ + \frac {\pi} {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image540.png§rit_42145_3.inkml§$ n \neq 6 $§project/CROHME DATA/VAL_CROHME_671 
+Image541.png§rit_42145_4.inkml§$ \sum c _ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image542.png§rit_42150_0.inkml§$ 3 ^ {3 ^ {3}} + 3 $§project/CROHME DATA/VAL_CROHME_671 
+Image543.png§rit_42150_1.inkml§$ 12 / (4 / 3) \neq (12 / 4) / 3 $§project/CROHME DATA/VAL_CROHME_671 
+Image544.png§rit_42150_2.inkml§$ \theta + \frac {\pi} {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image545.png§rit_42150_3.inkml§$ \frac {\pi} {7} $§project/CROHME DATA/VAL_CROHME_671 
+Image546.png§rit_42150_4.inkml§$ x ^ {3} - 3 x ^ {2} \sqrt {3} - 3 x + \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image547.png§rit_42155_0.inkml§$ x ^ {3} - 3 - \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image548.png§rit_42155_1.inkml§$ x ^ {2} + y ^ {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image549.png§rit_42155_2.inkml§$ \beta _ {2 n} $§project/CROHME DATA/VAL_CROHME_671 
+Image550.png§rit_42155_3.inkml§$ x ^ {3} + 1 $§project/CROHME DATA/VAL_CROHME_671 
+Image551.png§rit_4215_0.inkml§$ x + h $§project/CROHME DATA/VAL_CROHME_671 
+Image552.png§rit_4215_1.inkml§$ \frac {b h} {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image553.png§rit_4215_2.inkml§$ \frac {2} {3} h $§project/CROHME DATA/VAL_CROHME_671 
+Image554.png§rit_4215_3.inkml§$ \frac {9} {5} $§project/CROHME DATA/VAL_CROHME_671 
+Image555.png§rit_4215_4.inkml§$ \log \log n $§project/CROHME DATA/VAL_CROHME_671 
+Image556.png§rit_42160_0.inkml§$ \sin 5 x = 16 \sin ^ {5} x - 20 \sin ^ {3} x + 5 \sin x $§project/CROHME DATA/VAL_CROHME_671 
+Image557.png§rit_42160_1.inkml§$ \int \limits ^ {b} _ {a} z + y d y $§project/CROHME DATA/VAL_CROHME_671 
+Image558.png§rit_42160_2.inkml§$ \pm \sqrt {- 1} $§project/CROHME DATA/VAL_CROHME_671 
+Image559.png§rit_42160_3.inkml§$ \frac {2} {\frac {1} {x} + \frac {1} {y}} $§project/CROHME DATA/VAL_CROHME_671 
+Image560.png§rit_42160_4.inkml§$ \int \frac {1} {y} + \frac {1} {1 - y} d y = \int d x $§project/CROHME DATA/VAL_CROHME_671 
+Image561.png§rit_42165_0.inkml§$ x ^ {2} + y ^ {2} + z ^ {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image562.png§rit_42165_1.inkml§$ \cos c = \cos a \cos b + \sin a \sin b $§project/CROHME DATA/VAL_CROHME_671 
+Image563.png§rit_42165_2.inkml§$ \sin \lbrack a + b \rbrack = \sin a \cos b + \cos a \sin b $§project/CROHME DATA/VAL_CROHME_671 
+Image564.png§rit_42170_0.inkml§$ x ^ {4} - 4 x ^ {3} - 14 x ^ {2} - 4 x + 1 $§project/CROHME DATA/VAL_CROHME_671 
+Image565.png§rit_42170_1.inkml§$ x ^ {4} - 4 x ^ {2} + 2 + \sqrt {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image566.png§rit_42170_2.inkml§$ sin [x + y] = [sin x \cos y + \cos x sin y] $§project/CROHME DATA/VAL_CROHME_671 
+Image567.png§rit_42170_3.inkml§$ \frac {\log _ {2} x} {\log _ {2} e} + \frac {\log _ {2} x} {\log _ {2} 10} $§project/CROHME DATA/VAL_CROHME_671 
+Image568.png§rit_42170_4.inkml§$ \sum \limits _ {n \geq 0} a _ {n + 1} (n + 1) z ^ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image569.png§rit_42175_0.inkml§$ \sum _ {k} 2 ^ {- k} $§project/CROHME DATA/VAL_CROHME_671 
+Image570.png§rit_42175_1.inkml§$ \sum _ {n \geq 0} n 2 ^ {n} z ^ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image571.png§rit_42175_2.inkml§$ \sum _ {n \geq _ {0}} \frac {1} {x _ n} $§project/CROHME DATA/VAL_CROHME_671 
+Image572.png§rit_42175_3.inkml§$ \sum x ^ n $§project/CROHME DATA/VAL_CROHME_671 
+Image573.png§rit_42180_0.inkml§$ \int d x $§project/CROHME DATA/VAL_CROHME_671 
+Image574.png§rit_42180_1.inkml§$ \int _ {1} ^ {2} x d x $§project/CROHME DATA/VAL_CROHME_671 
+Image575.png§rit_42180_2.inkml§$ \int _ {2} ^ {5} x ^ {2} d x $§project/CROHME DATA/VAL_CROHME_671 
+Image576.png§rit_42180_3.inkml§$ \int \frac {1} {\sqrt {a x ^ 2 + b x + c}} d x $§project/CROHME DATA/VAL_CROHME_671 
+Image577.png§rit_42185_0.inkml§$ lim _ {x \rightarrow 0} \frac {\cos (2 x) - 1} {x ^ {3} + 5 x ^ {2}} $§project/CROHME DATA/VAL_CROHME_671 
+Image578.png§rit_42185_1.inkml§$ lim \limits _ {a \rightarrow + \infty} \int ^ {a} _ {0} \frac {\sin (x)} {x} d x $§project/CROHME DATA/VAL_CROHME_671 
+Image579.png§rit_42185_2.inkml§$ lim x _ {x \rightarrow a} b = b $§project/CROHME DATA/VAL_CROHME_671 
+Image580.png§rit_42185_3.inkml§$ 10 ^ {n !} $§project/CROHME DATA/VAL_CROHME_671 
+Image581.png§rit_42190_0.inkml§$ \int ^ {1} _ {0} \int ^ {1} _ {0} \frac {1} {1 + x ^ {2} y ^ {2}} d x d y $§project/CROHME DATA/VAL_CROHME_671 
+Image582.png§rit_42190_1.inkml§$ P (2 + Y) = 4 Y ^ {3} + 17 Y ^ {2} + 23 Y $§project/CROHME DATA/VAL_CROHME_671 
+Image583.png§rit_42190_2.inkml§$ \phi ^ {3} + 3 \phi ^ {2} + 18 \phi + 5 + 12 $§project/CROHME DATA/VAL_CROHME_671 
+Image584.png§rit_42190_3.inkml§$ \sqrt {1 + \frac {1} {\sqrt {2}}} + \sqrt {1 - \frac {1} {\sqrt {2}}} $§project/CROHME DATA/VAL_CROHME_671 
+Image585.png§rit_42190_4.inkml§$ \sqrt {- 1} \times \sqrt {- 1} $§project/CROHME DATA/VAL_CROHME_671 
+Image586.png§rit_42195_0.inkml§$ \forall x \exists y x + y = 0 $§project/CROHME DATA/VAL_CROHME_671 
+Image587.png§rit_4220_0.inkml§$ a + h $§project/CROHME DATA/VAL_CROHME_671 
+Image588.png§rit_4220_1.inkml§$ 9 \times 9 $§project/CROHME DATA/VAL_CROHME_671 
+Image589.png§rit_4220_2.inkml§$ \sqrt {13 h} $§project/CROHME DATA/VAL_CROHME_671 
+Image590.png§rit_4220_3.inkml§$ \frac {9} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image591.png§rit_4220_4.inkml§$ - \frac {h ^ {2} _ {3} + h ^ {2} _ {2}} {h _ {3}} = \frac {h _ {3}} {h _ {3} h _ {0} - h _ {2} h _ {1}} $§project/CROHME DATA/VAL_CROHME_671 
+Image592.png§rit_4225_0.inkml§$ 5 div 3 \neq 3 div 5 $§project/CROHME DATA/VAL_CROHME_671 
+Image593.png§rit_4225_1.inkml§$ a div b $§project/CROHME DATA/VAL_CROHME_671 
+Image594.png§rit_4225_2.inkml§$ 8 \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image595.png§rit_4225_3.inkml§$ \frac {56} {8} $§project/CROHME DATA/VAL_CROHME_671 
+Image596.png§rit_4225_4.inkml§$ 7 ^ {7 ^ {7}} $§project/CROHME DATA/VAL_CROHME_671 
+Image597.png§rit_4230_0.inkml§$ \frac {7} {6} $§project/CROHME DATA/VAL_CROHME_671 
+Image598.png§rit_4230_1.inkml§$ \sin x \times \cos x $§project/CROHME DATA/VAL_CROHME_671 
+Image599.png§rit_4230_2.inkml§$ \frac {3} {7} $§project/CROHME DATA/VAL_CROHME_671 
+Image600.png§rit_4230_3.inkml§$ \frac {6} {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image601.png§rit_4230_4.inkml§$ \tan x = \frac {\sin x} {\cos x} $§project/CROHME DATA/VAL_CROHME_671 
+Image602.png§rit_4235_0.inkml§$ \frac {7} {5} $§project/CROHME DATA/VAL_CROHME_671 
+Image603.png§rit_4235_1.inkml§$ - \sin x $§project/CROHME DATA/VAL_CROHME_671 
+Image604.png§rit_4235_2.inkml§$ 6 \frac {\sqrt {3}} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image605.png§rit_4235_3.inkml§$ \frac {5} {6} $§project/CROHME DATA/VAL_CROHME_671 
+Image606.png§rit_4235_4.inkml§$ \frac {\sqrt {3}} {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image607.png§rit_4240_0.inkml§$ 57753336 $§project/CROHME DATA/VAL_CROHME_671 
+Image608.png§rit_4240_1.inkml§$ \tan \theta = \frac {\sin \theta} {\cos \theta} $§project/CROHME DATA/VAL_CROHME_671 
+Image609.png§rit_4240_2.inkml§$ \sin ^ {2} \theta $§project/CROHME DATA/VAL_CROHME_671 
+Image610.png§rit_4240_3.inkml§$ 4 \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image611.png§rit_4240_4.inkml§$ \frac {\sqrt {3}} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image612.png§rit_4245_0.inkml§$ \frac {b !} {b} $§project/CROHME DATA/VAL_CROHME_671 
+Image613.png§rit_4245_1.inkml§$ \tan \frac {\theta} {2} $§project/CROHME DATA/VAL_CROHME_671 
+Image614.png§rit_4245_2.inkml§$ 6 + 3 \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image615.png§rit_4245_3.inkml§$ 7 \sqrt {7} - 3 \sqrt {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image616.png§rit_4245_4.inkml§$ 2 \sin x + \tan x $§project/CROHME DATA/VAL_CROHME_671 
+Image617.png§rit_4250_0.inkml§$ \log _ {a} x $§project/CROHME DATA/VAL_CROHME_671 
+Image618.png§rit_4250_1.inkml§$ b ^ {x} $§project/CROHME DATA/VAL_CROHME_671 
+Image619.png§rit_4250_2.inkml§$ \sqrt {28} $§project/CROHME DATA/VAL_CROHME_671 
+Image620.png§rit_4250_3.inkml§$ \sqrt {18} $§project/CROHME DATA/VAL_CROHME_671 
+Image621.png§rit_4250_4.inkml§$ \log _ {2} x $§project/CROHME DATA/VAL_CROHME_671 
+Image622.png§rit_4255_0.inkml§$ \log _ {a} a $§project/CROHME DATA/VAL_CROHME_671 
+Image623.png§rit_4255_1.inkml§$ \sqrt {x +} y \leq \sqrt {x} + \sqrt {y} $§project/CROHME DATA/VAL_CROHME_671 
+Image624.png§rit_4255_2.inkml§$ x \rightarrow b $§project/CROHME DATA/VAL_CROHME_671 
+Image625.png§rit_4255_3.inkml§$ \sqrt {x y z} $§project/CROHME DATA/VAL_CROHME_671 
+Image626.png§rit_4255_4.inkml§$ b \leq x $§project/CROHME DATA/VAL_CROHME_671 
+Image627.png§rit_425_0.inkml§$ 9 ! ^ 9 $§project/CROHME DATA/VAL_CROHME_671 
+Image628.png§rit_425_1.inkml§$ \frac {h - y} {h} $§project/CROHME DATA/VAL_CROHME_671 
+Image629.png§rit_425_2.inkml§$ \frac {3} {5} h $§project/CROHME DATA/VAL_CROHME_671 
+Image630.png§rit_425_3.inkml§$ h \rightarrow x $§project/CROHME DATA/VAL_CROHME_671 
+Image631.png§rit_425_4.inkml§$ h \rightarrow \infty $§project/CROHME DATA/VAL_CROHME_671 
+Image632.png§rit_4260_0.inkml§$ \sqrt {a + b} $§project/CROHME DATA/VAL_CROHME_671 
+Image633.png§rit_4260_1.inkml§$ \frac {8 \sqrt {2}} {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image634.png§rit_4260_2.inkml§$ x + 4 $§project/CROHME DATA/VAL_CROHME_671 
+Image635.png§rit_4260_3.inkml§$ x ^ {y} + y ^ {x} $§project/CROHME DATA/VAL_CROHME_671 
+Image636.png§rit_4260_4.inkml§$ \frac {1} {8} $§project/CROHME DATA/VAL_CROHME_671 
+Image637.png§rit_4265_0.inkml§$ 4 ^ {4 ^ {4}} + 3 $§project/CROHME DATA/VAL_CROHME_671 
+Image638.png§rit_4265_1.inkml§$ x + y $§project/CROHME DATA/VAL_CROHME_671 
+Image639.png§rit_4265_2.inkml§$ \frac {x} {x} $§project/CROHME DATA/VAL_CROHME_671 
+Image640.png§rit_4265_3.inkml§$ a x + b y $§project/CROHME DATA/VAL_CROHME_671 
+Image641.png§rit_4270_0.inkml§$ x \leq y $§project/CROHME DATA/VAL_CROHME_671 
+Image642.png§rit_4270_1.inkml§$ a x + b $§project/CROHME DATA/VAL_CROHME_671 
+Image643.png§rit_4270_2.inkml§$ \frac {a} {b} $§project/CROHME DATA/VAL_CROHME_671 
+Image644.png§rit_4270_3.inkml§$ \frac {b} {a} $§project/CROHME DATA/VAL_CROHME_671 
+Image645.png§rit_4275_0.inkml§$ a b + b a $§project/CROHME DATA/VAL_CROHME_671 
+Image646.png§rit_4275_1.inkml§$ \int ^ {b} _ {a} \phi $§project/CROHME DATA/VAL_CROHME_671 
+Image647.png§rit_4275_2.inkml§$ \frac {3} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image648.png§rit_4275_3.inkml§$ \frac {2 x - 8} {4 x - 8} $§project/CROHME DATA/VAL_CROHME_671 
+Image649.png§rit_4275_4.inkml§$ \frac {a \vtop {\hbox {\sqrt {}} \hbox {3}}} {4} $§project/CROHME DATA/VAL_CROHME_671 
+Image650.png§rit_4280_0.inkml§$ \frac {91} {48} $§project/CROHME DATA/VAL_CROHME_671 
+Image651.png§rit_4280_1.inkml§$ x ^ {3} + a x + b $§project/CROHME DATA/VAL_CROHME_671 
+Image652.png§rit_4280_2.inkml§$ \sqrt {\sqrt {2}} $§project/CROHME DATA/VAL_CROHME_671 
+Image653.png§rit_4280_3.inkml§$ a \rightarrow b $§project/CROHME DATA/VAL_CROHME_671 
+Image654.png§rit_4280_4.inkml§$ \sqrt {x ^ {2} + 6 x} + 4 $§project/CROHME DATA/VAL_CROHME_671 
+Image655.png§rit_4285_0.inkml§$ \cos x + 1 $§project/CROHME DATA/VAL_CROHME_671 
+Image656.png§rit_4285_1.inkml§$ \sqrt {a} \pm \sqrt {b} = \sqrt {a + b \pm 2 \sqrt {a b}} $§project/CROHME DATA/VAL_CROHME_671 
+Image657.png§rit_4285_2.inkml§$ \sum b _ {n} $§project/CROHME DATA/VAL_CROHME_671 
+Image658.png§rit_4285_3.inkml§$ b \leq a $§project/CROHME DATA/VAL_CROHME_671 
+Image659.png§rit_4285_4.inkml§$ a \leq b $§project/CROHME DATA/VAL_CROHME_671 
+Image660.png§rit_4290_0.inkml§$ x ^ {3} + y ^ {3} $§project/CROHME DATA/VAL_CROHME_671 
+Image661.png§rit_4290_1.inkml§$ a \leq x \leq 6 $§project/CROHME DATA/VAL_CROHME_671 
+Image662.png§rit_4290_2.inkml§$ \sqrt {1 + x ^ {4}} $§project/CROHME DATA/VAL_CROHME_671 
+Image663.png§rit_4290_3.inkml§$ \frac {n ^ {4}} {8} $§project/CROHME DATA/VAL_CROHME_671 
+Image664.png§rit_4290_4.inkml§$ \sqrt {3 + \sqrt {2}} $§project/CROHME DATA/VAL_CROHME_671 
+Image665.png§rit_4295_0.inkml§$ 523 + 487 $§project/CROHME DATA/VAL_CROHME_671 
+Image666.png§rit_4295_1.inkml§$ \sqrt {5 + 2 \sqrt {6}} $§project/CROHME DATA/VAL_CROHME_671 

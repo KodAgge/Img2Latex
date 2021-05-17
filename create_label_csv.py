@@ -105,7 +105,7 @@ def main():
     corpus = generateCorpus() # Corpus is a dictionary where they keys are the symbols in math equations e.g. "{" or "\frac"
     tokenize(corpus)
     printCorpusDict(corpus)
-main()
+# main()
 
 
 #create_label_csv(filepath,img_name)
