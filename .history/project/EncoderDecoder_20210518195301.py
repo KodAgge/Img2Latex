@@ -45,41 +45,46 @@ class EncoderDecoder(nn.Module):
         pass
 
     def forward(self, X_batch): 
-        # 1) CNN, aka "HyperCube Creation" :) 
+        # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
         V = self.CNN(X_batch)
+
+        # 2) LSTM 
 
         # Initialize Y and O 
         Y_0 = torch.zeros(self.vocab_size, self.batch_size)
         Y_0[141,:] = 1
         O_0 = torch.zeros(self.o_layer_size, self.batch_size)
-        X_t = torch.cat((self.E @ Y_0, O_0), 0)
+        X_1 = torch.cat((self.E @ Y_0, O_0), 0)
 
-        
-        output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
-        print(X_t.shape)
         for i in range(self.sequence_length):
-            H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            #C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))   # 3) Attention Mechanism
+            H_t = self.LSTM_module(X_1) 
+            input(H_t.shape)
+            #C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))
             C_t = torch.ones (self.v_length, self.batch_size)
             concat = torch.cat((H_t, C_t), 0)
             concat = torch.transpose(concat, 0, 1)
             O_t = torch.tanh(self.O(concat))
             Y_distr = self.softmax(self.W_out(O_t))
-            
+
+            # TODO: output
+
+            print(torch.sum(Y_distr[0,:]))
+            print(Y_distr.shape)
+
             # Greedy approach
-            max_indices = torch.argmax(Y_distr, dim=1)
-            Y_onehot = torch.zeros(self.vocab_size, self.batch_size)
-            Y_onehot[max_indices, :] = 1
-            #print(Y_onehot[int(max_indices[0])-2:int(max_indices[0])+2,:])
-            O_t = torch.transpose(O_t, 0, 1)
-            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
-
-            # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
-            output[i,:,:] = Y_onehot
+            max_indices = torch.argmax(Y_distr, 1)
+            print(max_indices[0])
 
 
-        return output # Y_s -> [seq_length, vocab_size, batch_size]
+            input('Attention')
+            
+
+        # Attention
+
+        # The Rest
+
+        return 0
 
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
@@ -103,9 +108,11 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             
             # forward-pass
             outputs = net(images)
-            print(outputs.shape)
 
 
+
+
+            
             input('---Klar med FORWARD PASSET---')
 
             # backwards pass + gradient step
@@ -146,6 +153,25 @@ def main():
     ED_Trained = MGD(ED, train_loader, learning_rate=0.001, momentum=0.9, n_epochs=10)
 
 
+    """ n_batches = len(train_loader)
+    print(n_batches)
+    print(len(train_set))
+    for epoch in range(num_epochs):
+        for (i, batch) in enumerate(train_loader):
+            images = batch['image'] # [batch_size, height, width]
+            labels = batch['label']
+            #print(images)
+            #print(labels)
+            print(images.shape)
+            print(len(labels))
+
+            # Forward-pass
+
+
+            # Backward-pass and gradient descent
+
+
+            input('---BATCH IS OVER---') """
 
 if __name__=='__main__':
     main()

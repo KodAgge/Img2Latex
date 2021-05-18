@@ -45,7 +45,7 @@ class EncoderDecoder(nn.Module):
         pass
 
     def forward(self, X_batch): 
-        # 1) CNN, aka "HyperCube Creation" :) 
+        # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
         V = self.CNN(X_batch)
 
@@ -55,9 +55,6 @@ class EncoderDecoder(nn.Module):
         O_0 = torch.zeros(self.o_layer_size, self.batch_size)
         X_t = torch.cat((self.E @ Y_0, O_0), 0)
 
-        
-        output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
-        print(X_t.shape)
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
             #C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))   # 3) Attention Mechanism
@@ -66,6 +63,9 @@ class EncoderDecoder(nn.Module):
             concat = torch.transpose(concat, 0, 1)
             O_t = torch.tanh(self.O(concat))
             Y_distr = self.softmax(self.W_out(O_t))
+
+            # TODO: store output distribution (OR SHOULD WE STORE THE GREEDY?)   
+
             
             # Greedy approach
             max_indices = torch.argmax(Y_distr, dim=1)
@@ -75,11 +75,13 @@ class EncoderDecoder(nn.Module):
             O_t = torch.transpose(O_t, 0, 1)
             X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
-            # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
-            output[i,:,:] = Y_onehot
+            print(Y_distr.shape)
+            print(Y_onehot.shape)
 
+            input('Attention')
+            
 
-        return output # Y_s -> [seq_length, vocab_size, batch_size]
+        return 0
 
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
@@ -103,9 +105,11 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             
             # forward-pass
             outputs = net(images)
-            print(outputs.shape)
 
 
+
+
+            
             input('---Klar med FORWARD PASSET---')
 
             # backwards pass + gradient step
