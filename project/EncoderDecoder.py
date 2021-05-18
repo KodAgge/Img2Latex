@@ -34,10 +34,10 @@ class EncoderDecoder(nn.Module):
         self.AttentionMechanism = AttentionMechanism(beta_size=50, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
 
         # The other layers
-        self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size))
-        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False)  # TODO: ADD BIAS?
-        self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False)  # TODO: ADD BIAS?
-        self.softmax = nn.Softmax(1)
+        self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
+        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False).double()  # TODO: ADD BIAS?
+        self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False).double()  # TODO: ADD BIAS?
+        self.softmax = nn.Softmax(1).double()
 
 
     def init_parameters(self):
@@ -50,36 +50,48 @@ class EncoderDecoder(nn.Module):
         V = self.CNN(X_batch)
 
         # Initialize Y and O 
-        Y_0 = torch.zeros(self.vocab_size, self.batch_size)
+        # Y_pred = torch.zeros((self.batch_size, self.sequence_length)).int()
+        output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
+
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
         Y_0[141,:] = 1
-        O_0 = torch.zeros(self.o_layer_size, self.batch_size)
+        O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
         X_t = torch.cat((self.E @ Y_0, O_0), 0)
 
         
-        output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
-        print(X_t.shape)
+        # output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
+        # print(X_t.shape)
         for i in range(self.sequence_length):
+            print(i)
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            #C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))   # 3) Attention Mechanism
-            C_t = torch.ones (self.v_length, self.batch_size)
+
+            # 3) Attention Mechanism
+            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1).double())  
+            # C_t = torch.ones (self.v_length, self.batch_size)
+
             concat = torch.cat((H_t, C_t), 0)
             concat = torch.transpose(concat, 0, 1)
             O_t = torch.tanh(self.O(concat))
-            Y_distr = self.softmax(self.W_out(O_t))
+            A_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
+
+            output[:, i, :] = A_t
+            Y_distr = self.softmax(A_t)
             
             # Greedy approach
             max_indices = torch.argmax(Y_distr, dim=1)
-            Y_onehot = torch.zeros(self.vocab_size, self.batch_size)
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
             Y_onehot[max_indices, :] = 1
+            # Y_pred[:, i] = max_indices + 1
             #print(Y_onehot[int(max_indices[0])-2:int(max_indices[0])+2,:])
             O_t = torch.transpose(O_t, 0, 1)
             X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
             # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
-            output[i,:,:] = Y_onehot
+            # output[i,:,:] = Y_onehot
 
-
-        return output # Y_s -> [seq_length, vocab_size, batch_size]
+        # return Y_pred
+        # return output # Y_s -> [seq_length, vocab_size, batch_size]
+        return output
 
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
@@ -87,12 +99,14 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
     
     optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 
+    torch.autograd.set_detect_anomaly(True)
+
     for epoch in range(n_epochs):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(train_dataloader, 0):
             # get the inputs; data is a list of [images, labels]
-            images, labels = data["image"], data["label"]
+            images, labels = data["image"], data["label"] - 1 # Labels måste börja på 0
             
             # Can use to decrease learning rate
             # for g in optimizer.param_groups:
@@ -103,15 +117,18 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             
             # forward-pass
             outputs = net(images)
-            print(outputs.shape)
-
 
             input('---Klar med FORWARD PASSET---')
 
+
             # backwards pass + gradient step
             optimizer.zero_grad() # zero the parameter gradients
-            loss = criterion(outputs, labels)
-            loss.backward()
+            loss = criterion(outputs.view(-1, 144), labels.view(-1))
+            print(loss)
+            loss.backward(retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
+            # Kolla här: https://discuss.pytorch.org/t/runtimeerror-trying-to-backward-through-the-graph-a-second-time-but-the-buffers-have-already-been-freed-specify-retain-graph-true-when-calling-backward-the-first-time/6795
+            
+            # loss.backward()
             optimizer.step()
 
             # print statistics
@@ -138,7 +155,7 @@ def main():
     hidden_size = 512; 
     sequence_length = 110; vocab_size = 144; 
 
-    batch_size = 20
+    batch_size = 3
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)

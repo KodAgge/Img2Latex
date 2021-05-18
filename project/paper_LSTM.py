@@ -23,28 +23,28 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.H_t = None  # hidden state!
 
     # Forget-gate layer parameters
-    self.Wf = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size)) # dims på denna
-    self.bf = nn.Parameter(torch.zeros(hidden_size, 1))
+    self.Wf = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size)).double() # dims på denna
+    self.bf = nn.Parameter(torch.zeros(hidden_size, 1)).double()
 
     # Input-gate layer parameters
-    self.Wi = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size))
-    self.bi = nn.Parameter(torch.zeros(hidden_size, 1))
+    self.Wi = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size)).double()
+    self.bi = nn.Parameter(torch.zeros(hidden_size, 1)).double()
 
     # Candidate parameters
-    self.Wc = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size))
-    self.bc = nn.Parameter(torch.zeros(hidden_size, 1))
+    self.Wc = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size)).double()
+    self.bc = nn.Parameter(torch.zeros(hidden_size, 1)).double()
 
     # Output-gate layer parameters
-    self.Wo = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size))
-    self.bo = nn.Parameter(torch.zeros(hidden_size, 1))
+    self.Wo = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size)).double()
+    self.bo = nn.Parameter(torch.zeros(hidden_size, 1)).double()
 
     self.init_weights()
     self.init_LSTM_states()
 
   def init_LSTM_states(self):
     """Since these are not model parameters (we don't want to find their gradients) we initialize them here"""
-    self.H_t = torch.zeros(self.hidden_size, self.batch_size)  
-    self.S_t = torch.zeros(self.hidden_size, self.batch_size)
+    self.H_t = torch.zeros(self.hidden_size, self.batch_size).double()
+    self.S_t = torch.zeros(self.hidden_size, self.batch_size).double()
 
 
   def init_weights(self):   # TODO: CHANGE THIS? It initializes the bias-terms aswell now
@@ -64,13 +64,13 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     # TODO: Make sure the dimensionality is: [input_size, batch_size]
 
     # Update cell state (S_t)
-    F_t = torch.sigmoid(self.Wf @ X_and_H + self.bf)
-    I_t = torch.sigmoid(self.Wi @ X_and_H + self.bi)
-    C_t = torch.tanh(self.Wc @ X_and_H + self.bc)  
+    F_t = torch.sigmoid(self.Wf @ X_and_H + self.bf).double()
+    I_t = torch.sigmoid(self.Wi @ X_and_H + self.bi).double()
+    C_t = torch.tanh(self.Wc @ X_and_H + self.bc) .double() 
     self.S_t = F_t * self.S_t + I_t * C_t  # Hadamard product
 
     # Update hidden state (H_t)
-    O_t = torch.sigmoid(self.Wo @ X_and_H + self.bo)
+    O_t = torch.sigmoid(self.Wo @ X_and_H + self.bo).double()
     self.H_t = O_t * torch.tanh(self.S_t)
 
     return self.H_t

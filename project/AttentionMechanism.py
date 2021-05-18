@@ -10,13 +10,13 @@ class AttentionMechanism(nn.Module):
         super().__init__()
 
         # Weights for the hidden layer h
-        self.W_h = nn.Linear(hidden_size, beta_size, bias=False)
+        self.W_h = nn.Linear(hidden_size, beta_size, bias=False).double()
 
         # Weights for the encoded image V
-        self.W = nn.Linear(v_length, beta_size, bias=False)
+        self.W = nn.Linear(v_length, beta_size, bias=False).double()
 
         # To sum up after activation function (tanh)
-        self.beta = nn.Linear(beta_size, 1, bias=False)
+        self.beta = nn.Linear(beta_size, 1, bias=False).double()
 
     def forward(self, V, h_t):
         # Change dimensions of the input vector
@@ -29,7 +29,7 @@ class AttentionMechanism(nn.Module):
         V_new = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
         # Matrix multiplocation
-        U_t = self.W_h(h_t) + self.W(V_new)
+        U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
 
         # Activation function and weighted summing
         E_t = self.beta(torch.tanh(U_t))
@@ -39,6 +39,10 @@ class AttentionMechanism(nn.Module):
 
         # Final weighted summing
         C_t = torch.matmul(A_t, V_new)
+
+        C_t = torch.reshape(C_t, (batch_size, C))
+
+        C_t = torch.transpose(C_t, 0, 1)
 
         return C_t
 
