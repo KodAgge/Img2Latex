@@ -16,32 +16,82 @@ from CROHME_Datasets import CROHME_Training_Set
 
 class EncoderDecoder(nn.Module):
 
-    def __init__(self, input_size, hidden_size, batch_size):
+    def __init__(self, embedding_size, hidden_size, batch_size, sequence_length, vocab_size, o_layer_size, v_length=512):
         super().__init__()
 
+        # Static params
+        self.v_length = v_length
+        self.batch_size = batch_size
+        self.sequence_length = sequence_length
+        self.vocab_size = vocab_size
+        self.o_layer_size = o_layer_size
 
-        # Network Architecture
+        input_size = embedding_size + o_layer_size
+
+        # Network Modules
         self.CNN = CNN()
         self.LSTM_module = paper_LSTM_Module(input_size, hidden_size, batch_size)
-        self.AttentionMechanism = None
+        self.AttentionMechanism = AttentionMechanism(beta_size=50, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
 
-        # ... rest of layers
+        # The other layers
+        self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
+        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False).double()  # TODO: ADD BIAS?
+        self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False).double()  # TODO: ADD BIAS?
+        self.softmax = nn.Softmax(1).double()
+
 
     def init_parameters(self):
         """Function to initialize parameters that are NOT initialized in the modules (which should take care of themselves"""
         pass
 
     def forward(self, X_batch): 
-        # CNN & "Cube Creation"
-        x = self.CNN(X_batch)
+        # 1) CNN, aka "HyperCube Creation" :) 
+        #x = self.CNN(X_batch)
+        V = self.CNN(X_batch)
+
+        # Initialize Y and O 
+        # Y_pred = torch.zeros((self.batch_size, self.sequence_length)).int()
+        output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
+
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
+        Y_0[141,:] = 1
+        O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
+        X_t = torch.cat((self.E @ Y_0, O_0), 0)
+
         
-        # LSTM 
+        # output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
+        # print(X_t.shape)
+        for i in range(self.sequence_length):
+            print(i)
+            H_t = self.LSTM_module(X_t)         # 2) LSTM 
 
-        # Attention
+            # 3) Attention Mechanism
+            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1).double())  
+            # C_t = torch.ones (self.v_length, self.batch_size)
 
-        # The Rest
+            concat = torch.cat((H_t, C_t), 0)
+            concat = torch.transpose(concat, 0, 1)
+            O_t = torch.tanh(self.O(concat))
+            A_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
 
-        return x
+            output[:, i, :] = A_t
+            Y_distr = self.softmax(A_t)
+            
+            # Greedy approach
+            max_indices = torch.argmax(Y_distr, dim=1)
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot[max_indices, :] = 1
+            # Y_pred[:, i] = max_indices + 1
+            #print(Y_onehot[int(max_indices[0])-2:int(max_indices[0])+2,:])
+            O_t = torch.transpose(O_t, 0, 1)
+            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
+
+            # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
+            # output[i,:,:] = Y_onehot
+
+        # return Y_pred
+        # return output # Y_s -> [seq_length, vocab_size, batch_size]
+        return output
 
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
@@ -49,25 +99,36 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
     
     optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 
+    torch.autograd.set_detect_anomaly(True)
+
     for epoch in range(n_epochs):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(train_dataloader, 0):
-            # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data["image"], data["label"]
+            # get the inputs; data is a list of [images, labels]
+            images, labels = data["image"], data["label"] - 1 # Labels måste börja på 0
             
             # Can use to decrease learning rate
             # for g in optimizer.param_groups:
             #     g['lr'] /= 2
 
-            # zero the parameter gradients
-            optimizer.zero_grad()
+            #print(images.shape)
+            #print(labels)
             
-            # forward + backward + optimize
-            outputs = net(inputs)
+            # forward-pass
+            outputs = net(images)
 
-            loss = criterion(outputs, labels)
-            loss.backward()
+            input('---Klar med FORWARD PASSET---')
+
+
+            # backwards pass + gradient step
+            optimizer.zero_grad() # zero the parameter gradients
+            loss = criterion(outputs.view(-1, 144), labels.view(-1))
+            print(loss)
+            loss.backward(retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
+            # Kolla här: https://discuss.pytorch.org/t/runtimeerror-trying-to-backward-through-the-graph-a-second-time-but-the-buffers-have-already-been-freed-specify-retain-graph-true-when-calling-backward-the-first-time/6795
+            
+            # loss.backward()
             optimizer.step()
 
             # print statistics
@@ -90,37 +151,18 @@ def main():
     #plt.show()
     
     embedding_size = 80; # number of rows in the E-matrix
-    o_size = 100;  # size of o-vektorn
-    input_size = embedding_size + o_size
+    o_layer_size = 100;  # size of o-vektorn TODO: What should this be?
     hidden_size = 512; 
+    sequence_length = 110; vocab_size = 144; 
 
-    batch_size = 20
+    batch_size = 3
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    ED = EncoderDecoder(input_size=input_size, hidden_size=hidden_size, batch_size=batch_size)
+    ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
 
     ED_Trained = MGD(ED, train_loader, learning_rate=0.001, momentum=0.9, n_epochs=10)
 
 
-    """ n_batches = len(train_loader)
-    print(n_batches)
-    print(len(train_set))
-    for epoch in range(num_epochs):
-        for (i, batch) in enumerate(train_loader):
-            images = batch['image'] # [batch_size, height, width]
-            labels = batch['label']
-            #print(images)
-            #print(labels)
-            print(images.shape)
-            print(len(labels))
-
-            # Forward-pass
-
-
-            # Backward-pass and gradient descent
-
-
-            input('---BATCH IS OVER---') """
 
 if __name__=='__main__':
     main()

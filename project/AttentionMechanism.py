@@ -7,70 +7,70 @@ import numpy as np
 
 class AttentionMechanism(nn.Module): 
     def __init__(self, beta_size, hidden_size, v_length):
-        
         super().__init__()
 
-        self.W_h = nn.Linear(hidden_size, beta_size)
-        self.W = nn.Linear(v_length, beta_size)
-        # self.beta = nn.Parameter(torch.zeros(beta_size))
-        self.beta = nn.Linear(beta_size, 1)
+        # Weights for the hidden layer h
+        self.W_h = nn.Linear(hidden_size, beta_size, bias=False).double()
+
+        # Weights for the encoded image V
+        self.W = nn.Linear(v_length, beta_size, bias=False).double()
+
+        # To sum up after activation function (tanh)
+        self.beta = nn.Linear(beta_size, 1, bias=False).double()
 
     def forward(self, V, h_t):
-        H_prime, W_prime, C, batch_size = V.shape
-        V_new = torch.reshape(V, (H_prime * W_prime, C, batch_size))
-        c_t = torch.zeros(C, batch_size)
+        # Change dimensions of the input vector
+        V = V.permute(0, 2, 3, 1)
 
-        for n in range(V.shape[3]):
-            e = torch.zeros(V_new.shape[0])
+        # Find dimensions
+        batch_size, H_prime, W_prime, C = V.shape
 
-            for i in range(V_new.shape[0]):
-                e[i] = self.beta(torch.tanh(self.W_h(h_t) + self.W(V_new[i, :, n])))
+        # Reshape to batch_size x H' * W' x C
+        V_new = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
-            a = torch.softmax(e, dim = 0)
+        # Matrix multiplocation
+        U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
 
-            c_t[:, n] = torch.matmul(a, V_new[:, :, n])
+        # Activation function and weighted summing
+        E_t = self.beta(torch.tanh(U_t))
 
-        return c_t
+        # Applying softmax
+        A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
 
+        # Final weighted summing
+        C_t = torch.matmul(A_t, V_new)
 
-    def forward_3D_WIP(self, V, h_t):
-        H_prime, W_prime, C, batch_size = V.shape
-        V_new = torch.reshape(V, (H_prime * W_prime, C, batch_size))
-        c_t = torch.zeros(C, batch_size)
-        A = torch.zeros(H_prime * W_prime, batch_size)
-        for n in range(V.shape[3]):
-            e = torch.zeros(V_new.shape[0])
+        C_t = torch.reshape(C_t, (batch_size, C))
 
-            for i in range(h_t.shape[0]):
-                e[i] = self.beta(torch.tanh(self.W_h(h_t) + self.W(V_new[i, :, n])))
+        C_t = torch.transpose(C_t, 0, 1)
 
-            # a = np.exp(e)/sum(np.exp(e))
-            # a = torch.softmax(e)
-            a = e
-            A[:, n] = a
-            c_t[:, n] = torch.matmul(a, V_new[:, :, n])
-            # print(c_t.shape)
-            
-        print(A.shape)
-        print(V_new.shape)
-        c_t_2 = torch.matmul(A, V_new)
-        print(c_t.shape)
-        print(c_t_2.shape)
-            # print(V_new.shape)
-            # print(torch.all(torch.eq(V_new[2*W_prime,:,:], V[2,0,:,:]))) # check to see that it's correct
+        return C_t
+
 
 def main():
-    H_prime = 10; W_prime = 20; C = 30; batch_size = 3; hidden_size=8
-    V = torch.rand((H_prime, W_prime, C, batch_size)).float()
+    H_prime = 3; W_prime = 3; C = 30; batch_size = 3; hidden_size=8
     h_t = torch.rand(hidden_size).float()
 
+    V = torch.rand((batch_size, C, H_prime, W_prime)).float()
 
-    beta_size = 50; 
-    print(V.shape)
-    print(h_t.shape)
+    # ordinary_dimensions = True
+
+    # if ordinary_dimensions:
+    #     # The dimensions this program needs
+    #     V = torch.rand((batch_size, H_prime, W_prime, C)).float()
+    # else:
+    #     # The dimensions V will come in from the CNN
+    #     V = torch.rand((batch_size, C, H_prime, W_prime)).float()
+
+    #     # Changing the dimensions to the ones the program need
+    #     V = V.permute(0, 2, 3, 1)
+
+    beta_size = 10; 
+
     model = AttentionMechanism(beta_size, hidden_size, v_length=C)
-    # model = AttentionMechanism(beta_size, hidden_size, v_length=H_prime * W_prime)
-    print(model(V, h_t))
+
+    context = model(V, h_t)
+
 
 
 if __name__=='__main__':
