@@ -45,7 +45,7 @@ class EncoderDecoder(nn.Module):
         pass
 
     def forward(self, X_batch): 
-        # 1) CNN, aka "HyperCube Creation" :) 
+        # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
         V = self.CNN(X_batch)
 

@@ -60,8 +60,8 @@ class EncoderDecoder(nn.Module):
         print(X_t.shape)
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            #C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))   # 3) Attention Mechanism
-            C_t = torch.ones (self.v_length, self.batch_size)
+            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))   # 3) Attention Mechanism
+            #C_t = torch.ones (self.v_length, self.batch_size)
             concat = torch.cat((H_t, C_t), 0)
             concat = torch.transpose(concat, 0, 1)
             O_t = torch.tanh(self.O(concat))
