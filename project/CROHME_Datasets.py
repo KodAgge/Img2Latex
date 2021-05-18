@@ -55,7 +55,8 @@ class CROHME_Training_Set(Dataset):
         #print(self.annotations_df.head())
 
     def __len__(self):
-        return len(self.annotations_df)
+        return self.images.shape[2] #len(self.annotations_df)
+
 
     def __getitem__(self, idx):
         label = literal_eval(self.annotations_df.iloc[idx].LatexCode) # '[1, 2, 3]' to [1, 2, 3]
@@ -84,6 +85,7 @@ def main():
     train_set = CROHME_Training_Set()
     #print(len(train_set))
     #train_set[0]
+
 
 if __name__=='__main__':
     main()
