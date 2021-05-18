@@ -35,6 +35,7 @@ class EncoderDecoder(nn.Module):
         # CNN & "Cube Creation"
         x = self.CNN(X_batch)
         
+
         # LSTM 
 
         # Attention

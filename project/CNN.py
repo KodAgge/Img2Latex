@@ -1,17 +1,17 @@
 import torch
 from torch.cuda import init
-import torchvision
+# import torchvision
 import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
-import numpy as np
+# import matplotlib.pyplot as plt
+# import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
+# import torch.optim as optim
 from skimage.io import imread
 from skimage.io import imshow
-import cv2
-import math
-import time
+# import cv2
+# import math
+# import time
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -65,28 +65,28 @@ class Net(nn.Module):
 
   def forward(self, x):
     # First row (from end)
-    x = self.conv1(x)
+    x = F.relu(self.conv1(x))
     x = self.pool1(x)
 
     # Second row (from end)
-    x = self.conv2(x)
+    x = F.relu(self.conv2(x))
     x = self.pool2(x)
 
     # Third row (from end)
-    x = self.conv3(x)
+    x = F.relu(self.conv3(x))
     x = self.bn3(x)
 
     # Fourth row (from end)
-    x = self.conv4(x)
+    x = F.relu(self.conv4(x))
     x = self.pool4(x)
 
     # Fifth row (from end)
-    x = self.conv5(x)
+    x = F.relu(self.conv5(x))
     x = self.bn5(x)
     x = self.pool5(x)
 
     # Sixth row (from end)
-    x = self.conv6(x)
+    x = F.relu(self.conv6(x))
     x = self.bn6(x)
 
     # # For testing

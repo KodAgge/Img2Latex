@@ -33,51 +33,15 @@ class EncoderDecoder(nn.Module):
 
     def forward(self, X_batch): 
         # CNN & "Cube Creation"
-        x = self.CNN(X_batch)
-        
+
         # LSTM 
 
         # Attention
 
         # The Rest
 
-        return x
+        pass
 
-
-def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
-    criterion = nn.CrossEntropyLoss() # Ändra denna?
-    
-    optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
-
-    for epoch in range(n_epochs):  # loop over the dataset multiple times
-
-        running_loss = 0.0
-        for i, data in enumerate(train_dataloader, 0):
-            # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data["image"], data["label"]
-            
-            # Can use to decrease learning rate
-            # for g in optimizer.param_groups:
-            #     g['lr'] /= 2
-
-            # zero the parameter gradients
-            optimizer.zero_grad()
-            
-            # forward + backward + optimize
-            outputs = net(inputs)
-
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-
-            # print statistics
-            running_loss += loss.item()
-            if i % 2000 == 1999:    # print every 2000 mini-batches
-                print('[%d, %5d] loss: %.3f' %
-                    (epoch + 1, i + 1, running_loss / 2000))
-                running_loss = 0.0
-
-    return net
 
 
 
@@ -94,15 +58,13 @@ def main():
     input_size = embedding_size + o_size
     hidden_size = 512; 
 
-    batch_size = 20
+    batch_size = 20; num_epochs = 1
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     ED = EncoderDecoder(input_size=input_size, hidden_size=hidden_size, batch_size=batch_size)
 
-    ED_Trained = MGD(ED, train_loader, learning_rate=0.001, momentum=0.9, n_epochs=10)
 
-
-    """ n_batches = len(train_loader)
+    n_batches = len(train_loader)
     print(n_batches)
     print(len(train_set))
     for epoch in range(num_epochs):
@@ -120,7 +82,7 @@ def main():
             # Backward-pass and gradient descent
 
 
-            input('---BATCH IS OVER---') """
+            input('---BATCH IS OVER---')
 
 if __name__=='__main__':
     main()
