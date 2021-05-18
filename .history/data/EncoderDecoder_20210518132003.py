@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 from matplotlib import pyplot as plt
 
-from CNN import Net as CNN
+#from CNN import Net as CNN
 from paper_LSTM import paper_LSTM_Module
 from AttentionMechanism import AttentionMechanism
 
@@ -21,7 +21,7 @@ class EncoderDecoder(nn.Module):
 
 
         # Network Architecture
-        self.CNN = CNN()
+        #self.CNN = CNN()
         self.LSTM_module = paper_LSTM_Module(input_size, hidden_size, batch_size)
         self.AttentionMechanism = None
 
@@ -33,8 +33,6 @@ class EncoderDecoder(nn.Module):
 
     def forward(self, X_batch): 
         # CNN & "Cube Creation"
-        x = self.CNN(X_batch)
-        
 
         # LSTM 
 
@@ -42,7 +40,7 @@ class EncoderDecoder(nn.Module):
 
         # The Rest
 
-        return x
+        pass
 
 
 def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
@@ -66,7 +64,6 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             
             # forward + backward + optimize
             outputs = net(inputs)
-
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
