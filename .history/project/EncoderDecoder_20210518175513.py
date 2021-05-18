@@ -16,11 +16,10 @@ from CROHME_Datasets import CROHME_Training_Set
 
 class EncoderDecoder(nn.Module):
 
-    def __init__(self, embedding_size, hidden_size, batch_size, sequence_length, vocab_size, o_layer_size, v_length=512):
+    def __init__(self, embedding_size, hidden_size, batch_size, sequence_length, vocab_size, o_layer_size):
         super().__init__()
 
         # Static params
-        self.v_length = v_length
         self.batch_size = batch_size
         self.sequence_length = sequence_length
         self.vocab_size = vocab_size
@@ -31,14 +30,11 @@ class EncoderDecoder(nn.Module):
         # Network Modules
         self.CNN = CNN()
         self.LSTM_module = paper_LSTM_Module(input_size, hidden_size, batch_size)
-        self.AttentionMechanism = AttentionMechanism(beta_size=50, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
+        self.AttentionMechanism = None
 
         # The other layers
         self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size))
-        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False)  # TODO: ADD BIAS?
-        self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False)  # TODO: ADD BIAS?
-        self.softmax = nn.Softmax(1)
-
+        
 
     def init_parameters(self):
         """Function to initialize parameters that are NOT initialized in the modules (which should take care of themselves"""
@@ -47,8 +43,7 @@ class EncoderDecoder(nn.Module):
     def forward(self, X_batch): 
         # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
-        V = self.CNN(X_batch)
-
+        
         # 2) LSTM 
 
         # Initialize Y and O 
@@ -58,19 +53,8 @@ class EncoderDecoder(nn.Module):
         X_1 = torch.cat((self.E @ Y_0, O_0), 0)
 
         for i in range(self.sequence_length):
-            H_t = self.LSTM_module(X_1) 
-            input(H_t.shape)
-            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))
-            #C_t = torch.ones (self.v_length, self.batch_size)
-            concat = torch.cat((H_t, C_t), 0)
-            concat = torch.transpose(concat, 0, 1)
-            O_t = torch.tanh(self.O(concat))
-            Y_distr = self.softmax(self.W_out(O_t))
-            print(torch.sum(Y_distr[0,:]))
-            print(Y_distr.shape)
+            pass
 
-            input('Attention')
-            
 
         # Attention
 

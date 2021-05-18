@@ -47,7 +47,9 @@ class EncoderDecoder(nn.Module):
     def forward(self, X_batch): 
         # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
+        #print(X_batch.shape)
         V = self.CNN(X_batch)
+        #input(V.shape)
 
         # 2) LSTM 
 
@@ -59,15 +61,16 @@ class EncoderDecoder(nn.Module):
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_1) 
-            input(H_t.shape)
-            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))
-            #C_t = torch.ones (self.v_length, self.batch_size)
+            #C_t = self.AttentionMechanism(V, H_t)
+            C_t = torch.ones (self.v_length, self.batch_size)
             concat = torch.cat((H_t, C_t), 0)
             concat = torch.transpose(concat, 0, 1)
             O_t = torch.tanh(self.O(concat))
+            print(O_t.shape)
             Y_distr = self.softmax(self.W_out(O_t))
             print(torch.sum(Y_distr[0,:]))
             print(Y_distr.shape)
+
 
             input('Attention')
             

@@ -69,6 +69,7 @@ class EncoderDecoder(nn.Module):
             print(torch.sum(Y_distr[0,:]))
             print(Y_distr.shape)
 
+
             input('Attention')
             
 

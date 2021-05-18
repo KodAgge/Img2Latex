@@ -47,7 +47,9 @@ class EncoderDecoder(nn.Module):
     def forward(self, X_batch): 
         # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
+        #print(X_batch.shape)
         V = self.CNN(X_batch)
+        #input(V.shape)
 
         # 2) LSTM 
 
@@ -68,6 +70,7 @@ class EncoderDecoder(nn.Module):
             Y_distr = self.softmax(self.W_out(O_t))
             print(torch.sum(Y_distr[0,:]))
             print(Y_distr.shape)
+
 
             input('Attention')
             

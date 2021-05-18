@@ -35,9 +35,8 @@ class EncoderDecoder(nn.Module):
 
         # The other layers
         self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size))
-        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False)  # TODO: ADD BIAS?
-        self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False)  # TODO: ADD BIAS?
-        self.softmax = nn.Softmax(1)
+        self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False)
+
 
 
     def init_parameters(self):
@@ -47,7 +46,9 @@ class EncoderDecoder(nn.Module):
     def forward(self, X_batch): 
         # 1) CNN & "Cube Creation"
         #x = self.CNN(X_batch)
+        #print(X_batch.shape)
         V = self.CNN(X_batch)
+        #input(V.shape)
 
         # 2) LSTM 
 
@@ -59,16 +60,14 @@ class EncoderDecoder(nn.Module):
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_1) 
-            input(H_t.shape)
-            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))
-            #C_t = torch.ones (self.v_length, self.batch_size)
-            concat = torch.cat((H_t, C_t), 0)
-            concat = torch.transpose(concat, 0, 1)
-            O_t = torch.tanh(self.O(concat))
-            Y_distr = self.softmax(self.W_out(O_t))
-            print(torch.sum(Y_distr[0,:]))
-            print(Y_distr.shape)
-
+            #C_t = self.AttentionMechanism(V, H_t)
+            C_t = torch.ones (self.v_length, self.batch_size)
+            print(C_t)
+            print()
+            concat = torch.cat(H_T, C_t)
+            
+            print(C_t.shape)
+            
             input('Attention')
             
 
