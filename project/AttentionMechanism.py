@@ -19,6 +19,9 @@ class AttentionMechanism(nn.Module):
         self.beta = nn.Linear(beta_size, 1, bias=False)
 
     def forward(self, V, h_t):
+        # Change dimensions of the input vector
+        V = V.permute(0, 2, 3, 1)
+
         # Find dimensions
         batch_size, H_prime, W_prime, C = V.shape
 
@@ -44,17 +47,19 @@ def main():
     H_prime = 3; W_prime = 3; C = 30; batch_size = 3; hidden_size=8
     h_t = torch.rand(hidden_size).float()
 
-    ordinary_dimensions = True
+    V = torch.rand((batch_size, C, H_prime, W_prime)).float()
 
-    if ordinary_dimensions:
-        # The dimensions this program needs
-        V = torch.rand((batch_size, H_prime, W_prime, C)).float()
-    else:
-        # The dimensions V will come in from the CNN
-        V = torch.rand((batch_size, C, H_prime, W_prime)).float()
+    # ordinary_dimensions = True
 
-        # Changing the dimensions to the ones the program need
-        V = V.permute(0, 2, 3, 1)
+    # if ordinary_dimensions:
+    #     # The dimensions this program needs
+    #     V = torch.rand((batch_size, H_prime, W_prime, C)).float()
+    # else:
+    #     # The dimensions V will come in from the CNN
+    #     V = torch.rand((batch_size, C, H_prime, W_prime)).float()
+
+    #     # Changing the dimensions to the ones the program need
+    #     V = V.permute(0, 2, 3, 1)
 
     beta_size = 10; 
 
