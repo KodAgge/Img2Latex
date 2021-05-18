@@ -7,70 +7,50 @@ import numpy as np
 
 class AttentionMechanism(nn.Module): 
     def __init__(self, beta_size, hidden_size, v_length):
-        
         super().__init__()
 
+        # Weights for the hidden layer h
         self.W_h = nn.Linear(hidden_size, beta_size)
+
+        # Weights for the encoded image V
         self.W = nn.Linear(v_length, beta_size)
-        # self.beta = nn.Parameter(torch.zeros(beta_size))
+
+        # To sum up after activation function (tanh)
         self.beta = nn.Linear(beta_size, 1)
 
     def forward(self, V, h_t):
-        H_prime, W_prime, C, batch_size = V.shape
-        V_new = torch.reshape(V, (H_prime * W_prime, C, batch_size))
-        c_t = torch.zeros(C, batch_size)
+        # Find dimensions
+        batch_size, H_prime, W_prime, C = V.shape
 
-        for n in range(V.shape[3]):
-            e = torch.zeros(V_new.shape[0])
+        # Reshape to batch_size x H' * W' x C
+        V_new = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
-            for i in range(V_new.shape[0]):
-                e[i] = self.beta(torch.tanh(self.W_h(h_t) + self.W(V_new[i, :, n])))
+        # Matrix multiplocation
+        U_T = self.W_h(h_t) + self.W(V_new)
 
-            a = torch.softmax(e, dim = 0)
+        # Activation function and weighted summing
+        E_t = self.beta(torch.tanh(U_T))
 
-            c_t[:, n] = torch.matmul(a, V_new[:, :, n])
+        # Applying softmax
+        A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
 
-        return c_t
+        # Final weighted summing
+        C_T = torch.matmul(A_t, V_new)
+        
+        return C_T
 
-
-    def forward_3D_WIP(self, V, h_t):
-        H_prime, W_prime, C, batch_size = V.shape
-        V_new = torch.reshape(V, (H_prime * W_prime, C, batch_size))
-        c_t = torch.zeros(C, batch_size)
-        A = torch.zeros(H_prime * W_prime, batch_size)
-        for n in range(V.shape[3]):
-            e = torch.zeros(V_new.shape[0])
-
-            for i in range(h_t.shape[0]):
-                e[i] = self.beta(torch.tanh(self.W_h(h_t) + self.W(V_new[i, :, n])))
-
-            # a = np.exp(e)/sum(np.exp(e))
-            # a = torch.softmax(e)
-            a = e
-            A[:, n] = a
-            c_t[:, n] = torch.matmul(a, V_new[:, :, n])
-            # print(c_t.shape)
-            
-        print(A.shape)
-        print(V_new.shape)
-        c_t_2 = torch.matmul(A, V_new)
-        print(c_t.shape)
-        print(c_t_2.shape)
-            # print(V_new.shape)
-            # print(torch.all(torch.eq(V_new[2*W_prime,:,:], V[2,0,:,:]))) # check to see that it's correct
 
 def main():
-    H_prime = 10; W_prime = 20; C = 30; batch_size = 3; hidden_size=8
-    V = torch.rand((H_prime, W_prime, C, batch_size)).float()
+    H_prime = 3; W_prime = 3; C = 30; batch_size = 3; hidden_size=8
     h_t = torch.rand(hidden_size).float()
 
+    V = torch.rand((batch_size, H_prime, W_prime, C)).float()
+    beta_size = 10; 
 
-    beta_size = 50; 
-    print(V.shape)
-    print(h_t.shape)
     model = AttentionMechanism(beta_size, hidden_size, v_length=C)
-    # model = AttentionMechanism(beta_size, hidden_size, v_length=H_prime * W_prime)
-    print(model(V, h_t))
+
+    context = model(V, h_t)
+
 
 
 if __name__=='__main__':
