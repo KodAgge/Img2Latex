@@ -39,6 +39,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.bo = nn.Parameter(torch.zeros(hidden_size, 1))
 
     self.init_weights()
+    self.init_LSTM_states()
 
   def init_LSTM_states(self):
     """Since these are not model parameters (we don't want to find their gradients) we initialize them here"""
@@ -60,7 +61,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     # X_and_H -> [n1+n2+hidden_size] = 
     X_and_H = torch.cat((X_t, self.H_t), 0)
     
-    # TODO: Make sur the dimensionality is: [input_size, batch_size]
+    # TODO: Make sure the dimensionality is: [input_size, batch_size]
 
     # Update cell state (S_t)
     F_t = torch.sigmoid(self.Wf @ X_and_H + self.bf)
