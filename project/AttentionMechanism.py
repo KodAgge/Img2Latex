@@ -16,7 +16,9 @@ class AttentionMechanism(nn.Module):
         self.W = nn.Linear(v_length, beta_size, bias=False).double()
 
         # To sum up after activation function (tanh)
-        self.beta = nn.Linear(beta_size, 1, bias=False).double()
+        # self.beta = nn.Linear(beta_size, 1, bias=False).double()
+        self.beta = nn.Parameter(torch.Tensor(beta_size))
+        nn.init.uniform_(self.beta, -1e-2, 1e-2)
 
     def forward(self, V, h_t):
         # Change dimensions of the input vector
@@ -29,22 +31,24 @@ class AttentionMechanism(nn.Module):
         V_new = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
         # Matrix multiplocation
-        U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
-
+        # U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
+        U_t = torch.tanh(self.W_h(h_t).unsqueeze(1) + self.W(V_new))
+        
         # Activation function and weighted summing
-        E_t = self.beta(torch.tanh(U_t))
-
+        # E_t = self.beta(U_t)
+        E_t = torch.sum(self.beta * U_t, dim=-1)
+        
         # Applying softmax
-        A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
+        # A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
+        A_t = torch.softmax(E_t, dim = 1).unsqueeze(1)
+
 
         # Final weighted summing
-        C_t = torch.matmul(A_t, V_new)
-
-        C_t = torch.reshape(C_t, (batch_size, C))
+        C_t = torch.matmul(A_t, V_new).squeeze()
 
         C_t = torch.transpose(C_t, 0, 1)
 
-        return C_t
+        return C_t, A_t
 
 
 def main():

@@ -31,7 +31,7 @@ class EncoderDecoder(nn.Module):
         # Network Modules
         self.CNN = CNN()
         self.LSTM_module = paper_LSTM_Module(input_size, hidden_size, batch_size)
-        self.AttentionMechanism = AttentionMechanism(beta_size=50, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
+        self.AttentionMechanism = AttentionMechanism(beta_size=512, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
 
         # The other layers
         self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
@@ -66,7 +66,7 @@ class EncoderDecoder(nn.Module):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
 
             # 3) Attention Mechanism
-            C_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1).double())  
+            C_t, A_t = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
             # C_t = torch.ones (self.v_length, self.batch_size)
 
             concat = torch.cat((H_t, C_t), 0)
@@ -130,6 +130,8 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             
             # loss.backward()
             optimizer.step()
+
+            input('---Klar med BACKWARD PASSET---')
 
             # print statistics
             running_loss += loss.item()
