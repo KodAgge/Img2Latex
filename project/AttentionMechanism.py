@@ -32,21 +32,21 @@ class AttentionMechanism(nn.Module):
 
         # Matrix multiplocation
         # U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
-        U_t = torch.tanh(self.W_h(h_t).unsqueeze(1) + self.W(V_new))
+        U_t = torch.tanh(self.W_h(h_t).unsqueeze(1) + self.W(V_new)) # [B, H' * W', C]
         
         # Activation function and weighted summing
         # E_t = self.beta(U_t)
-        E_t = torch.sum(self.beta * U_t, dim=-1)
+        E_t = torch.sum(self.beta * U_t, dim=-1) # [B, H' * W']
         
         # Applying softmax
         # A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
-        A_t = torch.softmax(E_t, dim = 1).unsqueeze(1)
-
+        A_t = torch.softmax(E_t, dim = 1).unsqueeze(1) # [B, 1, H' * W']
+  
 
         # Final weighted summing
         C_t = torch.matmul(A_t, V_new).squeeze()
 
-        C_t = torch.transpose(C_t, 0, 1)
+        C_t = torch.transpose(C_t, 0, 1) # [C, B]
 
         return C_t, A_t
 
