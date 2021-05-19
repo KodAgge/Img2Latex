@@ -36,8 +36,8 @@ class EncoderDecoder(nn.Module):
         self.AttentionMechanism = AttentionMechanism(beta_size=512, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
 
         # The other layers
-        # self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
-        self.E = nn.Embedding(vocab_size, embedding_size).double()
+        self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
+        # self.E2 = nn.Embedding(512, embedding_size).double()
         self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False).double()  # TODO: ADD BIAS?
         self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False).double()  # TODO: ADD BIAS?
         self.softmax = nn.Softmax(1).double()
@@ -55,50 +55,60 @@ class EncoderDecoder(nn.Module):
         output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
 
 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
 
+        Y_0[141,:] = 1
         O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
-
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+        X_t = torch.cat((self.E @ Y_0, O_0), 0)
+        
 
         self.LSTM_module.reset_LSTM_states()  # THIS WAS THE PROBLEM BEFORE
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            print(H_t)
-            print(torch.sum(H_t))
-            # torch.sum
+            print(sum(H_t))
+
             # 3) Attention Mechanism
             C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
-            
+
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
             linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
             O_t = torch.tanh(linear_O)
             Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
+
             output[:, i, :] = Q_t
+            # Y_distr = self.softmax(Q_t)
             
             # Greedy approach
-            # print(torch.argmax(Q_t, dim=1))
-            
+            # max_indices = torch.argmax(Y_distr, dim=1)
+            # Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot[labels_batch[:, i] - 1, :] = 1
+
             O_t = torch.transpose(O_t, 0, 1)
-            Y_t = labels_batch[:, i]
-            # print(Y_t)
+            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
 
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+            # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
+            # output[i,:,:] = Y_onehot
 
+        # return Y_pred
+        # return output # Y_s -> [seq_length, vocab_size, batch_size]
         return output
 
     def forward_predict(self, X_batch): 
         # 1) CNN, aka "HyperCube Creation" :) 
+        #x = self.CNN(X_batch)
         V = self.CNN(X_batch)
 
         # Initialize Y and O 
+        # Y_pred = torch.zeros((self.batch_size, self.sequence_length)).int()
         output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
+        Y_0[141,:] = 1
         O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+        X_t = torch.cat((self.E @ Y_0, O_0), 0)
 
         self.LSTM_module.reset_LSTM_states()  # THIS WAS THE PROBLEM BEFORE
 
@@ -107,6 +117,7 @@ class EncoderDecoder(nn.Module):
 
             # 3) Attention Mechanism
             C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
+            # C_t = torch.ones (self.v_length, self.batch_size)
 
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
             linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
@@ -117,9 +128,11 @@ class EncoderDecoder(nn.Module):
             Y_distr = self.softmax(Q_t)
             
             # Greedy approach
-            Y_t = torch.argmax(Y_distr, dim=1)
+            max_indices = torch.argmax(Y_distr, dim=1)
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot[max_indices, :] = 1
             O_t = torch.transpose(O_t, 0, 1)
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
         return output
 
@@ -286,7 +299,7 @@ def main():
 
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
     
-    ED_Trained = MGD(ED, train_loader, learning_rate=1e-3, n_epochs=2)
+    ED_Trained = MGD(ED, train_loader, learning_rate=1e-3, n_epochs=1)
 
     ED_Trained.predict_multi(train_loader)
 

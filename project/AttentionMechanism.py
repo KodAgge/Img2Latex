@@ -20,6 +20,13 @@ class AttentionMechanism(nn.Module):
         self.beta = nn.Parameter(torch.Tensor(beta_size))
         nn.init.uniform_(self.beta, -1e-2, 1e-2)
 
+        self.init_weights()
+
+    def init_weights(self): 
+        # Initialisez the wights with Xavier Normalization
+        torch.nn.init.xavier_normal_(self.W_h.weight)
+        torch.nn.init.xavier_normal_(self.W.weight)
+
     def forward(self, V, h_t):
         # Change dimensions of the input vector
         V = V.permute(0, 2, 3, 1)
