@@ -58,12 +58,11 @@ class EncoderDecoder(nn.Module):
         O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
         X_t = torch.cat((self.E @ Y_0, O_0), 0)
 
-        self.LSTM_module.reset_LSTM_states()  # THIS WAS THE PROBLEM BEFORE
-
+        
         # output = torch.zeros(self.sequence_length, self.vocab_size, self.batch_size)   
         # print(X_t.shape)
         for i in range(self.sequence_length):
-            #print(i)
+            print(i)
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
 
             # 3) Attention Mechanism
@@ -71,7 +70,9 @@ class EncoderDecoder(nn.Module):
             # C_t = torch.ones (self.v_length, self.batch_size)
 
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
-            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
+            #concat = torch.cat((H_t, C_t), 0)
+            #concat = torch.transpose(concat, 0, 1)
+            linear_O = self.O(concat)
             O_t = torch.tanh(linear_O)
             A_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
 
@@ -106,7 +107,6 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
 
         running_loss = 0.0
         for i, data in enumerate(train_dataloader, 0):
-            outputs = None
             # get the inputs; data is a list of [images, labels]
             images, labels = data["image"], data["label"] - 1 # Labels måste börja på 0
             
@@ -120,7 +120,7 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             # forward-pass
             outputs = net(images)
 
-            #input('---Klar med FORWARD PASSET---')
+            input('---Klar med FORWARD PASSET---')
 
             
             # backwards pass + gradient step
@@ -128,13 +128,13 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             print(loss)
             
             optimizer.zero_grad() # zero the parameter gradients
-            loss.backward() #retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
+            loss.backward(retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
             # Kolla här: https://discuss.pytorch.org/t/runtimeerror-trying-to-backward-through-the-graph-a-second-time-but-the-buffers-have-already-been-freed-specify-retain-graph-true-when-calling-backward-the-first-time/6795
             
             # loss.backward()
             optimizer.step()
 
-            #input('---Klar med BACKWARD PASSET---')
+            input('---Klar med BACKWARD PASSET---')
 
             # print statistics
             running_loss += loss.item()

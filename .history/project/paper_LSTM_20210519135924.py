@@ -42,7 +42,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.reset_LSTM_states()
 
   def reset_LSTM_states(self):
-    """Since these are not model parameters (we don't want to find their gradients) we initialize them for each timestep to be:"""
+    """Since these are not model parameters (we don't want to find their gradients) we initialize them here"""
     self.H_t = torch.zeros(self.hidden_size, self.batch_size).double()
     self.S_t = torch.zeros(self.hidden_size, self.batch_size).double()
 

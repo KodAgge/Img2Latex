@@ -71,7 +71,9 @@ class EncoderDecoder(nn.Module):
             # C_t = torch.ones (self.v_length, self.batch_size)
 
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
-            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
+            #concat = torch.cat((H_t, C_t), 0)
+            #concat = torch.transpose(concat, 0, 1)
+            linear_O = self.O(concat)
             O_t = torch.tanh(linear_O)
             A_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
 
@@ -128,7 +130,7 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             print(loss)
             
             optimizer.zero_grad() # zero the parameter gradients
-            loss.backward() #retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
+            loss.backward(retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
             # Kolla här: https://discuss.pytorch.org/t/runtimeerror-trying-to-backward-through-the-graph-a-second-time-but-the-buffers-have-already-been-freed-specify-retain-graph-true-when-calling-backward-the-first-time/6795
             
             # loss.backward()

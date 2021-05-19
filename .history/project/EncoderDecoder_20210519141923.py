@@ -128,7 +128,7 @@ def MGD(net, train_dataloader, learning_rate, momentum, n_epochs):
             print(loss)
             
             optimizer.zero_grad() # zero the parameter gradients
-            loss.backward() #retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
+            loss.backward()#retain_graph=True) # Fullösning för att den verkar behöva förra iterationen
             # Kolla här: https://discuss.pytorch.org/t/runtimeerror-trying-to-backward-through-the-graph-a-second-time-but-the-buffers-have-already-been-freed-specify-retain-graph-true-when-calling-backward-the-first-time/6795
             
             # loss.backward()
