@@ -40,20 +40,20 @@ def unTokenize(tokenized_tensor, specialToken = True, sequenceLength = 110):
     specialChars = ['UNK','START','END','PAD']
     if specialToken == True:
         
-        for i in range(sequenceLength):
+        for i in range(len(tokenized_tensor)):
             key = str(tokenized_tensor[i]).split("(")[1].split(")")[0]
             labelString = corpusDict[key]
-            returnString = returnString +" "+ labelString
+            returnString += labelString + " "
         
     if specialToken == False:
-        for i in range(sequenceLength):
+        for i in range(len(tokenized_tensor)):
             key = str(tokenized_tensor[i]).split("(")[1].split(")")[0]
             labelString = corpusDict[key]
             if labelString in specialChars:
                 returnString = returnString
 
             else:   
-                returnString = returnString +" "+ labelString
+                returnString += labelString + " "
         
     
     return returnString
@@ -62,5 +62,7 @@ def main():
     corpusDict = corpus()
     testTensor = torch.tensor([142,2,3,4,144])
     untokenizedVector = unTokenize(testTensor,specialToken = True)
+    # print(untokenizedVector)
     
-main()
+if __name__=='__main__':
+    main()

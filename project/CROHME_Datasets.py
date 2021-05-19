@@ -23,11 +23,11 @@ VALIDATION_ANNOTATIONS = './project/VALIDATION_NORMALIZED_TOKENIZED.txt'
 ANNOTATION_HEADERS = ['ImageFile','InkmlFile','LatexCode','InkmlFolder']
 
 # N_TEST = 2120
-N_TRAIN = 80 #7170
+N_TRAIN = 100 #7170
 # N_VAL = 667
-N_TEST = 2
+N_TEST = 10
 # N_TRAIN = 7
-N_VAL = 6
+N_VAL = 10
 
 SCALE = 255 # RGB from 0-255 (black - white)
 HEIGHT = 100
@@ -46,13 +46,8 @@ class CROHME_Training_Set(Dataset):
         self.annotations_df = pd.read_csv(TRAIN_ANNOTATIONS, names = ANNOTATION_HEADERS, sep= ';', engine='python', encoding='UTF-8')
         self.img_dir = img_dir
         self.images = TRAIN_IMGS       
-        
         self.img_transform = img_transform
 
-        #print(self.images.shape)
-        #print(type(self.annotations_df))
-        #print(self.annotations_df.iloc[1])
-        #print(self.annotations_df.head())
 
     def __len__(self):
         return self.images.shape[2] #len(self.annotations_df)
@@ -61,25 +56,63 @@ class CROHME_Training_Set(Dataset):
     def __getitem__(self, idx):
         label = literal_eval(self.annotations_df.iloc[idx].LatexCode) # '[1, 2, 3]' to [1, 2, 3]
 
-        #TODO
-        '''
-            Write code that translates array to one-hot multy array
-        '''
-
         label = torch.Tensor(label).long() # Make it into a int-tensor
-        # print(self.images)
-        # print(self.images.shape)
+
         image = self.images[:,:,idx]
         
         if self.img_transform:
             image = self.img_transform(image)
-        
-        #print(label)
-        #print(image)
 
         return {"image": image, "label": label}
 
 
+class CROHME_Testing_Set(Dataset):
+    def __init__(self, annotations_file=TEST_ANNOTATIONS, img_dir=TEST_IMG_FOLDER, img_transform=ToTensor(), target_transform=None):
+        self.annotations_df = pd.read_csv(TEST_ANNOTATIONS, names = ANNOTATION_HEADERS, sep= ';', engine='python', encoding='UTF-8')
+        self.img_dir = img_dir
+        self.images = TEST_IMGS       
+        self.img_transform = img_transform
+
+
+    def __len__(self):
+        return self.images.shape[2] #len(self.annotations_df)
+
+
+    def __getitem__(self, idx):
+        label = literal_eval(self.annotations_df.iloc[idx].LatexCode) # '[1, 2, 3]' to [1, 2, 3]
+
+        label = torch.Tensor(label).long() # Make it into a int-tensor
+
+        image = self.images[:,:,idx]
+        
+        if self.img_transform:
+            image = self.img_transform(image)
+
+        return {"image": image, "label": label}
+
+class CROHME_Validation_Set(Dataset):
+    def __init__(self, annotations_file=VALIDATION_ANNOTATIONS, img_dir=VAL_IMG_FOLDER, img_transform=ToTensor(), target_transform=None):
+        self.annotations_df = pd.read_csv(VALIDATION_ANNOTATIONS, names = ANNOTATION_HEADERS, sep= ';', engine='python', encoding='UTF-8')
+        self.img_dir = img_dir
+        self.images = VAL_IMGS       
+        self.img_transform = img_transform
+
+
+    def __len__(self):
+        return self.images.shape[2] #len(self.annotations_df)
+
+
+    def __getitem__(self, idx):
+        label = literal_eval(self.annotations_df.iloc[idx].LatexCode) # '[1, 2, 3]' to [1, 2, 3]
+
+        label = torch.Tensor(label).long() # Make it into a int-tensor
+
+        image = self.images[:,:,idx]
+        
+        if self.img_transform:
+            image = self.img_transform(image)
+
+        return {"image": image, "label": label}
 
 def main():
     train_set = CROHME_Training_Set()
