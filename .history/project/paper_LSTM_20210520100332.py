@@ -39,6 +39,14 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.bo = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
 
     self.init_weights()
+    print(self.Wc)
+    print(torch.sum(self.Wc))
+    max_val, max_ind = torch.max(self.Wc)
+    print('max', max_val, max_ind)
+    min_val, min_ind = torch.min(self.Wc)
+    print('min', min_val, min_ind)
+    input('initialiseringen')
+
     self.reset_LSTM_states()
 
   def reset_LSTM_states(self):

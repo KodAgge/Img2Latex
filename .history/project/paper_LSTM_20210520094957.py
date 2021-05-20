@@ -23,7 +23,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.H_t = None  # hidden state!
 
     # Forget-gate layer parameters
-    self.Wf = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, dtype=torch.double))
+    self.Wf = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, dtype=torch.double)) # dims på denna
     self.bf = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
 
     # Input-gate layer parameters
@@ -31,14 +31,18 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.bi = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
 
     # Candidate parameters
-    self.Wc = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, dtype=torch.double))
-    self.bc = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
+    self.Wc = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, , dtype=torch.double))
+    self.bc = nn.Parameter(torch.zeros(hidden_size, 1), dtype=torch.double))
 
     # Output-gate layer parameters
-    self.Wo = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, dtype=torch.double))
+    self.Wo = nn.Parameter(torch.zeros(hidden_size, hidden_size + input_size, , dtype=torch.double))
     self.bo = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
 
     self.init_weights()
+    print(self.Wo)
+    print(torch.sum(self.Wo))
+    print('initialiseringen')
+
     self.reset_LSTM_states()
 
   def reset_LSTM_states(self):
@@ -47,7 +51,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.S_t = torch.zeros(self.hidden_size, self.batch_size, dtype=torch.double)
 
 
-  def init_weights(self):   # TODO: CHANGE THIS? It initializes the bias-terms as well now
+  def init_weights(self):   # TODO: CHANGE THIS? It initializes the bias-terms aswell now
     """ Sets the weights in a standard way. """
 
     stdv = 1.0 / math.sqrt(self.hidden_size)

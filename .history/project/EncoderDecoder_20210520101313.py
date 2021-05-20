@@ -65,8 +65,8 @@ class EncoderDecoder(nn.Module):
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            #input(H_t)
-            #print(torch.sum(H_t))
+            input(H_t)
+            print(torch.sum(H_t))
             
             # 3) Attention Mechanism
             C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
