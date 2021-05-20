@@ -4,7 +4,6 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 from matplotlib import pyplot as plt
 import CorpusHelper
-import time
 # import Performance
 
 from CNN import Net as CNN
@@ -37,14 +36,11 @@ class EncoderDecoder(nn.Module):
         self.AttentionMechanism = AttentionMechanism(beta_size=512, hidden_size=hidden_size, v_length=v_length) # TODO: Change these hard-coded values
 
         # The other layers
-        # self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
-        self.E = nn.Embedding(vocab_size, embedding_size).double()
+        self.E = nn.Parameter(torch.zeros(embedding_size, vocab_size)).double()
+        # self.E2 = nn.Embedding(512, embedding_size).double()
         self.O = nn.Linear(v_length + hidden_size, o_layer_size, bias=False).double()  # TODO: ADD BIAS?
         self.W_out = nn.Linear(o_layer_size, vocab_size, bias=False).double()  # TODO: ADD BIAS?
         self.softmax = nn.Softmax(1).double()
-
-        # Initialization of h_t
-        self.init_Wh = nn.Linear(v_length, hidden_size).double()
 
 
     def init_parameters(self):
@@ -55,83 +51,73 @@ class EncoderDecoder(nn.Module):
         # 1) CNN, aka "HyperCube Creation" :) 
         V = self.CNN(X_batch)
 
-        # Transforming into a cube
-        V = V.permute(0, 2, 3, 1)
-        batch_size, H_prime, W_prime, C = V.shape
-        V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
-
-        # Pre-allocate memory
+        # Initialize Y and O 
         output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
 
-        # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
+
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
+
+        Y_0[141,:] = 1
         O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+        X_t = torch.cat((self.E @ Y_0, O_0), 0)
+        
 
-        # Reset S_t
-        self.LSTM_module.reset_LSTM_states()
-
-        # Initialize H_t
-        mean_encoder_out = torch.mean(V, 1)
-        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-        self.LSTM_module.H_t = H_0
+        self.LSTM_module.reset_LSTM_states()  # THIS WAS THE PROBLEM BEFORE
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            
+            print(sum(H_t))
+
             # 3) Attention Mechanism
             C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
-            
+
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
             linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
             O_t = torch.tanh(linear_O)
             Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
+
             output[:, i, :] = Q_t
+            # Y_distr = self.softmax(Q_t)
             
             # Greedy approach
-            # print(torch.argmax(Q_t, dim=1))
-            
+            # max_indices = torch.argmax(Y_distr, dim=1)
+            # Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot[labels_batch[:, i] - 1, :] = 1
+
             O_t = torch.transpose(O_t, 0, 1)
-            Y_t = labels_batch[:, i]
-            # print(Y_t)
+            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
 
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+            # Store output distribution (OR SHOULD WE STORE THE GREEDY?)   
+            # output[i,:,:] = Y_onehot
 
+        # return Y_pred
+        # return output # Y_s -> [seq_length, vocab_size, batch_size]
         return output
-
 
     def forward_predict(self, X_batch): 
         # 1) CNN, aka "HyperCube Creation" :) 
+        #x = self.CNN(X_batch)
         V = self.CNN(X_batch)
 
-        # Transforming into a cube
-        V = V.permute(0, 2, 3, 1)
-        batch_size, H_prime, W_prime, C = V.shape
-        V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
-
-        # Pre-allocate memory
+        # Initialize Y and O 
+        # Y_pred = torch.zeros((self.batch_size, self.sequence_length)).int()
         output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
 
-        # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
+        Y_0 = torch.zeros(self.vocab_size, self.batch_size).double()
+        Y_0[141,:] = 1
         O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
+        X_t = torch.cat((self.E @ Y_0, O_0), 0)
 
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
-
-        # Reset S_t
-        self.LSTM_module.reset_LSTM_states()
-
-        # Initialize H_t
-        mean_encoder_out = torch.mean(V, 1)
-        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-        self.LSTM_module.H_t = H_0
+        self.LSTM_module.reset_LSTM_states()  # THIS WAS THE PROBLEM BEFORE
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
 
             # 3) Attention Mechanism
             C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
+            # C_t = torch.ones (self.v_length, self.batch_size)
 
             concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
             linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
@@ -142,9 +128,11 @@ class EncoderDecoder(nn.Module):
             Y_distr = self.softmax(Q_t)
             
             # Greedy approach
-            Y_t = torch.argmax(Y_distr, dim=1)
+            max_indices = torch.argmax(Y_distr, dim=1)
+            Y_onehot = torch.zeros(self.vocab_size, self.batch_size).double()
+            Y_onehot[max_indices, :] = 1
             O_t = torch.transpose(O_t, 0, 1)
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+            X_t = torch.cat((self.E @ Y_onehot, O_t), 0)
 
         return output
 
@@ -218,33 +206,6 @@ class EncoderDecoder(nn.Module):
             plt.show()
 
 
-    def write_results(self, loader, file_name = "results_test", headers = True):
-        print("\nWriting ground truth and predicted labels to " + file_name + ".txt ...")
-        results_file = open("project/results/" + file_name + ".txt", "w")
-
-        if headers:
-            results_file.write("Ground trutch;Predicted labels\n")
-
-        start_time = time.perf_counter()
-        for i, data in enumerate(loader, 0):
-            images, labels = data["image"], data["label"] - 1 # Labels måste börja på 0
-
-            logits = self.forward_predict(images)
-
-            predicted_labels = torch.argmax(logits, dim=2) + 1 # greedy
-
-            labels += 1
-
-            for j in range(images.shape[0]):
-                results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_labels[j, :].tolist()) + "\n")
-
-            print("\tBatch", i+1, "out of", len(loader), "done.")
-
-        end_time = time.perf_counter()
-        results_file.close()
-        print("Completed in", end_time - start_time, "seconds!")
-
-
 def MGD(net, train_dataloader, learning_rate, n_epochs):
     criterion = nn.CrossEntropyLoss() # Ändra denna?
 
@@ -256,9 +217,9 @@ def MGD(net, train_dataloader, learning_rate, n_epochs):
         running_loss = 0.0
 
         # Changing learning rate according to Stanford paper
-        first_cutoff = 1
-        second_cutoff = 2
-        third_cutoff = 4
+        first_cutoff = 2
+        second_cutoff = 10
+        third_cutoff = 15
         if epoch == first_cutoff:
             for g in optimizer.param_groups:
                 g['lr'] = 1e-3
@@ -329,7 +290,7 @@ def main():
     hidden_size = 512; 
     sequence_length = 109; vocab_size = 144; 
 
-    batch_size = 4
+    batch_size = 10
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
@@ -338,14 +299,9 @@ def main():
 
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
     
-    ED_Trained = MGD(ED, train_loader, learning_rate=5e-4, n_epochs=2)
-
-    file_name = "TEST500X2"
-    ED_Trained.write_results(test_loader, "TEST_" + file_name)
-    ED_Trained.write_results(train_loader, "TRAIN_" + file_name)
+    ED_Trained = MGD(ED, train_loader, learning_rate=1e-3, n_epochs=1)
 
     ED_Trained.predict_multi(train_loader)
-    ED_Trained.predict_multi(test_loader)
 
 
 

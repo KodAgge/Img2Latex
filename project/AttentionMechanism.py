@@ -27,26 +27,14 @@ class AttentionMechanism(nn.Module):
         torch.nn.init.xavier_normal_(self.W_h.weight)
         torch.nn.init.xavier_normal_(self.W.weight)
 
-    def forward(self, V, h_t):
-        # Change dimensions of the input vector
-        V = V.permute(0, 2, 3, 1)
-
-        # Find dimensions
-        batch_size, H_prime, W_prime, C = V.shape
-
-        # Reshape to batch_size x H' * W' x C
-        V_new = torch.reshape(V, (batch_size, H_prime * W_prime, C))
-
+    def forward(self, V_new, h_t):
         # Matrix multiplocation
-        # U_t = self.W_h(h_t).repeat(H_prime * W_prime, 1, 1).permute(1, 0, 2) + self.W(V_new)
         U_t = torch.tanh(self.W_h(h_t).unsqueeze(1) + self.W(V_new)) # [B, H' * W', C]
         
         # Activation function and weighted summing
-        # E_t = self.beta(U_t)
         E_t = torch.sum(self.beta * U_t, dim=-1) # [B, H' * W']
         
         # Applying softmax
-        # A_t = torch.transpose(torch.softmax(E_t, dim = 1), 1, 2)
         A_t = torch.softmax(E_t, dim = 1).unsqueeze(1) # [B, 1, H' * W']
   
 
