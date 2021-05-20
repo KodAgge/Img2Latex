@@ -23,11 +23,11 @@ class Net(nn.Module):
     super().__init__()
     # First row (from end)
     self.conv1 = nn.Conv2d(1, 64, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
-    self.pool1 = nn.MaxPool2d((2, 2), stride=(2, 2), padding=(1, 1)).double() # size_of_pool, stride, can't have (2,2) padding
+    self.pool1 = nn.MaxPool2d((2, 2), stride=(2, 2), padding=(1, 1)) # size_of_pool, stride, can't have (2,2) padding
 
     # Second row (from end)
     self.conv2 = nn.Conv2d(64, 128, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
-    self.pool2 = nn.MaxPool2d((2, 2), stride=(2, 2)).double() # size_of_pool, stride
+    self.pool2 = nn.MaxPool2d((2, 2), stride=(2, 2)) # size_of_pool, stride
 
     # Third row (from end)
     self.conv3 = nn.Conv2d(128, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
@@ -35,12 +35,12 @@ class Net(nn.Module):
 
     # Fourth row (from end)
     self.conv4 = nn.Conv2d(256, 256, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
-    self.pool4 = nn.MaxPool2d((2, 1), stride=(2, 1)).double() # size_of_pool, stride
+    self.pool4 = nn.MaxPool2d((2, 1), stride=(2, 1)) # size_of_pool, stride
 
     # Fifth row (from end)
     self.conv5 = nn.Conv2d(256, 512, 3, padding=(1, 1)).double() # num_input_channels, num_filters, filter_size
     self.bn5 = nn.BatchNorm2d(512).double()
-    self.pool5 = nn.MaxPool2d((1, 2), stride=(1, 2)).double() # size_of_pool, stride
+    self.pool5 = nn.MaxPool2d((1, 2), stride=(1, 2)) # size_of_pool, stride
 
     # Sixth row (from end)
     self.conv6 = nn.Conv2d(512, 512, 3).double() # num_input_channels, num_filters, filter_size

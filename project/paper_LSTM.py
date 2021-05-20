@@ -66,7 +66,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     # Update cell state (S_t)
     F_t = torch.sigmoid(self.Wf @ X_and_H + self.bf).double()
     I_t = torch.sigmoid(self.Wi @ X_and_H + self.bi).double()
-    C_t = torch.tanh(self.Wc @ X_and_H + self.bc) .double() 
+    C_t = torch.tanh(self.Wc @ X_and_H + self.bc).double() 
     self.S_t = F_t * self.S_t + I_t * C_t  # Hadamard product
 
     # Update hidden state (H_t)
