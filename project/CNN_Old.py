@@ -13,9 +13,9 @@ import math
 import time
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-from ray import tune
-from ray.tune import CLIReporter
-from ray.tune.schedulers import ASHAScheduler
+# from ray import tune
+# from ray.tune import CLIReporter
+# from ray.tune.schedulers import ASHAScheduler
 
 
 
@@ -283,7 +283,13 @@ def loadImages(path, width, height, n_test, scale = 255):
     image_path = path + '/Image' + str(i) + '.png'
     img = imread(image_path) # Read image
 
+    plt.imshow(img)
+    plt.show()
+
     img_gray_scale = img[:,:,0] # Remove unessecary dimensions
+
+    plt.imshow(img_gray_scale)
+    plt.show()
 
     (img_height, img_width) = img_gray_scale.shape # Current shape
 
@@ -302,14 +308,17 @@ def loadImages(path, width, height, n_test, scale = 255):
 
     img_rescaled = img_padded / (scale / 2) - 1 # Rescale to [-1, 1]
 
+    plt.imshow(img_rescaled)
+    plt.show()
+
     #FIXME Crashes when using [width, height]. Changed to tuple (width, height)
     #img_resize = cv2.resize(img_rescaled, [width, height]) # Resize image 
     img_resize = cv2.resize(img_rescaled, (width, height)) # Resize image
 
     data[:,:,i] = img_resize # Save transformed image data
 
-    # plt.imshow(img_resize)
-    # plt.show()
+    plt.imshow(img_resize)
+    plt.show()
 
   return data
 
@@ -360,14 +369,14 @@ width = 250
 # Load and transform images
 scale = 255 # RGB from 0-255 (black - white)
 
-#path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed'
-path_test = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed' 
+path_test = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/project/CROHME DATA/TestTransformed'
+# path_test = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TestTransformed' 
 
-#path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
-path_train = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
+path_train = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/project/CROHME DATA/TrainTransformed'
+# path_train = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/TrainTransformed'
 
-#path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
-path_val = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
+path_val = 'C:/Users/TheBeast/Documents/GitHub/DD2424_Img2Latex/project/CROHME DATA/Validation_Transformed'
+# path_val = '/Users/carlhoggren/Documents/GitHub/DD2424_Img2Latex/data/CROHME DATA/Validation_Transformed'
 
 #Load images and rescale to required dimensions 
 test_images = loadImages(path_test, width, height, n_test, scale)

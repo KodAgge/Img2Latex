@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 from matplotlib import pyplot as plt
 import CorpusHelper
+import time
 # import Performance
 
 from CNN import Net as CNN
@@ -65,7 +66,7 @@ class EncoderDecoder(nn.Module):
 
         for i in range(self.sequence_length):
             H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            #input(H_t)
+            # input(H_t)
             #print(torch.sum(H_t))
             
             # 3) Attention Mechanism
@@ -193,6 +194,31 @@ class EncoderDecoder(nn.Module):
             plt.show()
 
 
+    def write_results(self, loader, file_name = "results_test"):
+        print("\nWriting ground truch and predicted labels to " + file_name + ".txt ...")
+        results_file = open("project/results/" + file_name + ".txt", "w")
+        results_file.write("Ground trutch;Predicted labels\n")
+
+        start_time = time.perf_counter()
+        for i, data in enumerate(loader, 0):
+            images, labels = data["image"], data["label"] - 1 # Labels måste börja på 0
+
+            logits = self.forward_predict(images)
+
+            predicted_labels = torch.argmax(logits, dim=1) + 1 # greedy
+
+            labels += 1
+
+            for j in range(images.shape[0]):
+                results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_labels[j, :].tolist()) + "\n")
+
+            print("\tBatch", i+1, "out of", len(loader), "done.")
+
+        end_time = time.perf_counter()
+        results_file.close()
+        print("Completed in", end_time - start_time, "seconds!")
+
+
 def MGD(net, train_dataloader, learning_rate, n_epochs):
     criterion = nn.CrossEntropyLoss() # Ändra denna?
 
@@ -205,8 +231,8 @@ def MGD(net, train_dataloader, learning_rate, n_epochs):
 
         # Changing learning rate according to Stanford paper
         first_cutoff = 2
-        second_cutoff = 10
-        third_cutoff = 15
+        second_cutoff = 5
+        third_cutoff = 7
         if epoch == first_cutoff:
             for g in optimizer.param_groups:
                 g['lr'] = 1e-3
@@ -277,7 +303,7 @@ def main():
     hidden_size = 512; 
     sequence_length = 109; vocab_size = 144; 
 
-    batch_size = 10
+    batch_size = 2
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
@@ -286,9 +312,11 @@ def main():
 
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
     
-    ED_Trained = MGD(ED, train_loader, learning_rate=1e-3, n_epochs=2)
+    ED_Trained = MGD(ED, train_loader, learning_rate=1e-4, n_epochs=2)
 
-    ED_Trained.predict_multi(train_loader)
+    ED_Trained.write_results(test_loader, "Bigger_test")
+
+    # ED_Trained.predict_multi(train_loader)
 
 
 
