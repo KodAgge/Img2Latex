@@ -20,9 +20,11 @@ set specialToken = False in order to get a latex label without special tokens [S
 
 def corpus():
 
-    filePath = "./project"
+    #filePath = "./project"
     filename = "Corpus.txt"
-    corpusFile = open(filePath +"/"+ filename, "r")
+    #corpusFile = open(filePath +"/"+ filename, "r")
+    corpusFile = open(filename, "r")
+
     corpusDict = {}
 
     for line in corpusFile: #For each line in data file
