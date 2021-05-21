@@ -5,6 +5,7 @@ import torch.optim as optim
 from matplotlib import pyplot as plt
 import CorpusHelper
 import time
+import numpy as np
 # import Performance
 
 from CNN import Net as CNN
@@ -238,17 +239,16 @@ class EncoderDecoder(nn.Module):
             for j in range(images.shape[0]):
                 results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_labels[j, :].tolist()) + "\n")
 
-            print("\tBatch", i+1, "out of", len(loader), "done.")
+            if (i + 1) % 20 == 0 or i == 0:
+                print("\tBatch", i+1, "out of", len(loader), "done.")
 
         end_time = time.perf_counter()
         results_file.close()
         print("Completed in", end_time - start_time, "seconds!")
 
 
-def MGD(net, train_dataloader, learning_rate, n_epochs):
+def MGD(net, train_dataloader, optimizer, learning_rates, n_epochs, constant_lr = True):
     criterion = nn.CrossEntropyLoss() # Ändra denna?
-
-    optimizer = optim.Adam(net.parameters(), lr=learning_rate)
 
     # torch.autograd.set_detect_anomaly(True)
 
@@ -256,16 +256,9 @@ def MGD(net, train_dataloader, learning_rate, n_epochs):
         running_loss = 0.0
 
         # Changing learning rate according to Stanford paper
-        first_cutoff = 1
-        second_cutoff = 2
-        third_cutoff = 4
-        if epoch == first_cutoff:
+        if not constant_lr:
             for g in optimizer.param_groups:
-                g['lr'] = 1e-3
-        elif epoch >= second_cutoff and epoch < third_cutoff:
-            for g in optimizer.param_groups:
-                exponent = 5 + (3 - 5) * (third_cutoff - epoch) / (third_cutoff - second_cutoff)
-                g['lr'] = 10 ** -exponent
+                g['lr'] = learning_rates[epoch]
 
         print("\n" + "=" * 50 + "\n")
         print("Starting epoch", epoch + 1, "of", n_epochs, "with learning rate ", end="")
@@ -301,51 +294,112 @@ def MGD(net, train_dataloader, learning_rate, n_epochs):
     
     print("=" * 50 + "\n\nTraining complete!")
 
-    # KOD SOM PREDICTAR PÅ TEST...
-
-
-    # KOD FÖR ATT KOLLA PÅ NÄTETS PERFORMANCE
-    # predictions = []
-    # ground_truth = []
-    # performance = Performance(predictions, ground_truth)
-    # lev_labels, lev_scores = performance.levenshtein()
-    # bleu_labels, bleu_scores = performance.bleu()
-    # _, latex_scores = performance.equal_latex(expressions1, expressions2)
-
-    # performance.get_statistics(lev_scores, bleu_scores)
-    # performance.get_performance(lev_labels, lev_scores, bleu_labels, bleu_scores)
-
     return net
 
 
+def set_learning_rates(learning_rate_baselines, cut_offs, n_epochs):
+    learning_rates = np.zeros([n_epochs])
+
+    for i in range(max(n_epochs, learning_rate_baselines[-1])):
+        if i < cut_offs[0] + 1:
+            learning_rates[i] = learning_rate_baselines[0]
+
+        if i >= cut_offs[0] + 1 and i < cut_offs[1] - 1:
+            learning_rates[i] = learning_rate_baselines[1]
+        
+        if i >= cut_offs[1] - 1 and i < cut_offs[2]:
+            eta_max = - np.log10(learning_rate_baselines[1])
+            eta_min = - np.log10(learning_rate_baselines[2])
+            eta = eta_min  + (eta_max - eta_min) * (cut_offs[2] - 1 - i) / (cut_offs[2] - cut_offs[1])
+            learning_rates[i] = 10 ** -eta
+
+        if i >= cut_offs[2]:
+            learning_rates[i] = learning_rate_baselines[2]
+
+    return learning_rates
+
 
 def main():
+    # Load datasets
     train_set = CROHME_Training_Set()
     test_set = CROHME_Testing_Set()
     val_set = CROHME_Validation_Set()
     
+    # Hyperparameters
     embedding_size = 80; # number of rows in the E-matrix
     o_layer_size = 100;  # size of o-vektorn TODO: What should this be?
     hidden_size = 512; 
     sequence_length = 109; vocab_size = 144; 
+    batch_size = 2
+    n_epochs = 20
 
-    batch_size = 4
+    # Learning rates
+    constant_lr = False # False to use changing learning rate suggest by stanford
+    learning_rate_levels = [1e-4, 1e-3, 1e-5]
+    cutoffs_learning_rates = [1, 9, 15]
+    learning_rates = set_learning_rates(learning_rate_levels, cutoffs_learning_rates, n_epochs)
 
+    # Putting datasets in DataLoader
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
-    
 
+    # Loading existing model?
+    load_model = True
+    load_path = "project/saved_models/"
+    load_name_prefix = "SAVED"
+
+    # Saving model after training?
+    save_model = True
+    save_name_prefix = "SAVED"
+
+    # Writing predictions to a .txt file?
+    write_results_train = True
+    write_results_test = True
+    results_name_suffix = "TEST123"
+
+    # Print a few predicted examples?
+    print_examples_test = False
+    print_examples_train = False
+
+    # Initializing model
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
+    optimizer = optim.Adam(ED.parameters(), lr=learning_rates[0])
+
+    # Loading the model
+    if load_model:
+        print("\nLoading:")
+        print("\t" + load_path + load_name_prefix + "_MODEL")
+        print("\t" + load_path + load_name_prefix + "_OPTIMIZER")
+        ED.load_state_dict(torch.load(load_path + load_name_prefix + "_MODEL"))
+        optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
+
+    # Training the model
+    ED_Trained = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+
+    # Saving the model
+    if save_model:
+        print("\nSaving:")
+        print("\t" + load_path + save_name_prefix + "_MODEL")
+        print("\t" + load_path + save_name_prefix + "_OPTIMIZER")
+        torch.save(ED_Trained.state_dict(), load_path + save_name_prefix + "_MODEL")
+        torch.save(optimizer.state_dict(), load_path + save_name_prefix + "_OPTIMIZER")
+
+    # Writing results
+    if write_results_train:
+        ED_Trained.write_results(train_loader, "TRAIN_" + results_name_suffix)
     
-    ED_Trained = MGD(ED, train_loader, learning_rate=5e-4, n_epochs=2)
+    if write_results_test:
+        ED_Trained.write_results(test_loader, "TEST_" + results_name_suffix)
 
-    file_name = "TEST500X2"
-    ED_Trained.write_results(test_loader, "TEST_" + file_name)
-    ED_Trained.write_results(train_loader, "TRAIN_" + file_name)
+    # Printing examples
+    if print_examples_test:
+        print("\n\nEXAMPLES FROM THE TEST SET:")
+        ED_Trained.predict_multi(test_loader)
 
-    ED_Trained.predict_multi(train_loader)
-    ED_Trained.predict_multi(test_loader)
+    if print_examples_train:
+        print("\n\nEXAMPLES FROM THE TRAIN SET:")
+        ED_Trained.predict_multi(train_loader)
 
 
 
