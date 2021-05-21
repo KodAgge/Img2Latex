@@ -282,8 +282,16 @@ def MGD(net, train_dataloader, optimizer, learning_rates, n_epochs, constant_lr 
             loss.backward() #retain_graph=True)
             
             optimizer.step()
-            print("\tBatch", i+1, "of", len(train_dataloader), "complete")
-            print("\t\tLoss =", loss.item())
+
+            if i == 0 and epoch == 0:
+                smooth_loss = loss.item()
+            else:
+                smooth_loss = 0.9 * smooth_loss + 0.1 * loss.item()
+
+            if i == 0 or (i+1) % 5 == 0:
+                print("\tBatch", i+1, "of", len(train_dataloader), "complete")
+                print("\t\tLoss =", loss.item())
+                print("\t\tSmooth loss =", smooth_loss)
 
             running_loss += loss.item()
 
@@ -345,22 +353,22 @@ def main():
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # Loading existing model?
-    load_model = True
+    load_model = False
     load_path = "project/saved_models/"
     load_name_prefix = "SAVED"
 
     # Saving model after training?
     save_model = True
-    save_name_prefix = "SAVED"
+    save_name_prefix = "TR2000NE2"
 
     # Writing predictions to a .txt file?
     write_results_train = True
     write_results_test = True
-    results_name_suffix = "TEST123"
+    results_name_suffix = "TR2000NE2"
 
     # Print a few predicted examples?
-    print_examples_test = False
-    print_examples_train = False
+    print_examples_test = True
+    print_examples_train = True
 
     # Initializing model
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
