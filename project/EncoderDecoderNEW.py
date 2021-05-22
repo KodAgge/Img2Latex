@@ -119,45 +119,6 @@ class EncoderDecoder(nn.Module):
         return O_t, logits, (H_t, C_t)
 
 
-    def beam_searchOLD(self, X_batch):
-        self.eval()
-
-        with torch.no_grad():
-            V = self.CNN(X_batch)
-
-            # Transforming into a cube
-            V = V.permute(0, 2, 3, 1)
-            batch_size, H_prime, W_prime, C = V.shape
-            V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
-
-            # V = V.expand(self.beam_size, -1, -1)
-
-            # Initialize Y and O 
-            Y_t = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
-            O_t = torch.zeros(self.o_layer_size, self.batch_size).double()
-
-            # Reset S_t
-            self.LSTM_module.reset_LSTM_states(batch_size)
-
-            # Initialize H_t
-            mean_encoder_out = torch.mean(V, 1)
-            H_t = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-            self.LSTM_module.H_t = H_t
-
-            state = {}
-            state["H_t"] = H_t
-            state["C_t"] = torch.zeros(C, batch_size)
-            state["O_t"] = O_t
-            state["V"] = V
-
-            all_top_k_predictions, log_probabilities = self._beam_search.search(Y_t, state, self._take_step)
-
-            all_top_predictions = all_top_k_predictions[:, 0, :]
-            # all_top_predictions = self._idx2formulas(all_top_predictions)
-
-        return all_top_predictions
-
-
     def single_beam_search(self, image, beam_size):
         self.eval()
 
@@ -183,7 +144,7 @@ class EncoderDecoder(nn.Module):
         self.LSTM_module.H_t = H_t
 
         # Store top k ids (k is less or equal to beam_size)
-        # in first decoding step, all they are  start token
+        # in first decoding step, all are the start token
         topk_ids = torch.ones(beam_size).long() * (self.vocab_size - 3)
         topk_log_probs = torch.Tensor([0.0] + [-1e10] * (beam_size - 1))
         seqs = torch.ones(self.beam_size, 1).long() * (self.vocab_size - 3)
@@ -234,6 +195,8 @@ class EncoderDecoder(nn.Module):
                 topk_log_probs = topk_log_probs[incomplete_inds]
 
                 V = V[:k]
+
+                # Dropping of sequences that have been completed
                 selected = beam_index[incomplete_inds]
                 O_t = O_t[:, selected]
                 self.LSTM_module.H_t = H_t[:, selected]
@@ -243,10 +206,6 @@ class EncoderDecoder(nn.Module):
         seq = complete_seqs[i][1:] + 1
         
         return seq
-
-
-                
-
 
 
     def simple_beam_search(self, loader, beam_size):
@@ -273,32 +232,6 @@ class EncoderDecoder(nn.Module):
             plt.imshow(image.squeeze())
             plt.show()
         
-
-
-    def predict_beam_search(self, loader):
-        # Retrieve images
-        dataiter = iter(loader)
-        data = dataiter.next()
-
-        # Make images ready for forward pass
-        test_images = data["image"]
-        print(self.beam_search(test_images))
-
-
-    def _take_step(self, Y_t, state):
-        dec_states = (state['H_t'], state['C_t'])
-        O_t = state['O_t']
-        V = state['V']
-
-        with torch.no_grad():
-            O_t, logit, dec_states = self.step_decoding(O_t, V, Y_t, False)
-
-        # update state
-        state['H_t'] = dec_states[0]
-        state['C_t'] = dec_states[1]
-        state['O_t'] = O_t
-        return (logit, state)
-
 
     def forward_predict(self, X_batch): 
         self.eval()
@@ -406,7 +339,7 @@ class EncoderDecoder(nn.Module):
             plt.show()
 
 
-    def write_results(self, loader, file_name = "results_test", headers = True):
+    def write_results(self, loader, file_name = "beam_results_test", headers = True):
         print("\nWriting ground truth and predicted labels to " + file_name + ".txt ...")
         results_file = open("project/results/" + file_name + ".txt", "w")
 
@@ -425,6 +358,30 @@ class EncoderDecoder(nn.Module):
 
             for j in range(images.shape[0]):
                 results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_labels[j, :].tolist()) + "\n")
+
+            if (i + 1) % 20 == 0 or i == 0:
+                print("\tBatch", i+1, "out of", len(loader), "done.")
+
+        end_time = time.perf_counter()
+        results_file.close()
+        print("Completed in", end_time - start_time, "seconds!")
+
+
+    def write_beam_results(self, loader, beam_size, file_name = "results_test", headers = True):
+        print("\nWriting ground truth and predicted labels ( beam size =", beam_size, ") to " + file_name + ".txt ...")
+        results_file = open("project/results/" + file_name + ".txt", "w")
+
+        if headers:
+            results_file.write("Ground trutch;Predicted labels\n")
+
+        start_time = time.perf_counter()
+        for i, data in enumerate(loader, 0):
+            images, labels = data["image"], data["label"] # Labels måste börja på 0
+
+            for j in range(images.shape[0]):
+                image = images[j, :, :]
+                predicted_label = self.single_beam_search(image, beam_size)
+                results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_label.tolist()) + "\n")
 
             if (i + 1) % 20 == 0 or i == 0:
                 print("\tBatch", i+1, "out of", len(loader), "done.")
@@ -515,6 +472,9 @@ def set_learning_rates(learning_rate_baselines, cut_offs, n_epochs):
 
 
 def main():
+    # Should the network be trained?
+    train = False
+
     # Load datasets
     train_set = CROHME_Training_Set()
     test_set = CROHME_Testing_Set()
@@ -527,6 +487,7 @@ def main():
     sequence_length = 109; vocab_size = 144; 
     batch_size = 4
     n_epochs = 1
+    beam_size = 5
 
     # Learning rates
     constant_lr = False # False to use changing learning rate suggest by stanford
@@ -550,13 +511,15 @@ def main():
     save_name_prefix = "TR2000NE2"
 
     # Writing predictions to a .txt file?
-    write_results_train = False
-    write_results_test = False
+    write_results_train = True
+    write_results_test = True
+    beam_search_write = True
     results_name_suffix = "TR2000NE2"
 
     # Print a few predicted examples?
-    print_examples_test = False
-    print_examples_train = False
+    print_examples_test = True
+    print_examples_train = True
+    beam_search_print = True
 
     # Initializing model
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
@@ -572,9 +535,9 @@ def main():
             optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
 
     # Training the model
-    # ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+    if train:
+        ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
 
-    ED.simple_beam_search(train_loader, 10)
 
     # Saving the model
     if save_model:
@@ -586,19 +549,31 @@ def main():
 
     # Writing results
     if write_results_train:
-        ED.write_results(train_loader, "TRAIN_" + results_name_suffix)
+        if beam_search_write:
+            ED.write_beam_results(train_loader, beam_size, "TRAIN_BEAM_" + results_name_suffix)
+        else:
+            ED.write_results(train_loader, "TRAIN_" + results_name_suffix)
     
     if write_results_test:
-        ED.write_results(test_loader, "TEST_" + results_name_suffix)
+        if beam_search_write:
+            ED.write_beam_results(test_loader, beam_size, "TEST_BEAM_" + results_name_suffix)
+        else:
+            ED.write_results(test_loader, "TEST_" + results_name_suffix)
 
     # Printing examples
     if print_examples_test:
         print("\n\nEXAMPLES FROM THE TEST SET:")
-        ED.predict_multi(test_loader)
+        if beam_search_print:
+            ED.simple_beam_search(test_loader, beam_size)
+        else:
+            ED.predict_multi(test_loader)
 
     if print_examples_train:
         print("\n\nEXAMPLES FROM THE TRAIN SET:")
-        ED.predict_multi(train_loader)
+        if beam_search_print:
+            ED.simple_beam_search(train_loader, beam_size)
+        else:
+            ED.predict_multi(train_loader)
 
 
 
