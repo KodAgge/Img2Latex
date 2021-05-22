@@ -70,7 +70,7 @@ class EncoderDecoder(nn.Module):
         X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
 
         # Reset S_t
-        self.LSTM_module.reset_LSTM_states()
+        self.LSTM_module.reset_LSTM_states(batch_size)
 
         # Initialize H_t
         mean_encoder_out = torch.mean(V, 1)
@@ -112,16 +112,66 @@ class EncoderDecoder(nn.Module):
         V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
         # Pre-allocate memory
-        output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
+        output = torch.zeros(batch_size, self.sequence_length, self.vocab_size).double()
 
         # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
-        O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
+        Y_0 = (self.vocab_size - 3) * torch.ones(batch_size).long()
+        O_0 = torch.zeros(self.o_layer_size, batch_size).double()
 
         X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
 
         # Reset S_t
-        self.LSTM_module.reset_LSTM_states()
+        self.LSTM_module.reset_LSTM_states(batch_size)
+
+        # Initialize H_t
+        mean_encoder_out = torch.mean(V, 1)
+        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
+        self.LSTM_module.H_t = H_0
+
+        for i in range(self.sequence_length):
+            H_t = self.LSTM_module(X_t)         # 2) LSTM 
+
+            # 3) Attention Mechanism
+            C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
+
+            concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
+            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
+            O_t = torch.tanh(linear_O)
+            Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
+
+            output[:, i, :] = Q_t
+            Y_distr = self.softmax(Q_t)
+            
+            # Greedy approach
+            Y_t = torch.argmax(Y_distr, dim=1)
+            O_t = torch.transpose(O_t, 0, 1)
+            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+
+        return output
+
+
+    def beam_search(self, X_batch, beam_size): 
+        # 1) CNN, aka "HyperCube Creation" :) 
+        V = self.CNN(X_batch)
+
+        # Transforming into a cube
+        V = V.permute(0, 2, 3, 1)
+        batch_size, H_prime, W_prime, C = V.shape
+        V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
+
+        V = V[0, :, :].unsqueeze(0)
+        batch_size = V.shape[0]
+        # Pre-allocate memory
+        output = torch.zeros(batch_size, self.sequence_length, self.vocab_size).double()
+
+        # Initialize Y and O 
+        Y_0 = (self.vocab_size - 3) * torch.ones(batch_size).long()
+        O_0 = torch.zeros(self.o_layer_size, batch_size).double()
+
+        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+
+        # Reset S_t
+        self.LSTM_module.reset_LSTM_states(batch_size)
 
         # Initialize H_t
         mean_encoder_out = torch.mean(V, 1)
@@ -286,7 +336,7 @@ def MGD(net, train_dataloader, optimizer, learning_rates, n_epochs, constant_lr 
             if i == 0 and epoch == 0:
                 smooth_loss = loss.item()
             else:
-                smooth_loss = 0.9 * smooth_loss + 0.1 * loss.item()
+                smooth_loss = 0.99 * smooth_loss + 0.01 * loss.item()
 
             if i == 0 or (i+1) % 5 == 0:
                 print("\tBatch", i+1, "of", len(train_dataloader), "complete")
@@ -338,12 +388,12 @@ def main():
     o_layer_size = 100;  # size of o-vektorn TODO: What should this be?
     hidden_size = 512; 
     sequence_length = 109; vocab_size = 144; 
-    batch_size = 2
-    n_epochs = 20
+    batch_size = 4
+    n_epochs = 1
 
     # Learning rates
     constant_lr = False # False to use changing learning rate suggest by stanford
-    learning_rate_levels = [1e-4, 1e-3, 1e-5]
+    learning_rate_levels = [5e-4, 1e-3, 1e-5]
     cutoffs_learning_rates = [1, 9, 15]
     learning_rates = set_learning_rates(learning_rate_levels, cutoffs_learning_rates, n_epochs)
 
@@ -353,17 +403,17 @@ def main():
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # Loading existing model?
-    load_model = False
+    load_model = True
     load_path = "project/saved_models/"
-    load_name_prefix = "SAVED"
+    load_name_prefix = "TR2000NE2"
 
     # Saving model after training?
-    save_model = True
+    save_model = False
     save_name_prefix = "TR2000NE2"
 
     # Writing predictions to a .txt file?
-    write_results_train = True
-    write_results_test = True
+    write_results_train = False
+    write_results_test = False
     results_name_suffix = "TR2000NE2"
 
     # Print a few predicted examples?
@@ -383,31 +433,31 @@ def main():
         optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
 
     # Training the model
-    ED_Trained = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+    ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
 
     # Saving the model
     if save_model:
         print("\nSaving:")
         print("\t" + load_path + save_name_prefix + "_MODEL")
         print("\t" + load_path + save_name_prefix + "_OPTIMIZER")
-        torch.save(ED_Trained.state_dict(), load_path + save_name_prefix + "_MODEL")
+        torch.save(ED.state_dict(), load_path + save_name_prefix + "_MODEL")
         torch.save(optimizer.state_dict(), load_path + save_name_prefix + "_OPTIMIZER")
 
     # Writing results
     if write_results_train:
-        ED_Trained.write_results(train_loader, "TRAIN_" + results_name_suffix)
+        ED.write_results(train_loader, "TRAIN_" + results_name_suffix)
     
     if write_results_test:
-        ED_Trained.write_results(test_loader, "TEST_" + results_name_suffix)
+        ED.write_results(test_loader, "TEST_" + results_name_suffix)
 
     # Printing examples
     if print_examples_test:
         print("\n\nEXAMPLES FROM THE TEST SET:")
-        ED_Trained.predict_multi(test_loader)
+        ED.predict_multi(test_loader)
 
     if print_examples_train:
         print("\n\nEXAMPLES FROM THE TRAIN SET:")
-        ED_Trained.predict_multi(train_loader)
+        ED.predict_multi(train_loader)
 
 
 

@@ -39,7 +39,7 @@ class AttentionMechanism(nn.Module):
   
 
         # Final weighted summing
-        C_t = torch.matmul(A_t, V_new).squeeze()
+        C_t = torch.matmul(A_t, V_new).squeeze(1)
 
         C_t = torch.transpose(C_t, 0, 1) # [C, B]
 

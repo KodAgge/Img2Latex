@@ -17,7 +17,7 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     super().__init__()
     self.input_size = input_size  # Size of the input-values in sequence
     self.hidden_size = hidden_size  # Note that the size of the cellstate is equal to the hidden_size in the standard architecture
-    self.batch_size = batch_size
+    # self.batch_size = batch_size
 
     self.S_t = None  # cell state!
     self.H_t = None  # hidden state!
@@ -39,12 +39,12 @@ class paper_LSTM_Module(nn.Module):  # TODO: multiple LSTM:s on top of each othe
     self.bo = nn.Parameter(torch.zeros(hidden_size, 1, dtype=torch.double))
 
     self.init_weights()
-    self.reset_LSTM_states()
+    self.reset_LSTM_states(batch_size)
 
-  def reset_LSTM_states(self):
+  def reset_LSTM_states(self, batch_size):
     """Since these are not model parameters (we don't want to find their gradients) we initialize them for each timestep to be:"""
     # self.H_t = torch.zeros(self.hidden_size, self.batch_size, dtype=torch.double)
-    self.S_t = torch.zeros(self.hidden_size, self.batch_size, dtype=torch.double)
+    self.S_t = torch.zeros(self.hidden_size, batch_size, dtype=torch.double)
 
 
   def init_weights(self):   # TODO: CHANGE THIS? It initializes the bias-terms as well now
