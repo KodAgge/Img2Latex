@@ -1,11 +1,13 @@
 import torch
 import torch.nn as nn
+from torch.serialization import load
 from torch.utils.data import DataLoader
 import torch.optim as optim
 from matplotlib import pyplot as plt
 import CorpusHelper
 import time
 import numpy as np
+from beam_search import BeamSearch
 # import Performance
 
 from CNN import Net as CNN
@@ -47,12 +49,19 @@ class EncoderDecoder(nn.Module):
         # Initialization of h_t
         self.init_Wh = nn.Linear(v_length, hidden_size).double()
 
+        # Beam search
+        self.beam_size = 3
+        self._beam_search = BeamSearch(self.vocab_size - 2, self.sequence_length, beam_size = self.beam_size)
+
 
     def init_parameters(self):
         """Function to initialize parameters that are NOT initialized in the modules (which should take care of themselves"""
         pass
 
+
     def forward(self, X_batch, labels_batch): 
+        self.train()
+
         # 1) CNN, aka "HyperCube Creation" :) 
         V = self.CNN(X_batch)
 
@@ -65,140 +74,201 @@ class EncoderDecoder(nn.Module):
         output = torch.zeros(self.batch_size, self.sequence_length, self.vocab_size).double()
 
         # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
-        O_0 = torch.zeros(self.o_layer_size, self.batch_size).double()
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+        Y_t = (self.vocab_size - 3) * torch.ones(self.batch_size).long()
+        O_t = torch.zeros(self.o_layer_size, self.batch_size).double()
 
         # Reset S_t
         self.LSTM_module.reset_LSTM_states(batch_size)
 
         # Initialize H_t
         mean_encoder_out = torch.mean(V, 1)
-        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-        self.LSTM_module.H_t = H_0
+        H_t = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
+        self.LSTM_module.H_t = H_t
 
         for i in range(self.sequence_length):
-            H_t = self.LSTM_module(X_t)         # 2) LSTM 
-            
-            # 3) Attention Mechanism
-            C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
-            
-            concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
-            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
-            O_t = torch.tanh(linear_O)
-            Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
-            output[:, i, :] = Q_t
-            
-            # Greedy approach
-            # print(torch.argmax(Q_t, dim=1))
-            
-            O_t = torch.transpose(O_t, 0, 1)
+            O_t, logits, _ = self.step_decoding(O_t, V, Y_t, False)
+
+            output[:, i, :] = logits
+
+            # Next in the sequence
             Y_t = labels_batch[:, i]
-            # print(Y_t)
-
-
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
 
         return output
 
+
+    def step_decoding(self, O_t, V, Y_t, soft_max = True):
+        # The input
+        X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+
+        # Update hidden states
+        H_t = self.LSTM_module(X_t)
+
+        # Attention mechanism
+        C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1)) 
+
+        # O_t
+        concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
+        linear_O = self.O(concat)
+        O_t = torch.tanh(linear_O)
+        logits = self.W_out(O_t)
+        O_t = torch.transpose(O_t, 0, 1)
+
+        if soft_max:
+            logits = self.softmax(logits)
+
+        return O_t, logits, (H_t, C_t)
+
+
+    def single_beam_search(self, image, beam_size):
+        self.eval()
+
+        # Encode image
+        V = self.CNN(image.unsqueeze(0))
+        V = V.permute(0, 2, 3, 1)
+        _, H_prime, W_prime, C = V.shape
+        V = torch.reshape(V, (1, H_prime * W_prime, C))
+
+        # Prepare for decoding
+        V = V.expand(beam_size, -1, -1)
+
+        # Initialize Y and O 
+        Y_t = (self.vocab_size - 3) * torch.ones(beam_size).long()
+        O_t = torch.zeros(self.o_layer_size, beam_size).double()
+
+        # Reset S_t
+        self.LSTM_module.reset_LSTM_states(beam_size)
+
+        # Initialize H_t
+        mean_encoder_out = torch.mean(V, 1)
+        H_t = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
+        self.LSTM_module.H_t = H_t
+
+        # Store top k ids (k is less or equal to beam_size)
+        # in first decoding step, all are the start token
+        topk_ids = torch.ones(beam_size).long() * (self.vocab_size - 3)
+        topk_log_probs = torch.Tensor([0.0] + [-1e10] * (beam_size - 1))
+        seqs = torch.ones(self.beam_size, 1).long() * (self.vocab_size - 3)
+
+        # Store complete sequences and corresponding scores
+        complete_seqs = []
+        complete_seqs_scores = []
+        k = beam_size
+
+        # The main loop
+        with torch.no_grad():
+            for t in range(self.sequence_length):
+                Y_t = topk_ids # Target tokens
+
+                O_t, logits, (H_t, C_t) = self.step_decoding(O_t, V, Y_t, True)
+                log_probs = torch.log(logits)
+                
+                # Add to previous indeces
+                log_probs += topk_log_probs.unsqueeze(1)
+                topk_log_probs, topk_ids = torch.topk(log_probs.view(-1), k)
+
+                beam_index = topk_ids // self.vocab_size
+                topk_ids = topk_ids % self.vocab_size
+
+                seqs = torch.cat([seqs.index_select(0, beam_index), topk_ids.unsqueeze(1)], dim=1)
+                # print(seqs)
+
+                # Check for beams that have reached the END token
+                complete_inds = [ind for ind, next_word in enumerate(topk_ids) if next_word == (self.vocab_size - 2)]
+                # print(complete_inds)
+
+                if t == (self.sequence_length - 1): # End all sequences
+                    complete_inds = list(range(len(topk_ids)))
+
+                # Checking for non-finished indices
+                incomplete_inds = list(set(range(len(topk_ids))) - set(complete_inds))
+
+                # Checking if sequence have been completed
+                if len(complete_inds) > 0:
+                    complete_seqs.extend(seqs[complete_inds])
+                    complete_seqs_scores.extend(topk_log_probs[complete_inds])
+                k -= len(complete_inds)
+                if k == 0:  # all beam finished
+                    break
+
+                seqs = seqs[incomplete_inds]
+                topk_ids = topk_ids[incomplete_inds]
+                topk_log_probs = topk_log_probs[incomplete_inds]
+
+                V = V[:k]
+
+                # Dropping of sequences that have been completed
+                selected = beam_index[incomplete_inds]
+                O_t = O_t[:, selected]
+                self.LSTM_module.H_t = H_t[:, selected]
+                self.LSTM_module.S_t = self.LSTM_module.S_t[:, selected]
+
+        i = complete_seqs_scores.index(max(complete_seqs_scores))
+        seq = complete_seqs[i][1:] + 1
+        
+        return seq
+
+
+    def simple_beam_search(self, loader, beam_size):
+        dataiter = iter(loader)
+        data = dataiter.next()
+
+        # Make images ready for forward pass
+        images = data["image"]
+        labels = data["label"]
+
+        for i in range(images.shape[0]):
+            image = images[i, :, :]
+            predicted_label = self.single_beam_search(image, beam_size)
+            target_label = labels[i, :]
+            index_END = (target_label == (self.vocab_size - 1)).nonzero(as_tuple=True)[0]
+            target_label = target_label[:index_END+1]
+
+            print("\nTrue label:")
+            print(CorpusHelper.unTokenize(target_label, specialToken = True), "\n")
+
+            print("\nPredicted label:")
+            print(CorpusHelper.unTokenize(predicted_label, specialToken = True), "\n")
+
+            plt.imshow(image.squeeze())
+            plt.show()
+        
 
     def forward_predict(self, X_batch): 
+        self.eval()
         # 1) CNN, aka "HyperCube Creation" :) 
-        V = self.CNN(X_batch)
+        with torch.no_grad():
+            V = self.CNN(X_batch)
 
-        # Transforming into a cube
-        V = V.permute(0, 2, 3, 1)
-        batch_size, H_prime, W_prime, C = V.shape
-        V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
+            # Transforming into a cube
+            V = V.permute(0, 2, 3, 1)
+            batch_size, H_prime, W_prime, C = V.shape
+            V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
 
-        # Pre-allocate memory
-        output = torch.zeros(batch_size, self.sequence_length, self.vocab_size).double()
+            # Pre-allocate memory
+            output = torch.zeros(batch_size, self.sequence_length, self.vocab_size).double()
 
-        # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(batch_size).long()
-        O_0 = torch.zeros(self.o_layer_size, batch_size).double()
+            # Initialize Y and O 
+            Y_t = (self.vocab_size - 3) * torch.ones(batch_size).long()
+            O_t = torch.zeros(self.o_layer_size, batch_size).double()
 
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
+            # Reset S_t
+            self.LSTM_module.reset_LSTM_states(batch_size)
 
-        # Reset S_t
-        self.LSTM_module.reset_LSTM_states(batch_size)
+            # Initialize H_t
+            mean_encoder_out = torch.mean(V, 1)
+            H_t = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
+            self.LSTM_module.H_t = H_t
 
-        # Initialize H_t
-        mean_encoder_out = torch.mean(V, 1)
-        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-        self.LSTM_module.H_t = H_0
+            for i in range(self.sequence_length):
+                O_t, logits, _ = self.step_decoding(O_t, V, Y_t, True)
 
-        for i in range(self.sequence_length):
-            H_t = self.LSTM_module(X_t)         # 2) LSTM 
-
-            # 3) Attention Mechanism
-            C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
-
-            concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
-            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
-            O_t = torch.tanh(linear_O)
-            Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
-
-            output[:, i, :] = Q_t
-            Y_distr = self.softmax(Q_t)
-            
-            # Greedy approach
-            Y_t = torch.argmax(Y_distr, dim=1)
-            O_t = torch.transpose(O_t, 0, 1)
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
+                output[:, i, :] = logits
+                
+                # Greedy approach
+                Y_t = torch.argmax(logits, dim=1)
 
         return output
-
-
-    def beam_search(self, X_batch, beam_size): 
-        # 1) CNN, aka "HyperCube Creation" :) 
-        V = self.CNN(X_batch)
-
-        # Transforming into a cube
-        V = V.permute(0, 2, 3, 1)
-        batch_size, H_prime, W_prime, C = V.shape
-        V = torch.reshape(V, (batch_size, H_prime * W_prime, C))
-
-        V = V[0, :, :].unsqueeze(0)
-        batch_size = V.shape[0]
-        # Pre-allocate memory
-        output = torch.zeros(batch_size, self.sequence_length, self.vocab_size).double()
-
-        # Initialize Y and O 
-        Y_0 = (self.vocab_size - 3) * torch.ones(batch_size).long()
-        O_0 = torch.zeros(self.o_layer_size, batch_size).double()
-
-        X_t = torch.cat((torch.transpose(self.E(Y_0), 0, 1), O_0), 0)
-
-        # Reset S_t
-        self.LSTM_module.reset_LSTM_states(batch_size)
-
-        # Initialize H_t
-        mean_encoder_out = torch.mean(V, 1)
-        H_0 = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
-        self.LSTM_module.H_t = H_0
-
-        for i in range(self.sequence_length):
-            H_t = self.LSTM_module(X_t)         # 2) LSTM 
-
-            # 3) Attention Mechanism
-            C_t, _ = self.AttentionMechanism(V, torch.transpose(H_t, 0, 1))  
-
-            concat = torch.transpose(torch.cat((H_t, C_t), 0), 0, 1)
-            linear_O = self.O(concat) # THIS WAS THE PROBLEM BEFORE
-            O_t = torch.tanh(linear_O)
-            Q_t = self.W_out(O_t) # This is the wanted output for the cross-entropy, that is un-softmaxed probabilities
-
-            output[:, i, :] = Q_t
-            Y_distr = self.softmax(Q_t)
-            
-            # Greedy approach
-            Y_t = torch.argmax(Y_distr, dim=1)
-            O_t = torch.transpose(O_t, 0, 1)
-            X_t = torch.cat((torch.transpose(self.E(Y_t), 0, 1), O_t), 0)
-
-        return output
-
+        
 
     def predict_single(self, loader):
         # Retrieve image
@@ -213,7 +283,7 @@ class EncoderDecoder(nn.Module):
         test_images = data["image"]
         P = self.forward_predict(test_images)
         P_single = P[0, :, :].squeeze()
-        logit = self.softmax(P_single)
+        # logit = self.softmax(P_single)
         
         # Greedy approach
         predicted_label = torch.argmax(logit, dim=1) + 1
@@ -269,7 +339,7 @@ class EncoderDecoder(nn.Module):
             plt.show()
 
 
-    def write_results(self, loader, file_name = "results_test", headers = True):
+    def write_results(self, loader, file_name = "beam_results_test", headers = True):
         print("\nWriting ground truth and predicted labels to " + file_name + ".txt ...")
         results_file = open("project/results/" + file_name + ".txt", "w")
 
@@ -288,6 +358,30 @@ class EncoderDecoder(nn.Module):
 
             for j in range(images.shape[0]):
                 results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_labels[j, :].tolist()) + "\n")
+
+            if (i + 1) % 20 == 0 or i == 0:
+                print("\tBatch", i+1, "out of", len(loader), "done.")
+
+        end_time = time.perf_counter()
+        results_file.close()
+        print("Completed in", end_time - start_time, "seconds!")
+
+
+    def write_beam_results(self, loader, beam_size, file_name = "results_test", headers = True):
+        print("\nWriting ground truth and predicted labels ( beam size =", beam_size, ") to " + file_name + ".txt ...")
+        results_file = open("project/results/" + file_name + ".txt", "w")
+
+        if headers:
+            results_file.write("Ground trutch;Predicted labels\n")
+
+        start_time = time.perf_counter()
+        for i, data in enumerate(loader, 0):
+            images, labels = data["image"], data["label"] # Labels måste börja på 0
+
+            for j in range(images.shape[0]):
+                image = images[j, :, :]
+                predicted_label = self.single_beam_search(image, beam_size)
+                results_file.write(str(labels[j, :].tolist()) + ";" + str(predicted_label.tolist()) + "\n")
 
             if (i + 1) % 20 == 0 or i == 0:
                 print("\tBatch", i+1, "out of", len(loader), "done.")
@@ -338,7 +432,7 @@ def MGD(net, train_dataloader, optimizer, learning_rates, n_epochs, constant_lr 
             else:
                 smooth_loss = 0.99 * smooth_loss + 0.01 * loss.item()
 
-            if i == 0 or (i+1) % 5 == 0:
+            if i == 0 or (i+1) % 1 == 0:
                 print("\tBatch", i+1, "of", len(train_dataloader), "complete")
                 print("\t\tLoss =", loss.item())
                 print("\t\tSmooth loss =", smooth_loss)
@@ -378,6 +472,9 @@ def set_learning_rates(learning_rate_baselines, cut_offs, n_epochs):
 
 
 def main():
+    # Should the network be trained?
+    train = False
+
     # Load datasets
     train_set = CROHME_Training_Set()
     test_set = CROHME_Testing_Set()
@@ -390,6 +487,7 @@ def main():
     sequence_length = 109; vocab_size = 144; 
     batch_size = 4
     n_epochs = 1
+    beam_size = 5
 
     # Learning rates
     constant_lr = False # False to use changing learning rate suggest by stanford
@@ -404,6 +502,7 @@ def main():
 
     # Loading existing model?
     load_model = True
+    load_optimizer = False
     load_path = "project/saved_models/"
     load_name_prefix = "TR2000NE2"
 
@@ -412,13 +511,15 @@ def main():
     save_name_prefix = "TR2000NE2"
 
     # Writing predictions to a .txt file?
-    write_results_train = False
-    write_results_test = False
+    write_results_train = True
+    write_results_test = True
+    beam_search_write = True
     results_name_suffix = "TR2000NE2"
 
     # Print a few predicted examples?
     print_examples_test = True
     print_examples_train = True
+    beam_search_print = True
 
     # Initializing model
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
@@ -428,12 +529,15 @@ def main():
     if load_model:
         print("\nLoading:")
         print("\t" + load_path + load_name_prefix + "_MODEL")
-        print("\t" + load_path + load_name_prefix + "_OPTIMIZER")
         ED.load_state_dict(torch.load(load_path + load_name_prefix + "_MODEL"))
-        optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
+        if load_optimizer:
+            print("\t" + load_path + load_name_prefix + "_OPTIMIZER")
+            optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
 
     # Training the model
-    ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+    if train:
+        ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+
 
     # Saving the model
     if save_model:
@@ -445,19 +549,31 @@ def main():
 
     # Writing results
     if write_results_train:
-        ED.write_results(train_loader, "TRAIN_" + results_name_suffix)
+        if beam_search_write:
+            ED.write_beam_results(train_loader, beam_size, "TRAIN_BEAM_" + results_name_suffix)
+        else:
+            ED.write_results(train_loader, "TRAIN_" + results_name_suffix)
     
     if write_results_test:
-        ED.write_results(test_loader, "TEST_" + results_name_suffix)
+        if beam_search_write:
+            ED.write_beam_results(test_loader, beam_size, "TEST_BEAM_" + results_name_suffix)
+        else:
+            ED.write_results(test_loader, "TEST_" + results_name_suffix)
 
     # Printing examples
     if print_examples_test:
         print("\n\nEXAMPLES FROM THE TEST SET:")
-        ED.predict_multi(test_loader)
+        if beam_search_print:
+            ED.simple_beam_search(test_loader, beam_size)
+        else:
+            ED.predict_multi(test_loader)
 
     if print_examples_train:
         print("\n\nEXAMPLES FROM THE TRAIN SET:")
-        ED.predict_multi(train_loader)
+        if beam_search_print:
+            ED.simple_beam_search(train_loader, beam_size)
+        else:
+            ED.predict_multi(train_loader)
 
 
 
