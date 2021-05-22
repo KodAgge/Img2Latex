@@ -119,7 +119,7 @@ class EncoderDecoder(nn.Module):
         return O_t, logits, (H_t, C_t)
 
 
-    def beam_search(self, X_batch):
+    def beam_searchOLD(self, X_batch):
         self.eval()
 
         with torch.no_grad():
@@ -156,6 +156,123 @@ class EncoderDecoder(nn.Module):
             # all_top_predictions = self._idx2formulas(all_top_predictions)
 
         return all_top_predictions
+
+
+    def single_beam_search(self, image, beam_size):
+        self.eval()
+
+        # Encode image
+        V = self.CNN(image.unsqueeze(0))
+        V = V.permute(0, 2, 3, 1)
+        _, H_prime, W_prime, C = V.shape
+        V = torch.reshape(V, (1, H_prime * W_prime, C))
+
+        # Prepare for decoding
+        V = V.expand(beam_size, -1, -1)
+
+        # Initialize Y and O 
+        Y_t = (self.vocab_size - 3) * torch.ones(beam_size).long()
+        O_t = torch.zeros(self.o_layer_size, beam_size).double()
+
+        # Reset S_t
+        self.LSTM_module.reset_LSTM_states(beam_size)
+
+        # Initialize H_t
+        mean_encoder_out = torch.mean(V, 1)
+        H_t = torch.transpose(torch.tanh(self.init_Wh(mean_encoder_out)), 0, 1)
+        self.LSTM_module.H_t = H_t
+
+        # Store top k ids (k is less or equal to beam_size)
+        # in first decoding step, all they are  start token
+        topk_ids = torch.ones(beam_size).long() * (self.vocab_size - 3)
+        topk_log_probs = torch.Tensor([0.0] + [-1e10] * (beam_size - 1))
+        seqs = torch.ones(self.beam_size, 1).long() * (self.vocab_size - 3)
+
+        # Store complete sequences and corresponding scores
+        complete_seqs = []
+        complete_seqs_scores = []
+        k = beam_size
+
+        # The main loop
+        with torch.no_grad():
+            for t in range(self.sequence_length):
+                Y_t = topk_ids # Target tokens
+
+                O_t, logits, (H_t, C_t) = self.step_decoding(O_t, V, Y_t, True)
+                log_probs = torch.log(logits)
+                
+                # Add to previous indeces
+                log_probs += topk_log_probs.unsqueeze(1)
+                topk_log_probs, topk_ids = torch.topk(log_probs.view(-1), k)
+
+                beam_index = topk_ids // self.vocab_size
+                topk_ids = topk_ids % self.vocab_size
+
+                seqs = torch.cat([seqs.index_select(0, beam_index), topk_ids.unsqueeze(1)], dim=1)
+                # print(seqs)
+
+                # Check for beams that have reached the END token
+                complete_inds = [ind for ind, next_word in enumerate(topk_ids) if next_word == (self.vocab_size - 2)]
+                # print(complete_inds)
+
+                if t == (self.sequence_length - 1): # End all sequences
+                    complete_inds = list(range(len(topk_ids)))
+
+                # Checking for non-finished indices
+                incomplete_inds = list(set(range(len(topk_ids))) - set(complete_inds))
+
+                # Checking if sequence have been completed
+                if len(complete_inds) > 0:
+                    complete_seqs.extend(seqs[complete_inds])
+                    complete_seqs_scores.extend(topk_log_probs[complete_inds])
+                k -= len(complete_inds)
+                if k == 0:  # all beam finished
+                    break
+
+                seqs = seqs[incomplete_inds]
+                topk_ids = topk_ids[incomplete_inds]
+                topk_log_probs = topk_log_probs[incomplete_inds]
+
+                V = V[:k]
+                selected = beam_index[incomplete_inds]
+                O_t = O_t[:, selected]
+                self.LSTM_module.H_t = H_t[:, selected]
+                self.LSTM_module.S_t = self.LSTM_module.S_t[:, selected]
+
+        i = complete_seqs_scores.index(max(complete_seqs_scores))
+        seq = complete_seqs[i][1:] + 1
+        
+        return seq
+
+
+                
+
+
+
+    def simple_beam_search(self, loader, beam_size):
+        dataiter = iter(loader)
+        data = dataiter.next()
+
+        # Make images ready for forward pass
+        images = data["image"]
+        labels = data["label"]
+
+        for i in range(images.shape[0]):
+            image = images[i, :, :]
+            predicted_label = self.single_beam_search(image, beam_size)
+            target_label = labels[i, :]
+            index_END = (target_label == (self.vocab_size - 1)).nonzero(as_tuple=True)[0]
+            target_label = target_label[:index_END+1]
+
+            print("\nTrue label:")
+            print(CorpusHelper.unTokenize(target_label, specialToken = True), "\n")
+
+            print("\nPredicted label:")
+            print(CorpusHelper.unTokenize(predicted_label, specialToken = True), "\n")
+
+            plt.imshow(image.squeeze())
+            plt.show()
+        
 
 
     def predict_beam_search(self, loader):
@@ -424,6 +541,7 @@ def main():
 
     # Loading existing model?
     load_model = True
+    load_optimizer = False
     load_path = "project/saved_models/"
     load_name_prefix = "TR2000NE2"
 
@@ -437,8 +555,8 @@ def main():
     results_name_suffix = "TR2000NE2"
 
     # Print a few predicted examples?
-    print_examples_test = True
-    print_examples_train = True
+    print_examples_test = False
+    print_examples_train = False
 
     # Initializing model
     ED = EncoderDecoder(embedding_size=embedding_size, hidden_size=hidden_size, batch_size=batch_size, sequence_length=sequence_length, vocab_size=vocab_size, o_layer_size = o_layer_size)
@@ -448,14 +566,15 @@ def main():
     if load_model:
         print("\nLoading:")
         print("\t" + load_path + load_name_prefix + "_MODEL")
-        print("\t" + load_path + load_name_prefix + "_OPTIMIZER")
         ED.load_state_dict(torch.load(load_path + load_name_prefix + "_MODEL"))
-        optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
+        if load_optimizer:
+            print("\t" + load_path + load_name_prefix + "_OPTIMIZER")
+            optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
 
     # Training the model
     # ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
 
-    ED.predict_beam_search(train_loader)
+    ED.simple_beam_search(train_loader, 10)
 
     # Saving the model
     if save_model:
