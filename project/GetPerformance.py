@@ -14,7 +14,7 @@ predictions = []
 ground_truths = []
 skip_line = True
 
-with open('results/TEST_2021-05-20_2Epoch_batchS4.txt') as file:
+with open('results/TEST_BEAM_TR2000NE7.txt') as file:
     for line in file:
         if skip_line:
             skip_line = False
@@ -30,14 +30,14 @@ with open('results/TEST_2021-05-20_2Epoch_batchS4.txt') as file:
 performance = P.Performance(predictions, ground_truths)
 
 
-lev_labels, lev_scores, best_prediction, best_score = performance.levenshtein(get_best_prediction=True)
-bleu_labels, bleu_scores = performance.bleu()
-
-
+lev_labels, lev_scores, best_lev_prediction, best_lev_score = performance.levenshtein(get_best_prediction=True)
+bleu_labels, bleu_scores, best_bleu_prediction, best_bleu_score = performance.bleu(get_best_prediction=True)
+jacc_labels, jacc_scores, best_jacc_prediction, best_jacc_score = performance.jaccard(get_best_prediction=True)
+lms_labels, lms_scores = performance.LMS()
 
 
 performance.get_performance(lev_labels=lev_labels, lev_scores=lev_scores, bleu_labels=bleu_labels, bleu_scores=bleu_scores)
-performance.get_statistics(lev_scores=lev_scores, bleu_scores=bleu_scores)
+performance.get_statistics(lev_scores=lev_scores, bleu_scores=bleu_scores, jacc_scores=jacc_scores, lms_scores=lms_scores)
 predictions, ground_truth = performance.listToTensor()
 
 
@@ -51,14 +51,25 @@ for pred, truth in zip(predictions, ground_truth):
 
     except:
         KeyError
-print('Best sequence:', best_prediction)
-print('Distance', best_score)
+
+print('\n')
+print(20*'=')
+print('BEST SEQUENCE')
+print(20*'=')
+print(f'Levenshtein ==> {best_lev_prediction}  | Distance: {best_lev_score}')
+print(f'BLEU        ==> {best_bleu_prediction} | Score: {best_bleu_score}')
+print(f'Jaccard     ==> {best_jacc_prediction} | Similarity: {best_jacc_score}')
+
+
+#print('Distance', best_score)
 run_parser = False
+equal_latex = []
 
 if run_parser:
     correct = 0
     total = 0
     index = 0
+
     for pred, truth in zip(tokenized_predictions, tokenized_ground_truth):
         print(index)
         index +=1
@@ -71,6 +82,7 @@ if run_parser:
             equal = performance.equal_latex(pred, truth)
             
             if equal:
+                equal_latex.append([pred, truth])
                 correct +=1
 
             total +=1
@@ -78,9 +90,8 @@ if run_parser:
         except:
             Exception
 
-        
-
-    print(total)
+    for i in equal_latex:
+        print(i)
 
     print(f'Accuracy of LATEX parser: {(correct/total)*100} %')
 

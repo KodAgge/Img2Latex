@@ -17,21 +17,6 @@ class Performance:
 
         #CHECK DataTypes
         assert type(self.predictions) == type(self.ground_truth), 'Non-matching input-types'    
-
-        '''
-        print('Converting to numpy arrays... \n')
-        self.predictions, self.ground_truth = self.convert_to_arrays()
-        
-        conversionSuccessful = True
-
-        for pred, truth in zip(self.predictions, self.ground_truth):
-            if type(pred) != type(truth):
-                conversionSuccessfull = False
-
-        #CHECK DataTypes
-        print(f'Successfully converted tensors into arrays ==> {conversionSuccessful} \n') 
-        assert len(self.predictions) == len(self.ground_truth), 'Numpy arrays have different sizes'
-        '''
   
         print('Removing PAD tokens...\n')
         self.predictions, self.ground_truth = self.drop_padding()
@@ -108,7 +93,7 @@ class Performance:
 
         return array
     
-    def bleu(self):
+    def bleu(self, get_best_prediction=False):
         scores_bleu = []
         labels= []
 
@@ -121,6 +106,19 @@ class Performance:
             score =  bleu_score.sentence_bleu(pred, real)
             scores_bleu.append(score)
 
+
+        if get_best_prediction:
+            bleu_dict_pred = {}
+            
+            for l, s in zip(labels, scores_bleu):
+                pred, real = l[0], l[1]
+                key = 'Prediction: ' + str(pred) + " | " + "Real: " + str(real)
+                bleu_dict_pred[key] = s
+               
+            best_prediction = max(bleu_dict_pred, key=bleu_dict_pred.get)
+            best_score = bleu_dict_pred[best_prediction]
+            
+            return labels, scores_bleu, best_prediction, best_score
         return labels, scores_bleu
 
     def equal_latex(self, expr1, expr2):
@@ -128,16 +126,22 @@ class Performance:
         expr2 = parse_latex(expr2)
         return expr1.equals(expr2)
 
-    def get_statistics(self, lev_scores, bleu_scores):
-        lev_average, lev_stdev = stats.mean(lev_scores), stats.stdev(lev_scores)
-        bleu_average, bleu_stdev = stats.mean(bleu_scores), stats.stdev(bleu_scores)
-
+    def get_statistics(self, lev_scores, bleu_scores, jacc_scores, lms_scores):
+        lev_average, lev_stdev, lev_max, lev_min = stats.mean(lev_scores), stats.stdev(lev_scores), max(lev_scores), min(lev_scores)
+        bleu_average, bleu_stdev, bleu_max, bleu_min = stats.mean(bleu_scores), stats.stdev(bleu_scores), max(bleu_scores), min(bleu_scores)
+        jacc_average, jacc_stdev, jacc_max, jacc_min = stats.mean(jacc_scores), stats.stdev(jacc_scores), max(jacc_scores), min(jacc_scores)
+        lms_average, lms_stdev, lms_max, lms_min = stats.mean(lms_scores), stats.stdev(lms_scores), max(lms_scores), min(lms_scores)
+        
+        
         print(20*'=')
         print('STATISTICS')
         print(20*'=')
+        digits = 2
 
-        print(f'Levenshtein || Average score: {lev_average} | STDEV: {lev_stdev}')
-        print(f'Bleu        || Average score: {bleu_average} | STDEV: {bleu_stdev}')
+        print(f'Levenshtein  ==> Average score: {round(lev_average, digits)} \t| STDEV: {round(lev_stdev, digits)} \t| MAX (Worst): {round(lev_max, digits)} \t| MIN (Best): {round(lev_min, digits)}')
+        print(f'BLEU         ==> Average score: {round(bleu_average, digits)}\t| STDEV: {round(bleu_stdev, digits)}\t| MAX (Best): {round(bleu_max, digits)} \t| MIN (Worst): {round(bleu_min, digits)}')
+        print(f'Jaccard      ==> Average score: {round(jacc_average, digits)}\t| STDEV: {round(jacc_stdev, digits)}\t| MAX (Best): {round(jacc_max, digits)} \t| MIN (Worst): {round(jacc_min, digits)}')
+        print(f'LMS          ==> Average score: {round(lms_average, digits)} \t| STDEV: {round(lms_stdev, digits)} \t| MAX (Best): {round(lms_max, digits)}  \t| MIN (Worst): {round(lms_min, digits)}')
 
     def get_performance(self, lev_labels=None, lev_scores=None, bleu_labels=None, bleu_scores=None):
         print(20*'=')
@@ -168,6 +172,7 @@ class Performance:
                     print()
 
     def listToTensor(self):
+
         predictions = []
         ground_truth = []
         for pred, truth in zip(self.predictions, self.ground_truth):
@@ -175,3 +180,81 @@ class Performance:
             ground_truth.append(torch.tensor(truth))
 
         return predictions, ground_truth
+
+    def jaccard(self, get_best_prediction=False):
+
+        labels = []
+        jacc_score = []
+
+        for pred, real in zip(self.predictions, self.ground_truth):
+            pred, real = set(pred), set(real)
+            
+            i = pred.intersection(real)
+            u = pred.union(real)
+            jacc_similarity = len(list(i))/len(list(u))
+            
+            labels.append([pred, real])
+            jacc_score.append(jacc_similarity)
+
+        if get_best_prediction:
+            jacc_dict_pred = {}
+            
+            for l, s in zip(labels, jacc_score):
+                pred, real = l[0], l[1]
+                key = 'Prediction: ' + str(pred) + " | " + "Real: " + str(real)
+                jacc_dict_pred[key] = s
+               
+            best_prediction = max(jacc_dict_pred, key=jacc_dict_pred.get)
+            best_score = jacc_dict_pred[best_prediction]
+            
+            return labels, jacc_score, best_prediction, best_score
+        
+
+        return labels, jacc_score
+
+    def LMS(self):
+        lms_labels = []
+        lms_scores = []
+
+        for pred, real in zip(self.predictions, self.ground_truth):
+
+            lms_labels.append([pred, real])
+            sequence = []
+
+            for p, r in zip(pred, real):
+                if p == r:
+                    sequence.append(1)
+
+                else:
+                    sequence.append(0)
+                
+            longest_match = 0
+            current_match = 0
+            matches = []
+            
+            for i in sequence:
+                if i == 0:
+                    current_match = 0
+                    matches.append(current_match)
+
+                else:
+                    current_match +=1
+                    matches.append(current_match)
+
+            longest_match = max(matches)
+
+         
+            lms_scores.append(longest_match/len(matches))
+
+        assert len(lms_labels) == len(lms_scores), 'Not of same length'
+
+        return lms_labels, lms_scores
+
+            
+
+            
+
+
+    
+
+    
