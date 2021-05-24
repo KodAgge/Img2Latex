@@ -29,6 +29,7 @@ N_TRAIN = 5 #7170
 N_TEST = 5
 # N_TRAIN = 7
 N_VAL = 5
+THRESHOLD = 165 # 0 = Black, 255 = White
 
 N_OWN = 11
 
@@ -43,7 +44,7 @@ TRAIN_IMG = loadImages(TRAIN_IMG_FOLDER, WIDTH, HEIGHT, N_TRAIN, SCALE, ending)
 print("Loading of train images complete")
 VAL_IMG = loadImages(VAL_IMG_FOLDER, WIDTH, HEIGHT, N_VAL, SCALE, ending)
 print("Loading of validation images complete")
-OWN_IMG = loadImages(OWN_IMG_FOLDER, WIDTH, HEIGHT, N_OWN, SCALE, ".jpg")
+OWN_IMG = loadImages(OWN_IMG_FOLDER, WIDTH, HEIGHT, N_OWN, SCALE, ".jpg", THRESHOLD)
 print("Loading of own images complete")
 
 _, _, OWN_IMGS = normalizeData(TEST_IMG, TRAIN_IMG, OWN_IMG)
