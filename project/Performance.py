@@ -181,27 +181,46 @@ class Performance:
 
         scores_main = []
         length_main = []
-        stepsize = 10
+        count_main = []
+        stepsize = 20
         groups = list(range(0, 120, stepsize))
 
         for group in groups: 
             scores_temp = []
+            count = 0
 
             for s, l in zip(scores, length):
                 if (l >= group and l <= group+stepsize):
                     scores_temp.append(s)
+                    count +=1
 
             try:
                 length_main.append(group)
                 scores_main.append(stats.mean(scores_temp))
+                count_main.append(count)
 
             except:
                 print('Missing data for group-range')
-        
-        length_main.remove(0)
+
+        normalized_count = []
+        total_count = sum(count_main)
+
+        for c in count_main:
+            normalized_count.append(c/total_count)
 
         if plot:
-            plt.plot(length_main, scores_main)
+            f, [ax1, ax2] = plt.subplots(2)
+            xdata = length_main
+            ydata = scores_main
+            ax1.plot(xdata, ydata)
+            ax1.set_ylim(ymin=0)
+            ax1.set_xlabel('Forumla length')
+            ax1.set_ylabel('BLEU Score')
+           
+            ax2.plot(xdata, normalized_count)
+            ax1.set_ylim(ymin=0)
+            ax2.set_xlabel('Forumla length')
+            ax2.set_ylabel('% Datapoints')
             plt.show()
 
     def equal_latex(self, expr1, expr2):
