@@ -3,15 +3,19 @@ import cv2
 from skimage.io import imread
 import math
 
-def loadImages(path, width, height, n_test, scale = 255):
+def loadImages(path, width, height, n_test, scale = 255, ending = ".png", threshold = 165):
   # Preallocate memory
   data = np.zeros([height, width, n_test])
 
   for i in range(n_test):
-    image_path = path + '/Image' + str(i) + '.png'
+    image_path = path + '/Image' + str(i) + ending
     img = imread(image_path) # Read image
 
     img_gray_scale = img[:,:,0] # Remove unessecary dimensions
+
+    if ending == ".jpg":
+      img_gray_scale[img_gray_scale>threshold] = 255
+      img_gray_scale[img_gray_scale<=threshold] = 0
 
     (img_height, img_width) = img_gray_scale.shape # Current shape
 

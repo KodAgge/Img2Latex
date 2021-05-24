@@ -14,7 +14,7 @@ predictions = []
 ground_truths = []
 skip_line = True
 
-with open('results/TEST_BEAM_TR2000NE7.txt') as file:
+with open('project/results/Bigger_test.txt') as file:
     for line in file:
         if skip_line:
             skip_line = False
