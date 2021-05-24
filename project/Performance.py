@@ -66,15 +66,26 @@ class Performance:
         scores_lev = []
 
         for pred, real in zip(self.predictions, self.ground_truth):
-            pred, real = self.castListToString(pred), self.castListToString(real)
-            dist = ed.distance(pred, real)
-            labels.append([pred, real])
             length = self.get_max_token_length(pred, real)
-            
+            #pred = [12, 13, 12]
+            #real = [12, 13, 12]
+            #pred, real = self.castListToString(pred), self.castListToString(real)
+    
+            dist = ed.distance(pred, real)
+            #print(dist)
+         
+            labels.append([pred, real])
             normalized_lev = (length-dist)/length
-            #print(length, dist, normalized_lev)
             scores_lev.append(normalized_lev)
-        
+            '''
+            print('Pred: ', pred)
+            print('Real: ', real)
+            print('MAX length (pred vs real): ', length)
+            print('Dist: ', dist)
+            print('Score: ', normalized_lev)
+            print()
+            print()
+            '''
 
         if get_best_prediction:
             lev_dict_pred = {}
@@ -141,27 +152,57 @@ class Performance:
                 break
 
             pred_length +=1
-        
+
         return max(pred_length, truth_length)
 
 
     def grouped_bleu(self, plot = True):
-        scores = []
-        token_length = []
+        #scores = []
+        #token_length = []
+        scores_and_token_length = []
 
         for pred, real in zip(self.predictions, self.ground_truth):
-            pred, real = self.castListToString(pred), self.castListToString(real)
             length = self.get_max_token_length(pred, real)
+
+            pred, real = self.castListToString(pred), self.castListToString(real)
             pred, real = [pred.split()], real.split() #Required format as input
             score =  bleu_score.sentence_bleu(pred, real)
-            scores.append(score)
-            token_length.append(length)
+  
+            scores_and_token_length.append([score, length])
 
+        scores_and_token_length.sort(key=lambda pair: pair[1])
 
+        scores = []
+        length = []
 
+        for i in scores_and_token_length:
+            scores.append(i[0])
+            length.append(i[1])
+
+        scores_main = []
+        length_main = []
+        stepsize = 10
+        groups = list(range(0, 120, stepsize))
+
+        for group in groups: 
+            scores_temp = []
+
+            for s, l in zip(scores, length):
+                if (l >= group and l <= group+stepsize):
+                    scores_temp.append(s)
+
+            try:
+                length_main.append(group)
+                scores_main.append(stats.mean(scores_temp))
+
+            except:
+                print('Missing data for group-range')
+        
+        length_main.remove(0)
 
         if plot:
-            plt.plot(token_length, scores)
+            plt.plot(length_main, scores_main)
+            plt.show()
 
     def equal_latex(self, expr1, expr2):
         expr1 = parse_latex(expr1)

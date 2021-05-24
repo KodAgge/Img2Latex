@@ -34,6 +34,7 @@ lev_labels, lev_scores, best_lev_prediction, best_lev_score = performance.levens
 bleu_labels, bleu_scores, best_bleu_prediction, best_bleu_score = performance.bleu(get_best_prediction=True)
 jacc_labels, jacc_scores, best_jacc_prediction, best_jacc_score = performance.jaccard(get_best_prediction=True)
 lms_labels, lms_scores = performance.LMS()
+performance.grouped_bleu()
 exact_matches, matching_sequences = performance.exact()
 
 
@@ -53,13 +54,16 @@ for pred, truth in zip(predictions, ground_truth):
     except:
         KeyError
 
-print('\n')
-print(20*'=')
-print('BEST SEQUENCE')
-print(20*'=')
-#print(f'Levenshtein ==> {best_lev_prediction}  | Distance: {best_lev_score}')
-print(f'BLEU        ==> {best_bleu_prediction} | Score: {best_bleu_score}')
-print(f'Jaccard     ==> {best_jacc_prediction} | Similarity: {best_jacc_score}')
+print_best_seq = False
+
+if print_best_seq:
+    print('\n')
+    print(20*'=')
+    print('BEST SEQUENCE')
+    print(20*'=')
+    #print(f'Levenshtein ==> {best_lev_prediction}  | Distance: {best_lev_score}')
+    print(f'BLEU        ==> {best_bleu_prediction} | Score: {best_bleu_score}')
+    print(f'Jaccard     ==> {best_jacc_prediction} | Similarity: {best_jacc_score}')
 
 
 #print('Distance', best_score)
