@@ -57,7 +57,7 @@ print('\n')
 print(20*'=')
 print('BEST SEQUENCE')
 print(20*'=')
-print(f'Levenshtein ==> {best_lev_prediction}  | Distance: {best_lev_score}')
+#print(f'Levenshtein ==> {best_lev_prediction}  | Distance: {best_lev_score}')
 print(f'BLEU        ==> {best_bleu_prediction} | Score: {best_bleu_score}')
 print(f'Jaccard     ==> {best_jacc_prediction} | Similarity: {best_jacc_score}')
 

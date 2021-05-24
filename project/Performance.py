@@ -7,6 +7,7 @@ import warnings
 warnings.simplefilter(action='ignore')
 import torch
 from CorpusHelper import unTokenize 
+import matplotlib.pyplot as plt 
 
 
 class Performance:
@@ -68,8 +69,11 @@ class Performance:
             pred, real = self.castListToString(pred), self.castListToString(real)
             dist = ed.distance(pred, real)
             labels.append([pred, real])
-
-            scores_lev.append(dist)
+            length = self.get_max_token_length(pred, real)
+            
+            normalized_lev = (length-dist)/length
+            #print(length, dist, normalized_lev)
+            scores_lev.append(normalized_lev)
         
 
         if get_best_prediction:
@@ -99,6 +103,7 @@ class Performance:
 
         for pred, real in zip(self.predictions, self.ground_truth):
             pred, real = self.castListToString(pred), self.castListToString(real)
+     
            
             labels.append([pred, real])
             pred, real = [pred.split()], real.split() #Required format as input
@@ -121,6 +126,43 @@ class Performance:
             return labels, scores_bleu, best_prediction, best_score
         return labels, scores_bleu
 
+    def get_max_token_length(self, prediction, ground_truth):
+        stop_character = 143
+        truth_length = 0
+        pred_length = 0
+        for i in ground_truth:
+            if i == 143:
+                break
+
+            truth_length +=1
+
+        for j in prediction:
+            if j == 143:
+                break
+
+            pred_length +=1
+        
+        return max(pred_length, truth_length)
+
+
+    def grouped_bleu(self, plot = True):
+        scores = []
+        token_length = []
+
+        for pred, real in zip(self.predictions, self.ground_truth):
+            pred, real = self.castListToString(pred), self.castListToString(real)
+            length = self.get_max_token_length(pred, real)
+            pred, real = [pred.split()], real.split() #Required format as input
+            score =  bleu_score.sentence_bleu(pred, real)
+            scores.append(score)
+            token_length.append(length)
+
+
+
+
+        if plot:
+            plt.plot(token_length, scores)
+
     def equal_latex(self, expr1, expr2):
         expr1 = parse_latex(expr1)
         expr2 = parse_latex(expr2)
@@ -139,7 +181,7 @@ class Performance:
         print(20*'=')
         digits = 2
 
-        print(f'Levenshtein  ==> Average score: {round(lev_average, digits)} \t| STDEV: {round(lev_stdev, digits)} \t| MAX (Worst): {round(lev_max, digits)} \t| MIN (Best): {round(lev_min, digits)}')
+        print(f'Levenshtein  ==> Average score: {round(lev_average, digits)} \t| STDEV: {round(lev_stdev, digits)} \t| MAX (Best): {round(lev_max, digits)} \t| MIN (Worst): {round(lev_min, digits)}')
         print(f'BLEU         ==> Average score: {round(bleu_average, digits)}\t| STDEV: {round(bleu_stdev, digits)}\t| MAX (Best): {round(bleu_max, digits)} \t| MIN (Worst): {round(bleu_min, digits)}')
         print(f'Jaccard      ==> Average score: {round(jacc_average, digits)}\t| STDEV: {round(jacc_stdev, digits)}\t| MAX (Best): {round(jacc_max, digits)} \t| MIN (Worst): {round(jacc_min, digits)}')
         print(f'LMS          ==> Average score: {round(lms_average, digits)} \t| STDEV: {round(lms_stdev, digits)} \t| MAX (Best): {round(lms_max, digits)}  \t| MIN (Worst): {round(lms_min, digits)}')
@@ -157,7 +199,6 @@ class Performance:
 
             print(20*'=')
 
-  
     def get_performance(self, lev_labels=None, lev_scores=None, bleu_labels=None, bleu_scores=None):
         print(20*'=')
         print('PERFORMANCE LEVENSHTEIN')
