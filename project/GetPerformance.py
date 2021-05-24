@@ -14,7 +14,7 @@ predictions = []
 ground_truths = []
 skip_line = True
 
-with open('results/TRAIN_BEAM_Prediction_9Epoch_BS5_AllData_23_may.txt') as file:
+with open('results/TEST_BEAM_Prediction_9Epoch_BS5_AllData_23_may.txt') as file:
     for line in file:
         if skip_line:
             skip_line = False

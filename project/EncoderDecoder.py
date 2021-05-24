@@ -16,7 +16,7 @@ from AttentionMechanism import AttentionMechanism
 
 import sys
 sys.path.insert(0, '..\data')
-from CROHME_Datasets import CROHME_Training_Set, CROHME_Testing_Set, CROHME_Validation_Set
+from CROHME_Datasets import CROHME_Training_Set, CROHME_Testing_Set, CROHME_Validation_Set, CROHME_Own_Set
 
 
 
@@ -208,7 +208,7 @@ class EncoderDecoder(nn.Module):
         return seq
 
 
-    def simple_beam_search(self, loader, beam_size):
+    def simple_beam_search(self, loader, beam_size, target = True):
         dataiter = iter(loader)
         data = dataiter.next()
 
@@ -219,12 +219,14 @@ class EncoderDecoder(nn.Module):
         for i in range(images.shape[0]):
             image = images[i, :, :]
             predicted_label = self.single_beam_search(image, beam_size)
-            target_label = labels[i, :]
-            index_END = (target_label == (self.vocab_size - 1)).nonzero(as_tuple=True)[0]
-            target_label = target_label[:index_END+1]
 
-            print("\nTrue label:")
-            print(CorpusHelper.unTokenize(target_label, specialToken = True), "\n")
+            if target:
+                target_label = labels[i, :]
+                index_END = (target_label == (self.vocab_size - 1)).nonzero(as_tuple=True)[0]
+                target_label = target_label[:index_END+1]
+
+                print("\nTrue label:")
+                print(CorpusHelper.unTokenize(target_label, specialToken = True), "\n")
 
             print("\nPredicted label:")
             print(CorpusHelper.unTokenize(predicted_label, specialToken = True), "\n")
@@ -299,7 +301,7 @@ class EncoderDecoder(nn.Module):
         plt.show()
 
 
-    def predict_multi(self, loader):
+    def predict_multi(self, loader, target = True):
         # corpusDict = CorpusHelper.corpus()
         
         # Retrieve images
@@ -324,9 +326,10 @@ class EncoderDecoder(nn.Module):
             predicted_label = torch.argmax(logit, dim=1) + 1
 
             # Printing
-            print("\nTrue label:\n", label)
-            print()
-            print(CorpusHelper.unTokenize(label,specialToken = True), "\n")
+            if target:
+                print("\nTrue label:\n", label)
+                print()
+                print(CorpusHelper.unTokenize(label,specialToken = True), "\n")
 
             print("\nPredicted label:\n", predicted_label)
             print()
@@ -479,19 +482,20 @@ def main():
     train_set = CROHME_Training_Set()
     test_set = CROHME_Testing_Set()
     val_set = CROHME_Validation_Set()
+    own_set = CROHME_Own_Set()
     
     # Hyperparameters
     embedding_size = 80; # number of rows in the E-matrix
     o_layer_size = 100;  # size of o-vektorn TODO: What should this be?
     hidden_size = 512; 
     sequence_length = 109; vocab_size = 144; 
-    batch_size = 4
-    n_epochs = 1
+    batch_size = 11
+    n_epochs = 2
     beam_size = 5
 
     # Learning rates
     constant_lr = False # False to use changing learning rate suggest by stanford
-    learning_rate_levels = [5e-4, 1e-3, 1e-5]
+    learning_rate_levels = [1e-3, 1e-3, 1e-5]
     cutoffs_learning_rates = [1, 9, 15]
     learning_rates = set_learning_rates(learning_rate_levels, cutoffs_learning_rates, n_epochs)
 
@@ -499,26 +503,28 @@ def main():
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
+    own_loader = DataLoader(own_set, batch_size=batch_size, shuffle=True)
 
     # Loading existing model?
     load_model = True
-    load_optimizer = False
+    load_optimizer = True
     load_path = "project/saved_models/"
-    load_name_prefix = "TR2000NE2"
+    load_name_prefix = "ALL_DATA_6TH7TH"
 
     # Saving model after training?
     save_model = False
-    save_name_prefix = "TR2000NE2"
+    save_name_prefix = "ALL_DATA_6TH7TH"
 
     # Writing predictions to a .txt file?
-    write_results_train = True
-    write_results_test = True
-    beam_search_write = True
-    results_name_suffix = "TR2000NE2"
+    write_results_train = False
+    write_results_test = False
+    beam_search_write = False
+    results_name_suffix = "ALL_DATA_3RD"
 
     # Print a few predicted examples?
-    print_examples_test = True
-    print_examples_train = True
+    print_examples_test = False
+    print_examples_train = False
+    print_examples_own = True
     beam_search_print = True
 
     # Initializing model
@@ -535,8 +541,10 @@ def main():
             optimizer.load_state_dict(torch.load(load_path + load_name_prefix + "_OPTIMIZER"))
 
     # Training the model
+    tic = time.perf_counter()
     if train:
         ED = MGD(ED, train_loader, optimizer, learning_rates, n_epochs, constant_lr)
+    toc = time.perf_counter()
 
 
     # Saving the model
@@ -575,8 +583,23 @@ def main():
         else:
             ED.predict_multi(train_loader)
 
+    if print_examples_own:
+        print("\n\nEXAMPLES FROM THE OWN SET:")
+        if beam_search_print:
+            ED.simple_beam_search(own_loader, beam_size, False)
+        else:
+            ED.predict_multi(own_loader, False)
+
+    print("\nTraining finished in", toc - tic, "seconds")
+
+    
+
+    
+
 
 
 if __name__=='__main__':
     main()
+
+    
     
