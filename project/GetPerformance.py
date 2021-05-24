@@ -14,7 +14,7 @@ predictions = []
 ground_truths = []
 skip_line = True
 
-with open('results/TEST_BEAM_TR2000NE7.txt') as file:
+with open('results/TRAIN_BEAM_Prediction_9Epoch_BS5_AllData_23_may.txt') as file:
     for line in file:
         if skip_line:
             skip_line = False
@@ -34,10 +34,11 @@ lev_labels, lev_scores, best_lev_prediction, best_lev_score = performance.levens
 bleu_labels, bleu_scores, best_bleu_prediction, best_bleu_score = performance.bleu(get_best_prediction=True)
 jacc_labels, jacc_scores, best_jacc_prediction, best_jacc_score = performance.jaccard(get_best_prediction=True)
 lms_labels, lms_scores = performance.LMS()
+exact_matches, matching_sequences = performance.exact()
 
 
 performance.get_performance(lev_labels=lev_labels, lev_scores=lev_scores, bleu_labels=bleu_labels, bleu_scores=bleu_scores)
-performance.get_statistics(lev_scores=lev_scores, bleu_scores=bleu_scores, jacc_scores=jacc_scores, lms_scores=lms_scores)
+performance.get_statistics(lev_scores=lev_scores, bleu_scores=bleu_scores, jacc_scores=jacc_scores, lms_scores=lms_scores, exact_matches=exact_matches, matching_sequences=matching_sequences)
 predictions, ground_truth = performance.listToTensor()
 
 

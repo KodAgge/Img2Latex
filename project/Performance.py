@@ -126,13 +126,14 @@ class Performance:
         expr2 = parse_latex(expr2)
         return expr1.equals(expr2)
 
-    def get_statistics(self, lev_scores, bleu_scores, jacc_scores, lms_scores):
+    def get_statistics(self, lev_scores, bleu_scores, jacc_scores, lms_scores, exact_matches, matching_sequences):
+
         lev_average, lev_stdev, lev_max, lev_min = stats.mean(lev_scores), stats.stdev(lev_scores), max(lev_scores), min(lev_scores)
         bleu_average, bleu_stdev, bleu_max, bleu_min = stats.mean(bleu_scores), stats.stdev(bleu_scores), max(bleu_scores), min(bleu_scores)
         jacc_average, jacc_stdev, jacc_max, jacc_min = stats.mean(jacc_scores), stats.stdev(jacc_scores), max(jacc_scores), min(jacc_scores)
         lms_average, lms_stdev, lms_max, lms_min = stats.mean(lms_scores), stats.stdev(lms_scores), max(lms_scores), min(lms_scores)
         
-        
+
         print(20*'=')
         print('STATISTICS')
         print(20*'=')
@@ -142,7 +143,21 @@ class Performance:
         print(f'BLEU         ==> Average score: {round(bleu_average, digits)}\t| STDEV: {round(bleu_stdev, digits)}\t| MAX (Best): {round(bleu_max, digits)} \t| MIN (Worst): {round(bleu_min, digits)}')
         print(f'Jaccard      ==> Average score: {round(jacc_average, digits)}\t| STDEV: {round(jacc_stdev, digits)}\t| MAX (Best): {round(jacc_max, digits)} \t| MIN (Worst): {round(jacc_min, digits)}')
         print(f'LMS          ==> Average score: {round(lms_average, digits)} \t| STDEV: {round(lms_stdev, digits)} \t| MAX (Best): {round(lms_max, digits)}  \t| MIN (Worst): {round(lms_min, digits)}')
+        print(f'Exact matches: {round(exact_matches, digits)} %')
 
+        print(20*'=')
+        print('EXACT MATCHES')
+        print(20*'=')
+        
+        print_matches = False
+
+        if print_matches:
+            for i in matching_sequences:
+                print(f'PREDICTION: {i[0]} | GROUND TRUTH: {i[1]}') 
+
+            print(20*'=')
+
+  
     def get_performance(self, lev_labels=None, lev_scores=None, bleu_labels=None, bleu_scores=None):
         print(20*'=')
         print('PERFORMANCE LEVENSHTEIN')
@@ -215,6 +230,7 @@ class Performance:
     def LMS(self):
         lms_labels = []
         lms_scores = []
+        
 
         for pred, real in zip(self.predictions, self.ground_truth):
 
@@ -231,6 +247,7 @@ class Performance:
             longest_match = 0
             current_match = 0
             matches = []
+            
             
             for i in sequence:
                 if i == 0:
@@ -250,7 +267,25 @@ class Performance:
 
         return lms_labels, lms_scores
 
-            
+    def exact(self):
+        num_exact_matches = 0
+        matching_sequences = []
+        for pred, real in zip(self.predictions, self.ground_truth):
+            match = 1
+
+            for p, r in zip(pred, real):
+                if p != r:
+                    match = 0
+
+            if match == 1:
+                matching_sequences.append([pred, real])
+
+
+            num_exact_matches += match
+
+        
+        return 100*(num_exact_matches/len(self.predictions)), matching_sequences
+
 
             
 
