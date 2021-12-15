@@ -5,4 +5,4 @@ In this project we built Encoder-Decoder model to convert images of handwritten 
 The model was trained on the CROHME dataset.
 
 ## Some cherry picked results
-![Result A](/images/result_a.png)
+![Result A](/images/result_a.PNG)
