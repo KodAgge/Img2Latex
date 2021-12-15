@@ -5,6 +5,7 @@ In this project we built Encoder-Decoder model to convert images of handwritten 
 The model was trained on the CROHME dataset.
 
 ## Some cherry picked results
+The following expression were written by the authors themselves. 
 ![Result A](/images/result_a.PNG)
 ![Result B](/images/result_b.PNG)
 ![Result C](/images/result_c.PNG)
