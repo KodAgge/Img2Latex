@@ -10,4 +10,7 @@ The model was trained on the CROHME dataset.
 ![Result B](/images/result_b.PNG)
 ![Result C](/images/result_c.PNG)
 ![Result D](/images/result_d.PNG)
+
+
+
 The expressions above were written by the authors themselves. 
